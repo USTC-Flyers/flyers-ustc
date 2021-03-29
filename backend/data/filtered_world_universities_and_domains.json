@@ -1,0 +1,244 @@
+[
+  {
+    "web_pages": [
+      "http://www.chuhai.edu.hk/"
+    ],
+    "name": "Chu Hai College",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "chuhai.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.cityu.edu.hk/"
+    ],
+    "name": "City University of Hong Kong",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "cityu.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.cuhk.hk/"
+    ],
+    "name": "Chinese University of Hong Kong",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "cuhk.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.hkapa.edu/"
+    ],
+    "name": "Hong Kong Academy for Performing Arts",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "hkapa.edu"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.hkbu.edu.hk/"
+    ],
+    "name": "Hong Kong Baptist University",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "hkbu.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.hksyc.edu/"
+    ],
+    "name": "Hong Kong Shue Yan College",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "hksyc.edu"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.hku.hk/"
+    ],
+    "name": "University of Hong Kong",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "hku.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.ied.edu.hk/"
+    ],
+    "name": "Hong Kong Institute of Education",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "ied.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.ln.edu.hk/"
+    ],
+    "name": "Lingnan University",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "ln.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.ouhk.edu.hk/"
+    ],
+    "name": "Open University of Hong Kong",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "ouhk.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.polyu.edu.hk/"
+    ],
+    "name": "Hong Kong Polytechnic University",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "polyu.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.ust.hk/"
+    ],
+    "name": "Hong Kong University of Science and Technology",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "ust.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.hsu.edu.hk/"
+    ],
+    "name": "The Hang Seng University of Hong Kong",
+    "alpha_two_code": "HK",
+    "state-province": null,
+    "domains": [
+      "hsu.edu.hk"
+    ],
+    "country": "Hong Kong"
+  },
+  {
+    "web_pages": [
+      "http://www.aventis.edu.sg/"
+    ],
+    "name": "Aventis School of Management",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "aventis.edu.sg"
+    ],
+    "country": "Singapore"
+  },
+  {
+    "web_pages": [
+      "http://www.ntu.edu.sg/"
+    ],
+    "name": "Nanyang Technological University",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "ntu.edu.sg"
+    ],
+    "country": "Singapore"
+  },
+  {
+    "web_pages": [
+      "http://www.nus.edu/",
+      "http://www.nus.edu.sg/"
+    ],
+    "name": "National University of Singapore",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "nus.edu",
+      "nus.edu.sg"
+    ],
+    "country": "Singapore"
+  },
+  {
+    "web_pages": [
+      "http://www.yale-nus.edu.sg/"
+    ],
+    "name": "yale-NUS",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "yale-nus.edu.sg"
+    ],
+    "country": "Singapore"
+  },
+  {
+    "web_pages": [
+      "http://www.sim.edu.sg/"
+    ],
+    "name": "Singapore Institute of Management (SIM)",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "sim.edu.sg"
+    ],
+    "country": "Singapore"
+  },
+  {
+    "web_pages": [
+      "http://www.smu.edu.sg/"
+    ],
+    "name": "Singapore Management University",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "smu.edu.sg"
+    ],
+    "country": "Singapore"
+  },
+  {
+    "web_pages": [
+      "http://www.taoistcollege.org.sg/"
+    ],
+    "name": "Taoist College Singapore",
+    "alpha_two_code": "SG",
+    "state-province": null,
+    "domains": [
+      "taoistcollege.org.sg"
+    ],
+    "country": "Singapore"
+  }
+]
