@@ -7,7 +7,7 @@ from drf_yasg import openapi
 from .. import models
 from .. import serializers
 
-test_param = openapi.Parameter('short_name', openapi.IN_QUERY, description="University short name", type=openapi.TYPE_STRING)
+test_param = openapi.Parameter('uid', openapi.IN_QUERY, description="University ID", type=openapi.TYPE_INTEGER)
 user_response = openapi.Response('data', serializers.ProgramSerializer(many=True))
 
 class ProgramViewSet(
@@ -20,7 +20,7 @@ class ProgramViewSet(
     
     @swagger_auto_schema(manual_parameters=[test_param], responses={200: user_response, 204: "请填写学校"})
     def list(self, request, *args, **kwargs):
-        query = request.get('short_name', '')
+        query = request.GET.get('uid', '')
         if query == '':
             return Response(
                 data={
@@ -31,7 +31,7 @@ class ProgramViewSet(
             )
         else:
             # !FIXME: assert the queryset just contains a single element
-            result = models.University.objects.filter(short_name__search=query).get()
+            result = models.University.objects.filter(pk=query).get()
             programs = self.queryset.filter(related_university=result)
             programs = serializers.ProgramSerializer(programs, many=True).data
             data = {

@@ -8,7 +8,7 @@ router = routers.SimpleRouter()
 router.register('program', views.ProgramViewSet)
 router.register('university', views.UniversityViewSet)
 router.register('admissions', views.AdmissionsViewSet)
-router.register('backgroud', views.BackgroundViewSet)
+router.register('background', views.BackgroundViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

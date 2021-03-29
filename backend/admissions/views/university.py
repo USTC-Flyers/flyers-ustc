@@ -20,11 +20,11 @@ class UniversityViewSet(
     
     @swagger_auto_schema(manual_parameters=[parmas], responses={200: response})
     def list(self, request, *args, **kwargs):
-        query = request.get('query', '')
+        query = request.GET.get('query', '')
         result = models.University.objects.annotate(
             search=SearchVector('school_name', 'area', 'school_name_cn', 'short_name'),
         ).filter(search=query)
-        result = serializers.UniversirySerializer(result, many=True).data
+        result = serializers.UniversitySerializer(result, many=True).data
         data = {
             'msg': 'ok', 
             'errno': '0',

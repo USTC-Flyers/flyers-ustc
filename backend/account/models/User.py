@@ -10,21 +10,12 @@ for school in school_list:
 
 # !TODO: add cas login
 class User(AbstractUser):
-    name = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-        unique=True)
-    sid = models.CharField(
-        max_length=10,
-        null=False,
-        blank=False,
-        unique=True)
     school = models.IntegerField(
         choices=SCHOOL_CHOICES,
-        blank=False,
-        null=False
+        editable=True,
+        null=True
     )
     contact = models.CharField(
         max_length=256,
-        validators=[contact_email_qq_wechat])
+        validators=[contact_email_qq_wechat],
+        null=True)

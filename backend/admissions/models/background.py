@@ -13,8 +13,8 @@ class Background(models.Model):
         null=False,
         blank=False
     )
-    major = models.IntegerField(
-        choices=Choices.MAJORCHOICES,
+    major = models.CharField(
+        max_length=256,
         null=False, 
         blank=False
     )
@@ -22,33 +22,50 @@ class Background(models.Model):
         null=False, 
         blank=False
     )
-    rank = models.IntegerField(
-        choices=Choices.RANKCHOICES,
+    rank = models.CharField(
+        max_length=256,
         null=False, 
         blank=False
     )
-    TOEFL = PickledObjectField(
-        editable=True
+    TOEFL = models.CharField(
+        max_length=256,
+        null=False, 
+        blank=False
     )
-    GRE = PickledObjectField(
-        editable=True
+    GRE = models.CharField(
+        max_length=256,
+        null=False, 
+        blank=False
     )
     researchSpec = models.CharField(
         max_length=1024,
         null=False,
         blank=False
     )
-    researchTag = MultiSelectField(
-        choices=Choices.RESEARCHCHOICES
+    researchTag = models.CharField(
+        max_length=256,
+        null=False, 
+        blank=False
     )
     researchSpec = models.CharField(
-        max_length=1024
+        max_length=1024,
+        null=True,
+        blank=True
     )
-    referTag = MultiSelectField(
-        choices=Choices.REFERCHOICES
+    referTag = models.CharField(
+        max_length=256,
+        null=False, 
+        blank=False
     )
-    applyFor = MultiSelectField(
-        choices=Choices.APPLYFORCHOICES
+    referSpec = models.CharField(
+        max_length=1024,
+        null=True,
+        blank=True
+    )
+    applyFor = models.CharField(
+        max_length=256,
+        null=False, 
+        blank=False
     )
     summary = models.CharField(
         max_length=1024
