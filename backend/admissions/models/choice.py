@@ -83,6 +83,3 @@ class Choices():
             choice.append((t, t))
         choices_all.append(choice)
     MAJORCHOICES, RANKCHOICES, REFERCHOICES, RESEARCHCHOICES, ADMISSIONCHOICES, APPLYFORCHOICES = choices_all
-
-class UnivChoices():
-    
