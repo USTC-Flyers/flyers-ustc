@@ -3,8 +3,9 @@ from django.db import models
 from multiselectfield import MultiSelectField
 from .choice import AdmissionChoices
 from .validators import enrolled_semester
+from django.utils.translation import gettext_lazy as _
 
-class Admissions(model.Model):
+class Admissions(models.Model):
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         verbose_name=_("related user"), 

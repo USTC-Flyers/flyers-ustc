@@ -3,6 +3,7 @@ from django.db import models
 from .choice import Choices
 from multiselectfield import MultiSelectField
 from picklefield.fields import PickledObjectField
+from django.utils.translation import gettext_lazy as _
 
 class Background(models.Model):
     related_user = models.ForeignKey(
@@ -26,10 +27,10 @@ class Background(models.Model):
         null=False, 
         blank=False
     )
-    TOEFL = models.PickledObjectField(
+    TOEFL = PickledObjectField(
         editable=True
     )
-    GRE = models.PickledObjectField(
+    GRE = PickledObjectField(
         editable=True
     )
     researchSpec = models.CharField(

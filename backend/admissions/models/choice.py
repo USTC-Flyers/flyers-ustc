@@ -83,3 +83,8 @@ class Choices():
             choice.append((t, t))
         choices_all.append(choice)
     MAJORCHOICES, RANKCHOICES, REFERCHOICES, RESEARCHCHOICES, ADMISSIONCHOICES, APPLYFORCHOICES = choices_all
+    
+class AdmissionChoices(DjangoChoices):
+    admitted = ChoiceItem()
+    reject = ChoiceItem()
+    waitlist = ChoiceItem()
