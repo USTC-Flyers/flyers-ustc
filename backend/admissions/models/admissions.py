@@ -4,6 +4,8 @@ from multiselectfield import MultiSelectField
 from .choice import AdmissionChoices
 from .validators import enrolled_semester
 from django.utils.translation import gettext_lazy as _
+from .university import University
+from .program import Program
 
 class Admissions(models.Model):
     related_user = models.ForeignKey(
@@ -13,16 +15,21 @@ class Admissions(models.Model):
         null=False,
         blank=False
     )
-    # !TODO: change to choiceField if applicable
-    university = models.CharField(
-        max_length=256,
+    related_university = models.ForeignKey(
+        University,
+        verbose_name=_("related university"), 
+        on_delete=models.CASCADE,
         null=False,
-        blank=False
+        blank=False,
+        default=''
     )
-    program = models.CharField(
-        max_length=256,
+    related_program = models.ForeignKey(
+        Program,
+        verbose_name=_("related program"), 
+        on_delete=models.CASCADE,
         null=False,
-        blank=False
+        blank=False,
+        default=''
     )
     result = models.BooleanField(
         null=False,
