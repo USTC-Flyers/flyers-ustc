@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.db import models
-from .choice import MajorChoices, RankChoices, RecTagChoices, ResearchTagChoices, ApplyForChoices
-from .validators import toefl_score, gre_score
+from .choice import Choices
 from multiselectfield import MultiSelectField
+from picklefield.fields import PickledObjectField
 
 class Background(models.Model):
     related_user = models.ForeignKey(
@@ -13,7 +13,7 @@ class Background(models.Model):
         blank=False
     )
     major = models.IntegerField(
-        choices=MajorChoices.choices,
+        choices=Choices.MAJORCHOICES,
         null=False, 
         blank=False
     )
@@ -22,17 +22,15 @@ class Background(models.Model):
         blank=False
     )
     rank = models.IntegerField(
-        choices = RankChoices.choices,
+        choices=Choices.RANKCHOICES,
         null=False, 
         blank=False
     )
-    TOEFL = models.CharField(
-        max_length=256,
-        validators=[toefl_score]
+    TOEFL = models.PickledObjectField(
+        editable=True
     )
-    GRE = models.CharField(
-        max_length=256,
-        validators=[gre_score]
+    GRE = models.PickledObjectField(
+        editable=True
     )
     researchSpec = models.CharField(
         max_length=1024,
@@ -40,16 +38,16 @@ class Background(models.Model):
         blank=False
     )
     researchTag = MultiSelectField(
-        choices=ResearchTagChoices.choices
+        choices=Choices.RESEARCHCHOICES
     )
     researchSpec = models.CharField(
         max_length=1024
     )
-    recTag = MultiSelectField(
-        choices=RecTagChoices.choices
+    referTag = MultiSelectField(
+        choices=Choices.REFERCHOICES
     )
     applyFor = MultiSelectField(
-        choices=ApplyForChoices.choices
+        choices=Choices.APPLYFORCHOICES
     )
     summary = models.CharField(
         max_length=1024

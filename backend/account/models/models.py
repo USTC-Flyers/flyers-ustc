@@ -1,7 +1,12 @@
 from django.db import models
-from .department import DepartmentChoices
+from .choices import school_list
 from .validators import contact_email_qq_wechat
 
+SCHOOL_CHOICES = []
+for school in school_list:
+    idx = school.split(':')[0]
+    SCHOOL_CHOICES.append((idx, school))
+    
 class User(model.Model):
     name = models.CharField(
         max_length=50,
@@ -13,8 +18,8 @@ class User(model.Model):
         null=False,
         blank=False,
         unique=True)
-    department = models.IntegerField(
-        choices=DepartmentChoices.choices,
+    school = models.IntegerField(
+        choices=SCHOOL_CHOICES,
         black=False,
         null=False
     )
