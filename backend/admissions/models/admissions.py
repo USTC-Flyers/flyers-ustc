@@ -11,6 +11,7 @@ class Admissions(models.Model):
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         verbose_name=_("related user"), 
+        related_name="admissions",
         on_delete=models.CASCADE,
         null=False,
         blank=False

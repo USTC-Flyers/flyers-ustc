@@ -8,7 +8,8 @@ from django.utils.translation import gettext_lazy as _
 class Background(models.Model):
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
-        verbose_name=_("related user"), 
+        verbose_name=_("related user"),
+        related_name="background", 
         on_delete=models.CASCADE,
         null=False,
         blank=False
