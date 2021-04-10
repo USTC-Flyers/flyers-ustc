@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from ..managers.notification import NotificationQueryset
 
 class Notification(models.Model):
     UPDATED, UPVOTED, DELETED, APPROVED, REJECTED, REPLIED, MENTIONED, PINNED, UNPINNED, PR, REPORT, OTHER = range(12)
@@ -42,6 +43,8 @@ class Notification(models.Model):
         choices=OPERATIONS_CHOICES,
         default=OTHER
     )
+    
+    objects = NotificationQueryset.as_manager()
     
     @property
     def display_text(self):

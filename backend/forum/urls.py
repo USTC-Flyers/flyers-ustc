@@ -9,6 +9,7 @@ router.register('comment_thread', views.CommentThreadViewSet)
 router.register('comment', views.CommentiewSet)
 router.register('topic', views.TopicViewSet)
 router.register('topic_revision', views.TopicRevisionViewSet)
+router.register('notification', views.NotificationViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
