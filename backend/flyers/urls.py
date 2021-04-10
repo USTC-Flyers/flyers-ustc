@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/admin/', admin.site.urls),
     path('api/api-auth/', include('rest_framework.urls')),
-    path('api/', include('admissions.urls')),    
+    path('api/', include('admissions.urls')),  
+    path('api/', include('forum.urls')),      
     path('api/login/', obtain_jwt_token)
 ]

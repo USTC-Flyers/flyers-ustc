@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from .topic import Topic
+from ..managers import CommentQuerySet, CommentThreadQuerySet
 
 class CommentThread(models.Model):
     DEFAULT, PINNED, UNPINNED, CLOSED, UNCLOSED = range(5)
@@ -32,6 +33,40 @@ class CommentThread(models.Model):
     created_time = models.DateTimeField(
         default=timezone.now
     )
+    is_anonymous = models.BooleanField(
+        default=False
+    )
+    upvoted = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="comment_thread_upvoted_by",
+        null=True,
+        blank=True
+    )
+    upvoted_count = models.PositiveIntegerField(
+        default=0
+    )
+    
+    objects = CommentThreadQuerySet.as_manager()
+    
+    def upvote(self, user):
+        if self not in user.comment_thread_upvoted_by.all():
+            user.comment_thread_upvoted_by.add(self)
+            self.upvoted_count += 1
+            self.save()
+        
+    def downvote(self, user):
+        if self in user.comment_thread_upvoted_by.all():
+            user.comment_thread_upvoted_by.remove(self)
+            self.upvoted_count -= 1
+            self.save()
+        
+    def pin(self):
+        self.action = self.PINNED
+        self.save()
+    
+    def unpin(self):
+        self.action = self.UNPINNED
+        self.save()
     
 class Comment(models.Model):
     DEFAULT, PINNED, UNPINNED, CLOSED, UNCLOSED = range(5)
@@ -64,10 +99,32 @@ class Comment(models.Model):
     )
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name="topic_upvoted_by",
+        related_name="comment_upvoted_by",
         null=True,
         blank=True
     )
     upvoted_count = models.PositiveIntegerField(
         default=0
     )
+    
+    objects = CommentQuerySet.as_manager()
+    
+    def upvote(self, user):
+        if self not in user.comment_upvoted_by.all():
+            user.comment_upvoted_by.add(self)
+            self.upvoted_count += 1
+            self.save()
+        
+    def downvote(self, user):
+        if self in user.comment_upvoted_by.all():
+            user.comment_upvoted_by.remove(self)
+            self.upvoted_count -= 1
+            self.save()
+        
+    def pin(self):
+        self.action = self.PINNED
+        self.save()
+    
+    def unpin(self):
+        self.action = self.UNPINNED
+        self.save()

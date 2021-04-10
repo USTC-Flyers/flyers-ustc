@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Custom apps
     'account',
     'admissions',
+    'forum'
 ]
 
 MIDDLEWARE = [
@@ -112,6 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'account.User'
+
+GROUP_MODEL = 'auth.group'
 
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,

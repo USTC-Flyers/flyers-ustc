@@ -18,7 +18,7 @@ class UniversityViewSet(
     authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.University.objects.all()
     
-    @swagger_auto_schema(manual_parameters=[parmas], responses={200: response})
+    @swagger_auto_schema(manual_parameters=[parmas], responses={200: ''})
     def list(self, request, *args, **kwargs):
         query = request.GET.get('query', '')
         result = models.University.objects.annotate(

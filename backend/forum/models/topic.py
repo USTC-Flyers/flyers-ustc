@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 import os
+from ..managers.topic import TopicQuerySet
 
 def image_path(instance, filename):
     ext = os.path.splitext(filename)[1].lower()
@@ -13,22 +14,23 @@ def file_path(instance, filename):
     return os.path.join(
         'topic', 'file', str(instance.revision_number), 'file' + ext)
 
-class TopicRevision(BaseRevisionMixin, models.Model):
+class TopicRevision(models.Model):
     
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
-    author = models.ForeignKey(
+    related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='topic_revision_author',
         on_delete=models.CASCADE
     )
     related_topic = models.ForeignKey(
-        "forum.topic", 
-        on_delete=models.CASCADE
+        "Topic", 
+        on_delete=models.CASCADE,
+        related_name="topic_revision",
+        null=True,
+        blank=True
     )
-    revision_number = models.IntegerField(
-        editable=False, 
-    )
+    revision_number = models.IntegerField()
     title = models.TextField(
         verbose_name="title",
         max_length=255,
@@ -51,6 +53,9 @@ class TopicRevision(BaseRevisionMixin, models.Model):
     )
     created_time = models.DateTimeField(
         default=timezone.now
+    )
+    is_valid = models.BooleanField(
+        default=False
     )
 
     def __str__(self):
@@ -92,7 +97,9 @@ class Topic(models.Model):
     current_version = models.OneToOneField(
         "TopicRevision",
         on_delete=models.CASCADE,
-        related_name="topic"
+        related_name="topic",
+        null=True,
+        blank=True
     )
     group = models.ForeignKey(
         settings.GROUP_MODEL,
@@ -101,6 +108,15 @@ class Topic(models.Model):
         null=True,
         help_text="Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.",
         on_delete=models.SET_NULL,
+    )
+    followed = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="topic_followed_by",
+        blank=True,
+        null=True
+    )
+    followed_count = models.PositiveIntegerField(
+        default=0
     )
     action = models.IntegerField(
         choices=ACTIONS_CHOICES,
@@ -123,3 +139,56 @@ class Topic(models.Model):
     upvoted_count = models.PositiveIntegerField(
         default=0
     )
+    is_valid = models.BooleanField(
+        default=False
+    )
+    
+    objects = TopicQuerySet.as_manager()
+
+    def set_valid_and_update(self, new_revision):
+        if self.current_version is None or self.current_version.revision_number < new_revision.revision_number:
+            self.current_version = new_revision
+            self.is_valid = True
+            return True
+        return False
+        
+    
+    def follow(self, user):
+        if user not in user.topic_followed_by.all():
+            user.topic_followed_by.add(self)
+            self.followed_count += 1
+            self.save()
+            
+    def unfollow(self, user):
+        if user in user.topic_followed_by.all():
+            user.topic_followed_by.remove(self)
+            self.followed_count -= 1
+            self.save()
+            
+    def increase_comment_thread_count(self):
+        self.comment_count += 1
+        self.save()
+    
+    def decrease_comment_thread_count(self):
+        self.comment_count -= 1
+        self.save()
+        
+    def pin(self):
+        self.action = self.PINNED
+        self.save()
+    
+    def unpin(self):
+        self.action = self.UNPINNED
+        self.save()
+        
+    def upvote(self, user):
+        if self not in user.topic_upvoted_by.all():
+            user.topic_upvoted_by.add(self)
+            self.upvoted_count += 1
+            self.save()
+        
+    def downvote(self, user):
+        if self in user.topic_upvoted_by.all():
+            user.topic_upvoted_by.remove(self)
+            self.upvoted_count -= 1
+            self.save()

@@ -28,14 +28,14 @@ class BackgroundViewSet(
             kwargs["data"] = data
         return super().get_serializer(*args, **kwargs)
     
-    @action(methods=['get'], detail=False, url_path='get_major', url_name='get_major')
+    @action(methods=['get'], detail=True, url_path='get_major', url_name='get_major')
     def get_major(self, request, pk=None, *args, **kwargs):
         return Response(
             data=models.major,
             status=status.HTTP_200_OK
         )
     
-    @action(methods=['get'], detail=False, url_path='get_school', url_name='get_school')
+    @action(methods=['get'], detail=True, url_path='get_school', url_name='get_school')
     def get_school(self, request, pk=None, *args, **kwargs):
         return Response(
             data=models.school_list,
