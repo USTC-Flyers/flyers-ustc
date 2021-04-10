@@ -24,6 +24,7 @@ class TopicViewSet(
     authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Topic.objects.all()
     
+    @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
     def create(self, request, *args, **kwargs):
         # 新建topic -> 新建topic, topic_revision
         pk = getattr(request.data, 'related_topic', None)
@@ -103,6 +104,7 @@ class TopicRevisionViewSet(
     authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.TopicRevision.objects.all()
     
+    @swagger_auto_schema(operation_description="如果是审核topic的内容则需要is_valid参数，否则不需要")
     def perform_update(self, serializer):
         topic_revision = serializer.save()
         if 'is_valid' in serializer.validated_data:

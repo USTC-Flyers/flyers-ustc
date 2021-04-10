@@ -9,6 +9,15 @@ from .. import models
 from .. import serializers
 from .. import permissions
 
+resp = openapi.Response(
+    description='unread_count',
+    examples={
+        'msg': 'ok',
+        'errno': '0',
+        'unread_count': "unread_count"
+    }
+)
+
 class NotificationViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -26,6 +35,7 @@ class NotificationViewSet(
         models.Notification.objects.read(user=request.user)
         return super().list(request, *args, **kwargs)
     
+    @swagger_auto_schema(responses={200: resp})
     @action(methods=['get'], detail=False, url_path='unread_count', url_name='unread_count')
     def unread_count(self, request, *args, **kwargs):
         cnt = models.Notification.objects.unread_count(user=request.user)
