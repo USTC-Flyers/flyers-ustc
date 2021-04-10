@@ -5,6 +5,7 @@
 ```bash
 cd backend
 pip install -r requirements.txt 
+python manage.py init_groups
 python manage.py import_university
 python manage.py runserver
 ```

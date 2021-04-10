@@ -6,6 +6,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.conf import settings
 from .. import models
 from .. import serializers
 from .. import permissions
@@ -31,11 +32,14 @@ class TopicViewSet(
         if pk is None:
             # new topic
             revision_number = 0
+            group_name = request.data['category']
+            group = get_object_or_404(Group.objects.all(), name=group_name)
             topic_serializer = serializers.TopicSerializer(data={
                 'action': models.Topic.DEFAULT,
                 'is_valid': False,
                 'view_count': 0,
-                'related_user': request.user.id
+                'related_user': request.user.id,
+                'group': group.id
             })
             topic_serializer.is_valid(raise_exception=True)
             topic = topic_serializer.save()
@@ -93,8 +97,6 @@ class TopicViewSet(
         )
 
 class TopicRevisionViewSet(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
@@ -119,3 +121,8 @@ class TopicRevisionViewSet(
             elif not is_valid:
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
+                
+    def get_permissions(self):
+        if 'is_valid' in self.request.data:
+            return [permissions.IsWikiOwnerOrCannotValidate()]
+        return [permissions.IsOwnerOrReadOnly()]

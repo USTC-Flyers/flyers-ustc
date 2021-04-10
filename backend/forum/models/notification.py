@@ -64,5 +64,5 @@ class Notification(models.Model):
         
     @classmethod
     def notify_group(cls, comment, group, operation, **kwargs):
-        for user in group.all():
+        for user in group.user_set.all():
             cls.notify(comment, user, operation, **kwargs)
