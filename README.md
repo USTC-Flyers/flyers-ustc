@@ -23,4 +23,6 @@ python manage.py import_university
 python manage.py runserver
 ```
 
+backend-API: http://0.0.0.0:5959/api/swagger/
+
 TODO: dockerize and nginx serve

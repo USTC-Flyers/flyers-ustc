@@ -22,14 +22,8 @@ class AdmissionsViewSet(
     queryset = models.Admissions.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     
-    def create(self, request, *args, **kwargs):
-        univeristy = get_object_or_404(models.University, pk=request.data['uid'])
-        program = get_object_or_404(models.Program, pk=request.data['pid'])
-        user = self.request.user
-        request.data['related_university'] = univeristy
-        request.data['related_program'] = program
-        request.data['related_user'] = user
-        return super().create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        serializer.save(related_user=self.request.user)
     
     @action(methods=['get'], detail=False, url_path='my', url_name='my')
     def my_admission(self, request, pk=None, *args, **kwargs):
