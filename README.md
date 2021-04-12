@@ -25,4 +25,8 @@ python manage.py runserver
 
 backend-API: http://0.0.0.0:5959/api/swagger/
 
-TODO: dockerize and nginx serve
+### backend-API doc
+[docker-compose](https://docs.docker.com/compose/install/) and [docker](https://docs.docker.com/engine/install/) should be installed.
+```
+docker-compose build && docker-compose up
+```

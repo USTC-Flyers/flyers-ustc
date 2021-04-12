@@ -28,7 +28,7 @@ schema_view = get_schema_view(
    openapi.Info(
       title="Flyers API",
       default_version='v1',
-      description="Rishi api description placeholder",
+      description="Flyers api description placeholder",
       terms_of_service="http://www.placeholder.com/",
       contact=openapi.Contact(email="contact@ustc.edu.cn"),
       license=openapi.License(name="BSD License"),

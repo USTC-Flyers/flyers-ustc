@@ -12,12 +12,14 @@ django-rest-framework-nested==0.0.1
 djangorestframework==3.12.4
 djangorestframework-jwt==1.11.0
 drf-yasg==1.20.0
+gunicorn==20.0.4
 idna==2.10
 inflection==0.5.1
 itypes==1.2.0
 Jinja2==2.11.3
 MarkupSafe==1.1.1
 packaging==20.9
+Pillow==8.2.0
 psycopg2-binary==2.8.6
 PyJWT==1.7.1
 pyparsing==2.4.7
