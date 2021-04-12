@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+// ! TODO
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -34,7 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
+        commit('SET_TOKEN', "JWT " + data.token)
         setToken(data.token)
         resolve()
       }).catch(error => {
