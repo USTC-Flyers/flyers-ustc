@@ -108,3 +108,7 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 .DS_Store
+
+frontend/package-lock.json
+backend/entrypoint-local.sh
+backend/flyers/local_settings.py
