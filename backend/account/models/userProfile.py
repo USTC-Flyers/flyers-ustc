@@ -23,7 +23,7 @@ class UserProfile(models.Model):
         (ALUMNI, "Alumni"),
         (ADMIN, "Admin")
     )
-    user = models.OneToOneField(
+    related_user = models.OneToOneField(
         User,
         on_delete=models.CASCADE
     )

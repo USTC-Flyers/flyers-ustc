@@ -45,5 +45,6 @@ urlpatterns = [
     path('api/api-auth/', include('rest_framework.urls')),
     path('api/', include('admissions.urls')),  
     path('api/', include('forum.urls')),      
+    path('api/', include('account.urls')),      
     path('api/login/', obtain_jwt_token)
 ]
