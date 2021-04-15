@@ -6,8 +6,8 @@ import { resetRouter } from '@/router'
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: ''
+    name: null,
+    avatar: null
   }
 }
 
@@ -34,9 +34,9 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', "JWT " + data.token)
-        setToken(data.token)
+        // const { data } = response;
+        commit('SET_TOKEN', "JWT " + response.token)
+        setToken("JWT " + response.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -48,17 +48,21 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
+        // const { data } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
+        // if (!data) {
+        //   return reject('Verification failed, please Login again.')
+        // }
 
-        const { name, avatar } = data
+        // const { name, avatar } = data
 
+        // commit('SET_NAME', name)
+        // commit('SET_AVATAR', avatar)
+        // resolve(data)
+        const { name } = response
+        console.log(response);
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        resolve()
       }).catch(error => {
         reject(error)
       })

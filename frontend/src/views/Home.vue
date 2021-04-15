@@ -3,11 +3,11 @@
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   <el-container class="home-container">
     <el-header>
-      <el-menu mode="horizontal" router>
-        <el-menu-item index="1">录取汇报</el-menu-item>
-        <el-menu-item index="2">申请 WIKI</el-menu-item>
+      <el-menu :default-active="this.$route.path" mode="horizontal" router>
+        <el-menu-item index="/admission" router>录取汇报</el-menu-item>
+        <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
       </el-menu>
-      <el-menu mode="horizontal">
+      <!-- <el-menu mode="horizontal">
           <template slot="title">{{submenus.title}}</template>
           <el-menu-item v-for="(item, subIndex) in submenus.menus"
             :index="(index + 1) + '-' + (subIndex + 1)"
@@ -15,12 +15,11 @@
               {{item.title}}
           </el-menu-item>
         </el-submenu>
-      </el-menu>
+      </el-menu> -->
       
-      <el-button type="text" icon="el-icon-user-solid">用户名</el-button>
+      <el-button type="text" icon="el-icon-user-solid">{{ username }}</el-button>
     </el-header>
-    <div class="line"></div>
-    <el-container>
+    <el-container class="main">
       <!-- <el-aside width="200px">Aside</el-aside>
       <el-main>Main</el-main> -->
       <router-view></router-view>
@@ -36,9 +35,14 @@ export default {
   name: "Home",
   data() {
       return {
-        activeIndex: '1',
+        activeIndex: '',
       };
-    }
+  },
+  computed: {
+    username() {
+      return this.$store.state.user.name;
+    },
+  }
   // components: {
   //   HelloWorld,
   // },
@@ -54,7 +58,11 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-
+.main {
+  margin: auto;
+  margin-top: 30px;
+  width: 90%;
+}
 /* .el-aside {
   background-color: #409eff;
 } */
