@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
+    'multiselectfield',
     # Custom apps
     'account',
     'admissions',
@@ -86,7 +87,7 @@ WSGI_APPLICATION = 'flyers.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'flyers',
         'USER': 'postgres',
         'PASSWORD': '666666',
         'HOST': '0.0.0.0',
