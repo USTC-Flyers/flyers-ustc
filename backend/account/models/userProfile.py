@@ -6,9 +6,8 @@ import os
 from .user import User
 
 SCHOOL_CHOICES = []
-for school in school_list:
-    idx = school.split(':')[0]
-    SCHOOL_CHOICES.append((idx, school))
+for i, school in enumerate(school_list):
+    SCHOOL_CHOICES.append((i, school))
     
 def avatar_path(instance, filename):
     ext = os.path.splitext(filename)[1].lower()
