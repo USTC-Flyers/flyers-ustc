@@ -91,11 +91,6 @@ rank_tag = [
     'else',
 ]
 
-admission_tag = [
-    'ad',
-    'rej'
-]
-
 apply_for_tag = [
     'ms',
     'phd',
@@ -104,16 +99,14 @@ apply_for_tag = [
 
 class Choices():
     choices_all = []
-    i = 0
-    for tag in [rank_tag, refer_tag, research_tag, admission_tag, apply_for_tag]:
+    for tag in [rank_tag, refer_tag, research_tag, apply_for_tag]:
         choice = []
         for t in tag:
-            choices_all.append((i, t))
-            i += 1
+            choices_all.append((t, t))
     MAJORCHOICES = []
-    for i, t in enumerate(major):
-        MAJORCHOICES.append((i, t.split('：')[0]))
-    
+    for m in major:
+        MAJORCHOICES.append((m.split(':')[0], m))
+        
 class AdmissionChoices(DjangoChoices):
     admitted = ChoiceItem()
     reject = ChoiceItem()

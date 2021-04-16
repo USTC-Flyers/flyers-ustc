@@ -15,10 +15,11 @@ class Background(models.Model):
         null=False,
         blank=False
     )
-    major = models.IntegerField(
+    major = models.CharField(
         choices=Choices.MAJORCHOICES,
         editable=True,
-        null=True
+        null=True,
+        max_length=255
     )
     gpa = models.FloatField(
         null=False, 
@@ -50,10 +51,11 @@ class Background(models.Model):
         blank=True
     )
     tags = ArrayField(
-        base_field=models.IntegerField(
+        base_field=models.CharField(
             choices=Choices.choices_all,
             null=True,
-            blank=True
+            blank=True,
+            max_length=255
         ),
         null=True,
         blank=True,
