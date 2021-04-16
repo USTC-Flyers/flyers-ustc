@@ -7,6 +7,7 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: null,
+    user_id: 1,
     avatar: null
   }
 }

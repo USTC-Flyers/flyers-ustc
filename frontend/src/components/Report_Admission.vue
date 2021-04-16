@@ -75,8 +75,8 @@
             <el-input
               v-model="form_data.background.researchSpec"
               type="textarea"
-              :rows="4"
-              placeholder="科研实习具体描述"
+              :rows="5"
+              placeholder="科研实习背景具体描述，Paper发表等"
             ></el-input>
           </el-form-item>
           <el-form-item label="推荐信">
@@ -88,7 +88,7 @@
             <el-input
               v-model="form_data.background.referSpec"
               type="textarea"
-              :rows="4"
+              :rows="5"
               placeholder="推荐信具体描述"
             ></el-input>
           </el-form-item>
@@ -106,32 +106,132 @@
             </el-select>
           </el-form-item>
         </el-form>
-        <el-form v-else-if="active == 1">
-
+        <div v-else-if="active == 1">
+          <el-form
+            v-for="(item, index) in admissions"
+            :key="item"
+            label-position="right"
+            label-width="90px"
+            inline
+          >
+            <el-form-item v-show="index > 0 || admissions.length > 1" label=" ">
+              <el-button type="danger" size="mini" @click="del_admission(index)"
+                >删除此项</el-button
+              >
+            </el-form-item>
+            <el-row>
+              <el-form-item label="录取结果" size="mini">
+                <el-select
+                  style="width: 180px"
+                  placeholder="请选择"
+                  v-model="item.result"
+                  ><el-option
+                    v-for="result in result_list"
+                    :key="result"
+                    :label="result.show"
+                    :value="result.value"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="入学时间" size="mini">
+                <el-select
+                  style="width: 180px"
+                  placeholder="请选择"
+                ></el-select>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item label="录取学校" size="mini">
+                <el-input style="width: 180px"></el-input>
+              </el-form-item>
+              <el-form-item label="录取项目" size="mini">
+                <el-input style="width: 180px"></el-input>
+              </el-form-item>
+            </el-row>
+            <!-- </el-form> -->
+            <!-- <el-form label-position="right" label-width="auto"> -->
+            <el-row>
+              <el-form-item label="申请经验">
+                <el-input
+                  style="width: 450px"
+                  type="textarea"
+                  :rows="3"
+                  placeholder="可包括：1.申请、套磁、面试过程分享 2.项目录取偏好与特殊要求 3.最终是否选择就读该项目的考虑"
+                ></el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item v-show="item.result == true" label="入学后体验">
+                <el-input
+                  style="width: 450px"
+                  type="textarea"
+                  placeholder="欢迎入学就读后返场分享"
+                ></el-input>
+              </el-form-item>
+            </el-row>
+            <el-divider></el-divider>
+            <el-form-item label=" ">
+              <el-button
+                v-show="index == admissions.length - 1"
+                type="success"
+                size="small"
+                @click="add_admission()"
+                >新增录取项</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </div>
+        <el-form v-if="active == 2" label-position="top" label-width="auto">
+          <el-form-item label="申请方向的思考">
+            <el-input
+              type="textarea"
+              :rows="5"
+              placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="其他申请感言">
+            <el-input
+              type="textarea"
+              :rows="8"
+              placeholder="申请季感言，套磁、文书、面试、英语、中介等各方面的经验与建议"
+            ></el-input>
+          </el-form-item>
         </el-form>
-        <!-- <el-form v-else-if="active==2">
-
+        <el-form
+          v-if="active == 3"
+          label-position="right"
+          label-width="auto"
+          size="mini"
+          class="contact"
+        >
+          <el-form-item label="QQ">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="微信">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input></el-input>
+          </el-form-item>
         </el-form>
-        <el-form v-else>
-
-        </el-form> -->
       </div>
     </el-main>
     <el-footer>
       <div class="button">
-        <el-button v-show="active > 0" @click="last">上一步</el-button>
-        <el-button v-if="active < 3" class="next" @click="next"
+        <el-button v-show="active > 0" type="primary" @click="last"
+          >上一步</el-button
+        >
+        <el-button v-if="active < 3" type="primary" @click="next"
           >下一步</el-button
         >
-        <el-button v-else class="next" type="primary" @click="next"
-          >提交</el-button
-        >
+        <el-button v-else type="success" @click="next">提交</el-button>
       </div>
     </el-footer>
   </el-container>
 </template>
 
 <script>
+// import { background_get_my } from '@/api/admission'
 export default {
   name: "Report_Admission",
   data() {
@@ -192,24 +292,34 @@ export default {
         "其他",
       ],
       applyfor_list: ["Ph.D.", "Master", "混申"],
+      result_list: [
+        { show: "AD", value: true },
+        { show: "Reject", value: false },
+      ],
       form_data: {
         background: {
           major: "",
-          GPA: 0,
+          gpa: 0,
           rank: "",
+          applyFor: "",
           TOEFL: "",
           GRE: "",
-          research_tag_list: [],
           researchSpec: "",
-          ref_tag_list: [],
           referSpec: "",
-          applyFor: "",
+          research_tag_list: [],
+          ref_tag_list: [],
         },
-        admissions: []
       },
+      admissions: [
+        {
+          result: null,
+        },
+      ],
     };
   },
-
+  created() {
+    this.getData();
+  },
   methods: {
     last() {
       this.active--;
@@ -220,6 +330,22 @@ export default {
     },
     click_step(index) {
       this.active = index;
+    },
+    add_admission() {
+      this.admissions.push({
+        result: null,
+      });
+    },
+    del_admission(index) {
+      this.admissions.splice(index, 1);
+    },
+    // getData() {
+    //   background_get_my().then()(response => {
+
+    //   })
+    // },
+    removeEmpty(obj) {
+      Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
     },
   },
 };
@@ -236,12 +362,25 @@ export default {
 .el-form-item {
   font-weight: bolder;
 }
+.el-form {
+  margin: auto;
+}
 .form {
   margin: auto;
-  width: 50%;
+  margin-top: 3%;
+  width: 60%;
+  display: flex;
+  justify-content:center;
 }
+/* .el-row {
+  
+} */
+/* .contact {
+  margin: auto;
+  width: 35%;
+} */
 .button {
-  margin-top: 12px;
+  /* margin-top: 12px; */
   position: absolute;
   right: 15%;
 }

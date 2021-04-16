@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     username() {
-      return this.$store.state.user.name;
+      return this.$store.getters.name;
     },
   }
   // components: {
