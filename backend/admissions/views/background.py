@@ -4,6 +4,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from django.contrib.postgres.search import SearchVector
 from drf_yasg.utils import swagger_auto_schema
+from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from .. import permissions
 from .. import models
@@ -39,5 +40,20 @@ class BackgroundViewSet(
     def get_school(self, request, pk=None, *args, **kwargs):
         return Response(
             data=models.school_list,
+            status=status.HTTP_200_OK
+        )
+        
+    @action(methods=['get'], detail=True, url_path='user_detail', url_name='user_detail')
+    def user_detail(self, request, pk=None, *args, **kwargs):
+        if pk == None:
+            result = self.request.user.background.all()
+        else:
+            result = self.queryset.filter(related_user__id=pk)
+        result = serializers.BackgroundSerializers(result, many=True).data
+        data = {
+            'user_detail': result
+        }
+        return Response(
+            data=data,
             status=status.HTTP_200_OK
         )

@@ -19,6 +19,17 @@ class UserProfileViewSet(
     queryset = models.UserProfile.objects.all()
     permission_classes = [permissions.IsAdminOrReadOnly]
     
+    @action(methods=['get'], detail=True, url_path='user_detail', url_name='user_detail')
+    def user_detail(self, request, pk, *args, **kwargs):
+        result = get_object_or_404(self.queryset, pk=pk)
+        data = serializers.UserProfileSerializer(result).data
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                'user_detail': data
+            }
+        )
+    
 class UserViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
