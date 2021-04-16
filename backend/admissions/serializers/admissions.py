@@ -30,7 +30,7 @@ class AdmissionNestedSerializers(serializers.ModelSerializer):
         many=False,
     )
     related_program = serializers.SlugRelatedField(
-        slug_field="full_name",
+        slug_field="name",
         queryset=models.Program.objects.all()
     )
     related_background = BackgroundSerializers()

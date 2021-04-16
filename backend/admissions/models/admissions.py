@@ -7,12 +7,13 @@ from django.utils.translation import gettext_lazy as _
 from .university import University
 from .program import Program
 from .background import Background
+from ..managers import AdmissionsQueryset
 
 class Admissions(models.Model):
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         verbose_name=_("related user"), 
-        related_name="related_user",
+        related_name="admissions",
         on_delete=models.CASCADE,
         null=False,
         blank=False
@@ -51,3 +52,5 @@ class Admissions(models.Model):
     comments = models.TextField(
         max_length=1024
     )
+    
+    objects = AdmissionsQueryset.as_manager()

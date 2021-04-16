@@ -4,6 +4,7 @@ from .choice import Choices
 from multiselectfield import MultiSelectField
 from picklefield.fields import PickledObjectField
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import ArrayField
 
 class Background(models.Model):
     related_user = models.ForeignKey(
@@ -23,11 +24,6 @@ class Background(models.Model):
         null=False, 
         blank=False
     )
-    rank = models.CharField(
-        max_length=256,
-        null=False, 
-        blank=False
-    )
     TOEFL = models.CharField(
         max_length=256,
         null=False, 
@@ -43,18 +39,8 @@ class Background(models.Model):
         null=False,
         blank=False
     )
-    researchTag = MultiSelectField(
-        choices=Choices.RESEARCHCHOICES,
-        null=True,
-        blank=True
-    )
     researchSpec = models.TextField(
         max_length=1024,
-        null=True,
-        blank=True
-    )
-    referTag = MultiSelectField(
-        choices=Choices.REFERCHOICES,
         null=True,
         blank=True
     )
@@ -63,10 +49,15 @@ class Background(models.Model):
         null=True,
         blank=True
     )
-    applyFor = MultiSelectField(
-        choices=Choices.APPLYFORCHOICES,
+    tags = ArrayField(
+        base_field=models.IntegerField(
+            choices=Choices.choices_all,
+            null=True,
+            blank=True
+        ),
         null=True,
-        blank=True
+        blank=True,
+        default=list
     )
     summary = models.TextField(
         max_length=1024

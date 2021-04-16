@@ -26,9 +26,12 @@ class AdmissionsViewSet(
     def perform_create(self, serializer):
         serializer.save(related_user=self.request.user)
     
-    @action(methods=['get'], detail=False, url_path='my', url_name='my')
+    @action(methods=['get'], detail=True, url_path='detail', url_name='detail')
     def my_admission(self, request, pk=None, *args, **kwargs):
-        result = self.request.user.admissions.objects().all()
+        if pk == None:
+            result = self.request.user.admissions.all()
+        else:
+            result = self.queryset.filter(pk=pk)
         result = serializers.AdmissionsSerializers(result, many=True).data
         data = {
             'data': result,
@@ -38,6 +41,22 @@ class AdmissionsViewSet(
         return Response(
             data=data,
             status=status.HTTP_200_OK
+        )
+    @action(methods=['post'], detail=False, url_path='condition_query', url_name='condition_query')
+    def condition_query(self, request, *args, **kwargs):
+        result = models.Admissions.objects.condition(**request.data)
+        data = []
+        for obj in result:
+            serializer = serializers.AdmissionsSerializers(obj)
+            tmp = serializer.data
+            tmp['related_university_shortname'] = obj.related_university.short_name
+            tmp['related_program_name'] = obj.related_program.name
+            data.append(tmp)
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                'condition_query': data
+            }
         )
         
     @action(methods=['get'], detail=False, url_path='join', url_name='join')
