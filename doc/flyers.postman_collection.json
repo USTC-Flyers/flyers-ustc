@@ -1,204 +1,2129 @@
 {
 	"info": {
-		"_postman_id": "a386de9c-3102-4eed-88df-21d3b74fe366",
+		"_postman_id": "d3286e81-8a31-4403-99e1-43bde10db41b",
 		"name": "flyers",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "create admission record",
+			"name": "http://127.0.0.1:5959/api/notification/unread_count/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": null
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/notification/unread_count/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"notification",
+						"unread_count",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "get univ",
+			"name": "http://127.0.0.1:5959/api/topic/1/action/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "action",
+							"value": "follow",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/topic/1/action/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"topic",
+						"1",
+						"action",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "get program",
+			"name": "http://127.0.0.1:5959/api/comment/1/action/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "action",
+							"value": "upvote1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/comment/1/action/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"comment",
+						"1",
+						"action",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/comment/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "content",
+							"type": "text"
+						},
+						{
+							"key": "related_comment_thread",
+							"value": "14",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/comment/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"comment",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/topic_revision/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/topic_revision/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"topic_revision",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/topic_revision/17/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "is_valid",
+							"value": "True",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/topic_revision/17/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"topic_revision",
+						"17",
+						""
+					],
+					"query": [
+						{
+							"key": "Authorization",
+							"value": "JWT {{jwt_token}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/admissions/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "related_program",
+							"value": "699",
+							"type": "text"
+						},
+						{
+							"key": "related_university",
+							"value": "100",
+							"type": "text"
+						},
+						{
+							"key": "result",
+							"value": "True",
+							"type": "text"
+						},
+						{
+							"key": "enrolledSemester",
+							"value": "\"2021FALL\"",
+							"type": "text"
+						},
+						{
+							"key": "tag",
+							"value": "admitted",
+							"type": "text"
+						},
+						{
+							"key": "comments",
+							"value": "x",
+							"type": "text"
+						},
+						{
+							"key": "uid",
+							"value": "100",
+							"type": "text"
+						},
+						{
+							"key": "pid",
+							"value": "699",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/admissions/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"admissions",
+						""
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "100",
+							"disabled": true
+						},
+						{
+							"key": "pid",
+							"value": "699",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/university?query=MIT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/university?query=MIT",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"university"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "MIT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/program?uid=100",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/program?uid=100",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"program"
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/admissions/1/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/admissions/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"admissions",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/admissions/2/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "related_program",
+							"value": "699",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/admissions/2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"admissions",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/admissions/my/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/admissions/1/detail/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"admissions",
+						"1",
+						"detail",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/background/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "major",
+							"value": "\"000: 少年班学院\"",
+							"type": "text"
+						},
+						{
+							"key": "gpa",
+							"value": "4.30",
+							"type": "text"
+						},
+						{
+							"key": "rank",
+							"value": "top1%",
+							"type": "text"
+						},
+						{
+							"key": "TOEFL",
+							"value": "120|30|30|30|30",
+							"type": "text"
+						},
+						{
+							"key": "GRE",
+							"value": "340|170|170|4",
+							"type": "text"
+						},
+						{
+							"key": "researchSpec",
+							"value": "x",
+							"type": "text"
+						},
+						{
+							"key": "researchTag",
+							"value": "oversea_research",
+							"type": "text"
+						},
+						{
+							"key": "referTag",
+							"value": "oversea_refer",
+							"type": "text"
+						},
+						{
+							"key": "admissionTag",
+							"value": "ad",
+							"type": "text"
+						},
+						{
+							"key": "applyFor",
+							"value": "ms",
+							"type": "text"
+						},
+						{
+							"key": "researchSpec",
+							"value": "x",
+							"type": "text"
+						},
+						{
+							"key": "summary",
+							"value": "x",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/background/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"background",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/background/4/",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/background/4/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"background",
+						"4",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/background/4/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "major",
+							"value": "001: 数学科学学院",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/background/4/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"background",
+						"4",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/background/get_major/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/background/get_major/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"background",
+						"get_major",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/topic/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "title",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "content",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/topic/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"topic",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/comment_thread/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "related_topic",
+							"value": "39",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "content",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/comment_thread/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"comment_thread",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5959/api/notification/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/notification/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"notification",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create user profile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/user_profile/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"user_profile",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user profile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5959/api/background/1/user_detail/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"background",
+						"1",
+						"user_detail",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "list admissions",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "delete admission record",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "update admission",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "my admissions",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "create bg",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "edit bg",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "list all bg",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "get_major",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "create topic and topic revision",
-			"request": {
-				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": ""
+					"raw": "http://127.0.0.1:5959/api/admissions/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"admissions",
+						""
+					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "create comment thread",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
+			"name": "query admissions",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var authServiceUrl = pm.globals.get('authService');",
+							"var username = pm.globals.get('username');",
+							"var password = pm.globals.get('password');",
+							"",
+							"var sdk = require('postman-collection');",
+							"",
+							"pm.sendRequest(new sdk.Request({",
+							"    url: authServiceUrl,",
+							"    method: \"POST\",",
+							"    header: [",
+							"        new sdk.Header({",
+							"            key: 'content-type',",
+							"            value: 'application/json'",
+							"        }),",
+							"        new sdk.Header({",
+							"            key: 'acccept',",
+							"            value: 'application/json'",
+							"        }),",
+							"    ],",
+							"    body: {",
+							"        mode: 'formdata',",
+							"        formdata: [",
+							"            {",
+							"                \"key\": \"username\",",
+							"                \"value\": username,",
+							"                \"type\": \"text\"",
+							"            },",
+							"            {",
+							"                \"key\": \"password\",",
+							"                \"value\": password,",
+							"                \"type\": \"text\"         ",
+							"            }",
+							"        ]",
+							"    } ",
+							"}), function(err, response) {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"    if (response.code != 200) {",
+							"        throw new Error('Could not log in.');",
+							"    }",
+							"    console.log(response.json())",
+							"    var token = response.json().token",
+							"    pm.globals.set(\"jwt_token\", token);",
+							"    console.log(`New token has been set: ${token}`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "set topic revision valid",
+			],
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tags\": [\"oversea_refer\"],\n    \"related_university\": 100,\n    \"enrolledSemester\": \"2021FALL\",\n    \"rank\": \"else\"\n}"
+				},
 				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "list all topic revision",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "create new comment",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "comment action",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "topic action",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "notification unread cnt",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "read notification",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
+					"raw": "http://127.0.0.1:5959/api/admissions/condition_query/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5959",
+					"path": [
+						"api",
+						"admissions",
+						"condition_query",
+						""
+					]
 				}
 			},
 			"response": []
