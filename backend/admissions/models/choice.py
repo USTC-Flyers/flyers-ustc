@@ -99,13 +99,19 @@ apply_for_tag = [
 
 class Choices():
     choices_all = []
-    for tag in [rank_tag, refer_tag, research_tag, apply_for_tag]:
+    for tag in [refer_tag, research_tag]:
         choice = []
         for t in tag:
             choices_all.append((t, t))
     MAJORCHOICES = []
     for m in major:
         MAJORCHOICES.append((m.split(':')[0], m))
+    RANKCHOICES = []
+    for r in rank_tag:
+        RANKCHOICES.append((r, r))
+    APPLYFORCHOICES = []
+    for a in apply_for_tag:
+        APPLYFORCHOICES.append((a, a))
         
 class AdmissionChoices(DjangoChoices):
     admitted = ChoiceItem()

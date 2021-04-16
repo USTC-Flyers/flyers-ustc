@@ -22,23 +22,35 @@ class Background(models.Model):
         max_length=255
     )
     gpa = models.FloatField(
-        null=False, 
-        blank=False
+        null=True, 
+        blank=True
+    )
+    rank = models.CharField(
+        choices=Choices.RANKCHOICES,
+        null=True,
+        blank=True,
+        max_length=255
+    )
+    apply_for = models.CharField(
+        choices=Choices.APPLYFORCHOICES,
+        null=True,
+        blank=True,
+        max_length=255
     )
     TOEFL = models.CharField(
-        max_length=256,
-        null=False, 
-        blank=False
+        max_length=255,
+        null=True, 
+        blank=True
     )
     GRE = models.CharField(
         max_length=256,
-        null=False, 
-        blank=False
+        null=True, 
+        blank=True
     )
     researchSpec = models.TextField(
         max_length=1024,
-        null=False,
-        blank=False
+        null=True,
+        blank=True
     )
     researchSpec = models.TextField(
         max_length=1024,
