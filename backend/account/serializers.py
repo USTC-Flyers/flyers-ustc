@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from . import models
 
-class UserProfileSerializer(serializers.Serializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='userprofile.related_user')
     class Meta:
         model = models.UserProfile
