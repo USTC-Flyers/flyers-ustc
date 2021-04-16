@@ -18,7 +18,6 @@ class AdmissionsViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    # serializer_class = serializers.AdmissionsSerializers
     authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Admissions.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
@@ -44,13 +43,7 @@ class AdmissionsViewSet(
     @action(methods=['post'], detail=False, url_path='condition_query', url_name='condition_query')
     def condition_query(self, request, *args, **kwargs):
         result = models.Admissions.objects.condition(**request.data)
-        data = []
-        for obj in result:
-            serializer = serializers.AdmissionsSerializers(obj)
-            tmp = serializer.data
-            tmp['related_university_shortname'] = obj.related_university.short_name
-            tmp['related_program_name'] = obj.related_program.name
-            data.append(tmp)
+        data = serializers.AdmissionNestedSerializers(result, many=True).data
         return Response(
             status=status.HTTP_200_OK,
             data={

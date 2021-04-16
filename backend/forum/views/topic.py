@@ -122,7 +122,7 @@ class TopicRevisionViewSet(
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
                 
-    def get_permissions(self):
+    def get_permissions_class(self):
         if 'is_valid' in self.request.data:
             return [permissions.IsWikiOwnerOrCannotValidate()]
         return [permissions.IsOwnerOrReadOnly()]
