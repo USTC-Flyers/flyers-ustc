@@ -32,8 +32,9 @@ class AdmissionsViewSet(
             result = self.request.user.admissions.all()
         else:
             result = self.queryset.filter(related_user__id=pk)
+        serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.Admissions)
-        result = serializers.AdmissionsSerializers(result, many=many).data
+        result = serializer_class(result, many=many).data
         data = {
             'user_detail': result
         }

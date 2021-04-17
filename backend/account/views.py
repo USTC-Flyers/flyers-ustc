@@ -2,6 +2,7 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
+from rest_framework import permissions as drf_permissions
 from django.shortcuts import get_object_or_404
 from . import models
 from . import serializers
@@ -14,7 +15,6 @@ class UserProfileViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet
 ):
-    serializer_class = serializers.UserProfileSerializer
     authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.UserProfile.objects.all()
     permission_classes = [permissions.IsAdminOrReadOnly]
@@ -29,13 +29,20 @@ class UserProfileViewSet(
             result = self.request.user.userprofile
         else:
             result = self.queryset.filter(related_user__id=pk).get()
-        data = serializers.UserProfileSerializer(result).data
+        serializer_class = self.get_serializer_class()
+        data = serializer_class(result).data
         return Response(
             status=status.HTTP_200_OK,
             data={
                 'user_detail': data
             }
         )
+    
+    def get_serializer_class(self):
+        # for listing
+        if self.request.method in drf_permissions.SAFE_METHODS:
+            return serializers.UserProfileNestedSerializer
+        return serializers.UserProfileSerializer
     
 class UserViewSet(
     mixins.RetrieveModelMixin,
