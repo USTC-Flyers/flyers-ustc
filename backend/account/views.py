@@ -28,8 +28,8 @@ class UserProfileViewSet(
         if pk == None:
             result = self.request.user.userprofile
         else:
-            result = self.queryset.filter(related_user__id=pk)
-        data = serializers.UserProfileSerializer(result, many=True).data
+            result = self.queryset.filter(related_user__id=pk).get()
+        data = serializers.UserProfileSerializer(result).data
         return Response(
             status=status.HTTP_200_OK,
             data={
