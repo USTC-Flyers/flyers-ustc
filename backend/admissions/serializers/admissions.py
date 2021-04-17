@@ -16,6 +16,15 @@ class AdmissionsSerializers(serializers.ModelSerializer):
         db_table = 't_admissions'
         fields = '__all__'
         lookup_field = 'id'
+        
+    def is_valid(self, raise_exception=False):
+        valid = super().is_valid(raise_exception=raise_exception)
+        request = self.context['request']
+        if request.method == 'POST' and 'related_user' in request.data and request.data['related_user'] != request.user:
+            if raise_exception:
+                raise serializers.ValidationError({'related_user': 'only create model by oneself'})
+            valid = False
+        return valid
 
 # for nested creation
 class AdmissionNestedSerializers(serializers.ModelSerializer):
@@ -41,3 +50,12 @@ class AdmissionNestedSerializers(serializers.ModelSerializer):
         fields = '__all__'
         lookup_field = 'id'
         depth = 1
+        
+    def is_valid(self, raise_exception=False):
+        valid = super().is_valid(raise_exception=raise_exception)
+        request = self.context['request']
+        if request.method == 'POST' and 'related_user' in request.data and request.data['related_user'] != request.user:
+            if raise_exception:
+                raise serializers.ValidationError({'related_user': 'only create model by oneself'})
+            valid = False
+        return valid
