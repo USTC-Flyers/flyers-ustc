@@ -11,108 +11,120 @@
       </el-steps>
     </el-header>
     <el-main>
-      <div class="form">
-        <el-form
-          :model="form_data.background"
-          v-if="active == 0"
-          label-position="right"
-          label-width="auto"
-        >
-          <el-form-item label="专业" size="mini">
-            <el-select
-              v-model="form_data.background.major"
-              filterable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in major_list"
-                :key="item"
-                :label="item"
-                :value="item"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="GPA" size="mini">
-            <el-col :span="9">
-              <el-input-number
-                v-model="form_data.background.gpa"
-                :precision="2"
-                :step="0.01"
-                :min="1.0"
-                :max="4.3"
-              ></el-input-number>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="排名" size="mini">
-            <el-select v-model="form_data.background.rank" placeholder="请选择">
-              <el-option
-                v-for="item in rank_list"
-                :key="item"
-                :label="item"
-                :value="item"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="托福" size="mini">
-            <el-col :span="9">
-              <el-input v-model="form_data.background.TOEFL"></el-input>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="GRE" size="mini">
-            <el-col :span="9">
-              <el-input v-model="form_data.background.GRE"></el-input>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="科研/实习背景">
-            <el-checkbox-group v-model="form_data.background.research_tag_list">
-              <el-checkbox
-                v-for="tag in research_tags"
-                :key="tag"
-                :label="tag"
-                >{{ tag }}</el-checkbox
+      <div>
+        <div v-if="active == 0" class="form">
+          <el-form
+            :model="form_data.background"
+            label-position="right"
+            label-width="auto"
+          >
+            <el-form-item label="专业" size="mini">
+              <el-col :span="9">
+                <el-select
+                  v-model="form_data.background.major"
+                  filterable
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in major_list"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="GPA" size="mini">
+              <el-col :span="9">
+                <el-input-number
+                  v-model="form_data.background.gpa"
+                  :precision="2"
+                  :step="0.01"
+                  :min="1.0"
+                  :max="4.3"
+                ></el-input-number>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="排名" size="mini">
+              <el-col :span="9">
+                <el-select
+                  v-model="form_data.background.rank"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in rank_list"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="托福" size="mini">
+              <el-col :span="9">
+                <el-input v-model="form_data.background.TOEFL"></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="GRE" size="mini">
+              <el-col :span="9">
+                <el-input v-model="form_data.background.GRE"></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="科研/实习背景">
+              <el-checkbox-group
+                v-model="form_data.background.research_tag_list"
               >
-            </el-checkbox-group>
-            <el-input
-              v-model="form_data.background.researchSpec"
-              type="textarea"
-              :rows="5"
-              placeholder="科研实习背景具体描述，Paper发表等"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="推荐信">
-            <el-checkbox-group v-model="form_data.background.ref_tag_list">
-              <el-checkbox v-for="tag in ref_tags" :key="tag" :label="tag">{{
-                tag
-              }}</el-checkbox>
-            </el-checkbox-group>
-            <el-input
-              v-model="form_data.background.referSpec"
-              type="textarea"
-              :rows="5"
-              placeholder="推荐信具体描述"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="主申方向" size="mini">
-            <el-select
-              v-model="form_data.background.applyFor"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in applyfor_list"
-                :key="item"
-                :label="item"
-                :value="item"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div v-else-if="active == 1">
+                <el-checkbox
+                  v-for="tag in research_tags"
+                  :key="tag"
+                  :label="tag"
+                  >{{ tag }}</el-checkbox
+                >
+              </el-checkbox-group>
+              <el-input
+                v-model="form_data.background.researchSpec"
+                type="textarea"
+                :rows="5"
+                placeholder="科研实习背景具体描述，Paper发表等"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="推荐信">
+              <el-checkbox-group v-model="form_data.background.ref_tag_list">
+                <el-checkbox v-for="tag in ref_tags" :key="tag" :label="tag">{{
+                  tag
+                }}</el-checkbox>
+              </el-checkbox-group>
+              <el-input
+                v-model="form_data.background.referSpec"
+                type="textarea"
+                :rows="5"
+                placeholder="推荐信具体描述"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="主申方向" size="mini">
+              <el-col :span="9">
+                <el-select
+                  v-model="form_data.background.applyFor"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in applyfor_list"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-col>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <div v-else-if="active == 1" class="form">
           <el-form
             v-for="(item, index) in admissions"
             :key="item"
             label-position="right"
             label-width="90px"
-            inline
           >
             <el-form-item v-show="index > 0 || admissions.length > 1" label=" ">
               <el-button type="danger" size="mini" @click="del_admission(index)"
@@ -120,9 +132,9 @@
               >
             </el-form-item>
             <el-row>
-              <el-form-item label="录取结果" size="mini">
+              <el-col :span="12">
+                <el-form-item label="录取结果" size="mini">
                 <el-select
-                  style="width: 180px"
                   placeholder="请选择"
                   v-model="item.result"
                   ><el-option
@@ -133,87 +145,104 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="入学时间" size="mini">
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="入学时间" size="mini">
                 <el-select
-                  style="width: 180px"
                   placeholder="请选择"
                 ></el-select>
               </el-form-item>
+              </el-col>              
             </el-row>
+            
             <el-row>
-              <el-form-item label="录取学校" size="mini">
-                <el-input style="width: 180px"></el-input>
+              <el-col :span="12">
+                <el-form-item label="录取学校" size="mini">
+                <el-input ></el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item label="录取项目" size="mini">
-                <el-input style="width: 180px"></el-input>
+                <el-input ></el-input>
               </el-form-item>
+            </el-col>
+              
+              
             </el-row>
-            <!-- </el-form> -->
-            <!-- <el-form label-position="right" label-width="auto"> -->
             <el-row>
-              <el-form-item label="申请经验">
+                <el-form-item label="申请经验">
                 <el-input
-                  style="width: 450px"
                   type="textarea"
                   :rows="3"
                   placeholder="可包括：1.申请、套磁、面试过程分享 2.项目录取偏好与特殊要求 3.最终是否选择就读该项目的考虑"
                 ></el-input>
-              </el-form-item>
+              </el-form-item>              
             </el-row>
             <el-row>
               <el-form-item v-show="item.result == true" label="入学后体验">
                 <el-input
-                  style="width: 450px"
                   type="textarea"
                   placeholder="欢迎入学就读后返场分享"
                 ></el-input>
               </el-form-item>
             </el-row>
             <el-divider></el-divider>
-            <el-form-item label=" ">
-              <el-button
-                v-show="index == admissions.length - 1"
-                type="success"
-                size="small"
-                @click="add_admission()"
+            <el-form-item v-show="index == admissions.length - 1" label=" ">
+              <el-button type="success" size="small" @click="add_admission()"
                 >新增录取项</el-button
               >
             </el-form-item>
           </el-form>
         </div>
-        <el-form v-if="active == 2" label-position="top" label-width="auto">
-          <el-form-item label="申请方向的思考">
-            <el-input
-              type="textarea"
-              :rows="5"
-              placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="其他申请感言">
-            <el-input
-              type="textarea"
-              :rows="8"
-              placeholder="申请季感言，套磁、文书、面试、英语、中介等各方面的经验与建议"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-        <el-form
-          v-if="active == 3"
-          label-position="right"
-          label-width="auto"
-          size="mini"
-          class="contact"
-        >
-          <el-form-item label="QQ">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="微信">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input></el-input>
-          </el-form-item>
-        </el-form>
+        <div v-else-if="active == 2" class="form">
+          <el-form label-position="right" label-width="auto">
+                <el-form-item label="申请方向的思考">
+                  <el-input
+                    v-model="form_data.background.summary"
+                    type="textarea"
+                    :rows="5"
+                    placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
+                  ></el-input>
+                </el-form-item>
+            <el-form-item label="其他申请感言">
+              <el-input
+                type="textarea"
+                :rows="8"
+                placeholder="申请季感言，套磁、文书、面试、英语、中介等各方面的经验与建议"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div v-else-if="active == 3" class="form">
+          <el-form
+            label-position="right"
+            label-width="auto"
+            size="mini"
+            class="contact"
+          >
+            <el-row type="flex" justify="center">
+              <el-col :span="9">
+                <el-form-item label="QQ">
+                <el-input></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row type="flex" justify="center">
+              <el-col :span="9">
+                <el-form-item label="微信">
+                <el-input></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row type="flex" justify="center">
+              <el-col :span="9">
+                <el-form-item label="邮箱">
+                <el-input></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
       </div>
     </el-main>
     <el-footer>
@@ -231,7 +260,7 @@
 </template>
 
 <script>
-// import { background_get_my } from '@/api/admission'
+import { background_get_my } from '@/api/admission'
 export default {
   name: "Report_Admission",
   data() {
@@ -308,6 +337,7 @@ export default {
           referSpec: "",
           research_tag_list: [],
           ref_tag_list: [],
+          summary: "",
         },
       },
       admissions: [
@@ -339,11 +369,11 @@ export default {
     del_admission(index) {
       this.admissions.splice(index, 1);
     },
-    // getData() {
-    //   background_get_my().then()(response => {
-
-    //   })
-    // },
+    getData() {
+      background_get_my().then()(response => {
+        console.log(response);
+      })
+    },
     removeEmpty(obj) {
       Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
     },
@@ -364,13 +394,22 @@ export default {
 }
 .el-form {
   margin: auto;
+  /* margin: 0px 0px; */
 }
 .form {
-  margin: auto;
-  margin-top: 3%;
-  width: 60%;
-  display: flex;
-  justify-content:center;
+  margin: 0 auto;
+  margin-top: 30px;
+  width: 600px;
+  
+	/* display: inline; */
+  /* text-align: center; */
+  /* margin: 0px 0px; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  /* display: table-cell;
+  vertical-align: middle;
+  text-align: center; */
 }
 /* .el-row {
   
