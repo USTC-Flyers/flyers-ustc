@@ -22,12 +22,8 @@ class BackgroundViewSet(
     queryset = models.Background.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     
-    def get_serializer(self, *args, **kwargs):
-        if self.request.method in ['PUT', 'POST']:
-            data = self.request.data.copy()
-            data['related_user'] = self.request.user.id
-            kwargs["data"] = data
-        return super().get_serializer(*args, **kwargs)
+    def perform_create(self, serializer):
+        serializer.save(related_user=self.request.user)
     
     @action(methods=['get'], detail=True, url_path='get_major', url_name='get_major')
     def get_major(self, request, pk=None, *args, **kwargs):
@@ -43,7 +39,7 @@ class BackgroundViewSet(
             status=status.HTTP_200_OK
         )
         
-    @action(methods=['get'], detail=True, url_path='user_detail', url_name='user_detail')
+    @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, pk=None, *args, **kwargs):
         if pk == None:
             result = self.request.user.background.all()

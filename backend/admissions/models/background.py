@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
 
 class Background(models.Model):
-    related_user = models.ForeignKey(
+    related_user = models.OneToOneField(
         settings.AUTH_USER_MODEL, 
         verbose_name=_("related user"),
         related_name="background", 

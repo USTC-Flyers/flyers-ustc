@@ -25,7 +25,7 @@ class AdmissionsViewSet(
     def perform_create(self, serializer):
         serializer.save(related_user=self.request.user)
     
-    @action(methods=['get'], detail=True, url_path='user_detail', url_name='user_detail')
+    @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, pk=None, *args, **kwargs):
         if pk == None:
             result = self.request.user.admissions.all()

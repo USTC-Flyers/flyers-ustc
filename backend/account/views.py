@@ -19,9 +19,15 @@ class UserProfileViewSet(
     queryset = models.UserProfile.objects.all()
     permission_classes = [permissions.IsAdminOrReadOnly]
     
-    @action(methods=['get'], detail=True, url_path='user_detail', url_name='user_detail')
-    def user_detail(self, request, pk, *args, **kwargs):
-        result = get_object_or_404(self.queryset, pk=pk)
+    def perform_create(self, serializer):
+        serializer.save(related_user=self.request.user)
+    
+    @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
+    def user_detail(self, request, pk=None, *args, **kwargs):
+        if pk == None:
+            result = self.request.user.user_profile.all()
+        else:
+            result = self.queryset.filter(related_user__id=pk)
         data = serializers.UserProfileSerializer(result).data
         return Response(
             status=status.HTTP_200_OK,

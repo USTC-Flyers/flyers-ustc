@@ -5,7 +5,7 @@ from django.conf import settings
 from .background import BackgroundSerializers
 
 class AdmissionsSerializers(serializers.ModelSerializer):
-    related_user = serializers.ReadOnlyField(source='admission.related_user')
+    related_user = serializers.ReadOnlyField(source='admissions.related_user')
     referTag = serializers.CharField(required=False)
     def __init__(self, *args, **kwargs):
         many = kwargs.pop('many', True)

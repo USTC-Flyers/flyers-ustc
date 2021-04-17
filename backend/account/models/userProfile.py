@@ -62,7 +62,9 @@ class UserProfile(models.Model):
     )
     followed = models.ManyToManyField(
         'account.UserProfile',
-        related_name="followed_by"
+        related_name="followed_by",
+        null=True,
+        blank=True
     )
     last_post_hash = models.CharField(
         "last post hash",
