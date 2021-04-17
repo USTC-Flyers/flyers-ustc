@@ -50,7 +50,13 @@ class Admissions(models.Model):
         blank=False
     )
     comments = models.TextField(
-        max_length=1024
+        max_length=1024,
+        null=True,
+        blank=True
     )
-    
+    summary = models.TextField(
+        max_length=1024,
+        null=True,
+        blank=True
+    )
     objects = AdmissionsQueryset.as_manager()

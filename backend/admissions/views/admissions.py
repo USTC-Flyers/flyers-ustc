@@ -23,7 +23,7 @@ class AdmissionsViewSet(
     permission_classes = [permissions.IsOwnerOrReadOnly]
     
     def perform_create(self, serializer):
-        serializer.save(related_user=self.request.user)
+        serializer.save(related_user=self.request.user, related_background=self.request.user.background)
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, pk=None, *args, **kwargs):
