@@ -26,12 +26,14 @@ class AdmissionsViewSet(
         serializer.save(related_user=self.request.user, related_background=self.request.user.background)
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
-    def user_detail(self, request, pk=None, *args, **kwargs):
+    def user_detail(self, request, *args, **kwargs):
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
         if pk == None:
             result = self.request.user.admissions.all()
         else:
             result = self.queryset.filter(related_user__id=pk)
-        result = serializers.AdmissionsSerializers(result, many=True).data
+        many = not isinstance(result, models.Admissions)
+        result = serializers.AdmissionsSerializers(result, many=many).data
         data = {
             'user_detail': result
         }

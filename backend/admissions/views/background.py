@@ -40,12 +40,13 @@ class BackgroundViewSet(
         )
         
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
-    def user_detail(self, request, pk=None, *args, **kwargs):
+    def user_detail(self, request, *args, **kwargs):
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
         if pk == None:
-            result = self.request.user.background.all()
+            result = get_object_or_404(self.queryset, related_user=self.request.user.id)
         else:
-            result = self.queryset.filter(related_user__id=pk)
-        result = serializers.BackgroundSerializers(result, many=True).data
+            result = self.queryset.filter(related_user__id=pk).get()
+        result = serializers.BackgroundSerializers(result).data
         data = {
             'user_detail': result
         }

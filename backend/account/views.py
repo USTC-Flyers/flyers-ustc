@@ -23,12 +23,13 @@ class UserProfileViewSet(
         serializer.save(related_user=self.request.user)
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
-    def user_detail(self, request, pk=None, *args, **kwargs):
+    def user_detail(self, request, *args, **kwargs):
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
         if pk == None:
-            result = self.request.user.user_profile.all()
+            result = self.request.user.userprofile
         else:
             result = self.queryset.filter(related_user__id=pk)
-        data = serializers.UserProfileSerializer(result).data
+        data = serializers.UserProfileSerializer(result, many=True).data
         return Response(
             status=status.HTTP_200_OK,
             data={

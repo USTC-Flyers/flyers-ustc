@@ -12,8 +12,8 @@ class BackgroundSerializers(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         valid = super().is_valid(raise_exception=raise_exception)
         request = self.context['request']
-        if request.method == 'POST' and 'related_user' in request.data and request.data['related_user'] != request.user:
+        if request.method == 'POST' and 'related_user' in request.data and request.data['related_user'] != request.user.id:
             if raise_exception:
-                raise serializers.ValidationError({'related_user': 'only create model by oneself'})
+                raise serializers.ValidationError({'related_user': '只允许创建本人信息哦'})
             valid = False
         return valid
