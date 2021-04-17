@@ -74,5 +74,7 @@ class Background(models.Model):
         default=list
     )
     summary = models.TextField(
-        max_length=1024
+        max_length=1024,
+        null=True,
+        blank=True,
     )
