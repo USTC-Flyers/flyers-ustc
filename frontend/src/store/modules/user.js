@@ -60,8 +60,8 @@ const actions = {
         // commit('SET_NAME', name)
         // commit('SET_AVATAR', avatar)
         // resolve(data)
-        const { name } = response
-        console.log(response);
+        const name  = response.user_detail.related_user;
+        console.log(name);
         commit('SET_NAME', name)
         resolve()
       }).catch(error => {

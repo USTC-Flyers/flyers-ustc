@@ -19,7 +19,8 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['Authorization'] = 'JWT ' + getToken()
+      config.headers['Authorization'] = getToken()
+      // console.log(getToken());
     }
     return config
   },

@@ -328,7 +328,7 @@ export default {
       form_data: {
         background: {
           major: "",
-          gpa: 0,
+          gpa: 4.3,
           rank: "",
           applyFor: "",
           TOEFL: "",
@@ -339,6 +339,9 @@ export default {
           ref_tag_list: [],
           summary: "",
         },
+      },
+      get_data: {
+        background: null
       },
       admissions: [
         {
@@ -370,9 +373,17 @@ export default {
       this.admissions.splice(index, 1);
     },
     getData() {
-      background_get_my().then()(response => {
-        console.log(response);
+      background_get_my().then(response => {
+        this.get_data.background = response.user_detail;
+        this.map2form();
+        console.log(this.get_data.background);
+      }).catch(() => {
+
+        console.log("no background data");
       })
+    },
+    map2form() {
+      this.form_data.background = this.get_data.background;
     },
     removeEmpty(obj) {
       Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
