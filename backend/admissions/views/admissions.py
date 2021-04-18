@@ -54,7 +54,7 @@ class AdmissionsViewSet(
             }
         )
         
-    @action(methods=['get'], detail=False, url_path='join', url_name='join')
+    @action(methods=['post'], detail=False, url_path='join', url_name='join')
     def join_creation(self, request, pk=None, *args, **kwargs):
         serializer = serializers.AdmissionNestedSerializers(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
@@ -71,3 +71,8 @@ class AdmissionsViewSet(
         if self.request.method in drf_permissions.SAFE_METHODS:
             return serializers.AdmissionNestedSerializers
         return serializers.AdmissionsSerializers
+
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(kwargs.get('data', {}), list):
+                kwargs['many'] = True
+        return super().get_serializer(*args, **kwargs)
