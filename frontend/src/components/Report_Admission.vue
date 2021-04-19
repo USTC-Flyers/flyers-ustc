@@ -27,9 +27,9 @@
                 >
                   <el-option
                     v-for="item in major_list"
-                    :key="item"
-                    :label="item"
-                    :value="item"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   ></el-option>
                 </el-select>
               </el-col>
@@ -53,9 +53,9 @@
                 >
                   <el-option
                     v-for="item in rank_list"
-                    :key="item"
-                    :label="item"
-                    :value="item"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   ></el-option>
                 </el-select>
               </el-col>
@@ -76,9 +76,9 @@
               >
                 <el-checkbox
                   v-for="tag in research_tags"
-                  :key="tag"
-                  :label="tag"
-                  >{{ tag }}</el-checkbox
+                  :key="tag.value"
+                  :label="tag.value"
+                  >{{ tag.label }}</el-checkbox
                 >
               </el-checkbox-group>
               <el-input
@@ -90,9 +90,12 @@
             </el-form-item>
             <el-form-item label="推荐信">
               <el-checkbox-group v-model="form_data.background.ref_tag_list">
-                <el-checkbox v-for="tag in ref_tags" :key="tag" :label="tag">{{
-                  tag
-                }}</el-checkbox>
+                <el-checkbox
+                  v-for="tag in ref_tags"
+                  :key="tag.value"
+                  :label="tag.value"
+                  >{{ tag.label }}</el-checkbox
+                >
               </el-checkbox-group>
               <el-input
                 v-model="form_data.background.referSpec"
@@ -109,9 +112,9 @@
                 >
                   <el-option
                     v-for="item in applyfor_list"
-                    :key="item"
-                    :label="item"
-                    :value="item"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   ></el-option>
                 </el-select>
               </el-col>
@@ -134,49 +137,43 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="录取结果" size="mini">
-                <el-select
-                  placeholder="请选择"
-                  v-model="item.result"
-                  ><el-option
-                    v-for="result in result_list"
-                    :key="result"
-                    :label="result.show"
-                    :value="result.value"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
+                  <el-select placeholder="请选择" v-model="item.result"
+                    ><el-option
+                      v-for="result in result_list"
+                      :key="result.value"
+                      :label="result.label"
+                      :value="result.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="入学时间" size="mini">
-                <el-select
-                  placeholder="请选择"
-                ></el-select>
-              </el-form-item>
-              </el-col>              
+                  <el-select placeholder="请选择"></el-select>
+                </el-form-item>
+              </el-col>
             </el-row>
-            
+
             <el-row>
               <el-col :span="12">
                 <el-form-item label="录取学校" size="mini">
-                <el-input ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="录取项目" size="mini">
-                <el-input ></el-input>
-              </el-form-item>
-            </el-col>
-              
-              
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="录取项目" size="mini">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row>
-                <el-form-item label="申请经验">
+              <el-form-item label="申请经验">
                 <el-input
                   type="textarea"
                   :rows="3"
                   placeholder="可包括：1.申请、套磁、面试过程分享 2.项目录取偏好与特殊要求 3.最终是否选择就读该项目的考虑"
                 ></el-input>
-              </el-form-item>              
+              </el-form-item>
             </el-row>
             <el-row>
               <el-form-item v-show="item.result == true" label="入学后体验">
@@ -196,14 +193,14 @@
         </div>
         <div v-else-if="active == 2" class="form">
           <el-form label-position="right" label-width="auto">
-                <el-form-item label="申请方向的思考">
-                  <el-input
-                    v-model="form_data.background.summary"
-                    type="textarea"
-                    :rows="5"
-                    placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
-                  ></el-input>
-                </el-form-item>
+            <el-form-item label="申请方向的思考">
+              <el-input
+                v-model="form_data.background.summary"
+                type="textarea"
+                :rows="5"
+                placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
+              ></el-input>
+            </el-form-item>
             <el-form-item label="其他申请感言">
               <el-input
                 type="textarea"
@@ -223,21 +220,21 @@
             <el-row type="flex" justify="center">
               <el-col :span="9">
                 <el-form-item label="QQ">
-                <el-input></el-input>
+                  <el-input></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row type="flex" justify="center">
               <el-col :span="9">
                 <el-form-item label="微信">
-                <el-input></el-input>
+                  <el-input></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row type="flex" justify="center">
               <el-col :span="9">
                 <el-form-item label="邮箱">
-                <el-input></el-input>
+                  <el-input></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -260,70 +257,92 @@
 </template>
 
 <script>
-import { background_get_my } from '@/api/admission'
+import { background_get_my } from "@/api/admission";
 export default {
   name: "Report_Admission",
   data() {
     return {
       active: 0,
       steps: ["个人背景", "录取信息", "申请总结与感想", "联系方式"],
-      research_tags: ["海外科研", "顶会/顶刊一作", "有Paper", "工业界实习"],
-      ref_tags: ["海外推", "牛推", "强Connection推"],
+      research_tags: [
+        { value: "oversea_research", label: "海外科研" },
+        { value: "first_author", label: "顶会/顶刊一作" },
+        { value: "paper", label: "有Paper" },
+        { value: "internship", label: "工业界实习" },
+      ],
+      ref_tags: [
+        { value: "oversea_refer", label: "海外推" },
+        { value: "bigname_refer", label: "牛推" },
+        { value: "connection", label: "强Connection推" },
+      ],
+      tags_mapper: {
+        oversea_research: 0,
+        first_author: 0,
+        paper: 0,
+        internship: 0,
+        oversea_refer: 1,
+        bigname_refer: 1,
+        connection: 1,
+      },
       major_list: [
-        "045: 数学系",
-        "046: 计算与应用数学系",
-        "047: 概率统计系",
-        "002: 物理学系",
-        "004: 近代物理系",
-        "022: 天文学系",
-        "038: 光学与光学工程系",
-        "048: 工程与应用物理系",
-        "015: 工商管理系",
-        "016: 管理科学系",
-        "017: 统计与金融系",
-        "034: MBA中心",
-        "035: MPA中心",
-        "039: EMBA",
-        "003: 化学物理系",
-        "012: 应用化学系",
-        "014: 材料科学与工程系",
-        "019: 化学系",
-        "020: 高分子科学与工程系",
-        "008: 分子生物学与细胞生物学系",
-        "021: 神经生物学与生物物理学系",
-        "031: 系统生物学系",
-        "032: 医药生物技术系",
-        "071: 地球物理与行星科学技术系",
-        "072: 地球化学与环境科学系",
-        "005: 近代力学系",
-        "009: 精密机械与精密仪器系",
-        "013: 热科学和能源工程系",
-        "030: 安全科学与工程系",
-        "006: 电子工程与信息科学系",
-        "010: 自动化系",
-        "023: 电子科学与技术系",
-        "033: 信息安全",
-        "018: 外语系",
-        "024: 科技史与科技考古系",
-        "025: 科技传播与科技政策系",
-        "055: 科技哲学系",
-        "056: 心理学系",
-        "011: 计算机科学与技术系",
-        "044: 物流工程硕士中心",
+        { value: "045", label: "045: 数学系" },
+        { value: "046", label: "046: 计算与应用数学系" },
+        { value: "047", label: "047: 概率统计系" },
+        { value: "002", label: "002: 物理学系" },
+        { value: "004", label: "004: 近代物理系" },
+        { value: "022", label: "022: 天文学系" },
+        { value: "038", label: "038: 光学与光学工程系" },
+        { value: "048", label: "048: 工程与应用物理系" },
+        { value: "015", label: "015: 工商管理系" },
+        { value: "016", label: "016: 管理科学系" },
+        { value: "017", label: "017: 统计与金融系" },
+        { value: "034", label: "034: MBA中心" },
+        { value: "035", label: "035: MPA中心" },
+        { value: "039", label: "039: EMBA" },
+        { value: "003", label: "003: 化学物理系" },
+        { value: "012", label: "012: 应用化学系" },
+        { value: "014", label: "014: 材料科学与工程系" },
+        { value: "019", label: "019: 化学系" },
+        { value: "020", label: "020: 高分子科学与工程系" },
+        { value: "008", label: "008: 分子生物学与细胞生物学系" },
+        { value: "021", label: "021: 神经生物学与生物物理学系" },
+        { value: "031", label: "031: 系统生物学系" },
+        { value: "032", label: "032: 医药生物技术系" },
+        { value: "071", label: "071: 地球物理与行星科学技术系" },
+        { value: "072", label: "072: 地球化学与环境科学系" },
+        { value: "005", label: "005: 近代力学系" },
+        { value: "009", label: "009: 精密机械与精密仪器系" },
+        { value: "013", label: "013: 热科学和能源工程系" },
+        { value: "030", label: "030: 安全科学与工程系" },
+        { value: "006", label: "006: 电子工程与信息科学系" },
+        { value: "010", label: "010: 自动化系" },
+        { value: "023", label: "023: 电子科学与技术系" },
+        { value: "033", label: "033: 信息安全" },
+        { value: "018", label: "018: 外语系" },
+        { value: "024", label: "024: 科技史与科技考古系" },
+        { value: "025", label: "025: 科技传播与科技政策系" },
+        { value: "055", label: "055: 科技哲学系" },
+        { value: "056", label: "056: 心理学系" },
+        { value: "011", label: "011: 计算机科学与技术系" },
+        { value: "044", label: "044: 物流工程硕士中心" },
       ],
       rank_list: [
-        "Top 1%",
-        "Top 5%",
-        "Top 10%",
-        "Top 20%",
-        "Top 30%",
-        "Top 50%",
-        "其他",
+        { value: "top1%", label: "Top 1%" },
+        { value: "top5%", label: "Top 5%" },
+        { value: "top10%", label: "Top 10%" },
+        { value: "top20%", label: "Top 20%" },
+        { value: "top30%", label: "Top 30%" },
+        { value: "top50%", label: "Top 50%" },
+        { value: "else", label: "其他" },
       ],
-      applyfor_list: ["Ph.D.", "Master", "混申"],
+      applyfor_list: [
+        { value: "phd", label: "Ph.D." },
+        { value: "ms", label: "Master" },
+        { value: "ms_phd", label: "混申" },
+      ],
       result_list: [
-        { show: "AD", value: true },
-        { show: "Reject", value: false },
+        { label: "AD", value: true },
+        { label: "Reject", value: false },
       ],
       form_data: {
         background: {
@@ -335,13 +354,14 @@ export default {
           GRE: "",
           researchSpec: "",
           referSpec: "",
+          summary: "",
+          tags: [],
           research_tag_list: [],
           ref_tag_list: [],
-          summary: "",
         },
       },
       get_data: {
-        background: null
+        background: null,
       },
       admissions: [
         {
@@ -350,7 +370,7 @@ export default {
       ],
     };
   },
-  created() {
+  mounted() {
     this.getData();
   },
   methods: {
@@ -373,17 +393,29 @@ export default {
       this.admissions.splice(index, 1);
     },
     getData() {
-      background_get_my().then(response => {
-        this.get_data.background = response.user_detail;
-        this.map2form();
-        console.log(this.get_data.background);
-      }).catch(() => {
-
-        console.log("no background data");
-      })
+      background_get_my()
+        .then((response) => {
+          this.get_data.background = response.user_detail;
+          this.map2form();
+        })
+        .catch(() => {
+          console.log("no background data");
+        });
     },
     map2form() {
-      this.form_data.background = this.get_data.background;
+      Object.assign(this.form_data.background, this.get_data.background);
+      var tags = this.get_data.background.tags;
+      for (const item of tags) {
+        // console.log(item);
+        // console.log(this.tags_mapper[item]);
+        if (this.tags_mapper[item] == 0) {
+          this.form_data.background.research_tag_list.push(item);
+        } else if (this.tags_mapper[item] == 1) {
+          this.form_data.background.ref_tag_list.push(item);
+        } else {
+          console.log("tag error:" + item);
+        }
+      }
     },
     removeEmpty(obj) {
       Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
@@ -411,8 +443,8 @@ export default {
   margin: 0 auto;
   margin-top: 30px;
   width: 600px;
-  
-	/* display: inline; */
+
+  /* display: inline; */
   /* text-align: center; */
   /* margin: 0px 0px; */
   /* display: flex;
