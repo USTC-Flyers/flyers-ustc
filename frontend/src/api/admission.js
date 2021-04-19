@@ -22,6 +22,22 @@ export function background_get_user(user_id) {
       method: 'get',
       params: { pk: user_id }
     })
+}
+
+export function background_submit(data) {
+    return request({
+      url: '/background/',
+      method: 'post',
+      data
+    })
+  }
+
+export function background_update(id, data) {
+    return request({
+      url: `/background/${id}/`,
+      method: 'put',
+      data
+    })
   }
 // export function getInfo(token) {
 //   return request({

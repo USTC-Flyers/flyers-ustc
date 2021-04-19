@@ -107,7 +107,7 @@
             <el-form-item label="主申方向" size="mini">
               <el-col :span="9">
                 <el-select
-                  v-model="form_data.background.applyFor"
+                  v-model="form_data.background.apply_for"
                   placeholder="请选择"
                 >
                   <el-option
@@ -149,7 +149,14 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="入学时间" size="mini">
-                  <el-select placeholder="请选择"></el-select>
+                  <el-select v-model="item.enrolledSemester" filterable placeholder="请选择">
+                    <el-option
+                      v-for="semester in semester_list"
+                      :key="semester"
+                      :label="semester"
+                      :value="semester"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -250,19 +257,20 @@
         <el-button v-if="active < 3" type="primary" @click="next"
           >下一步</el-button
         >
-        <el-button v-else type="success" @click="next">提交</el-button>
+        <el-button v-else type="success" @click="handleSubmit">提交</el-button>
       </div>
     </el-footer>
   </el-container>
 </template>
 
 <script>
-import { background_get_my } from "@/api/admission";
+import { background_get_my, background_submit, background_update } from "@/api/admission";
 export default {
   name: "Report_Admission",
   data() {
     return {
       active: 0,
+      is_initial: true,
       steps: ["个人背景", "录取信息", "申请总结与感想", "联系方式"],
       research_tags: [
         { value: "oversea_research", label: "海外科研" },
@@ -344,12 +352,37 @@ export default {
         { label: "AD", value: true },
         { label: "Reject", value: false },
       ],
+      semester_list: [
+        "2021 Fall",
+        "2021 Spring",
+        "2020 Fall",
+        "2020 Spring",
+        "2019 Fall",
+        "2019 Spring",
+        "2018 Fall",
+        "2018 Spring",
+        "2017 Fall",
+        "2017 Spring",
+        "2016 Fall",
+        "2016 Spring",
+        "2015 Fall",
+        "2015 Spring",
+        "2014 Fall",
+        "2014 Spring",
+        "2013 Fall",
+        "2013 Spring",
+        "2012 Fall",
+        "2012 Spring",
+        "2011 Fall",
+        "2011 Spring",
+      ],
       form_data: {
+        bg_id: null,
         background: {
           major: "",
           gpa: 4.3,
           rank: "",
-          applyFor: "",
+          apply_for: "",
           TOEFL: "",
           GRE: "",
           researchSpec: "",
@@ -366,11 +399,16 @@ export default {
       admissions: [
         {
           result: null,
+          enrolledSemester: null,
+          related_university: null,
+          related_program: null,
+          comments: "",
+          summary: ""
         },
       ],
     };
   },
-  mounted() {
+  created() {
     this.getData();
   },
   methods: {
@@ -395,10 +433,13 @@ export default {
     getData() {
       background_get_my()
         .then((response) => {
+          this.is_initial = false;
+          this.form_data.bg_id = response.user_detail.id;
           this.get_data.background = response.user_detail;
           this.map2form();
         })
         .catch(() => {
+          this.is_initial = true;
           console.log("no background data");
         });
     },
@@ -406,7 +447,7 @@ export default {
       Object.assign(this.form_data.background, this.get_data.background);
       var tags = this.get_data.background.tags;
       for (const item of tags) {
-        // console.log(item);
+        console.log(item);
         // console.log(this.tags_mapper[item]);
         if (this.tags_mapper[item] == 0) {
           this.form_data.background.research_tag_list.push(item);
@@ -416,6 +457,31 @@ export default {
           console.log("tag error:" + item);
         }
       }
+    },
+    handleSubmit() {
+      this.form_data.background.tags = this.form_data.background.research_tag_list.concat(this.form_data.background.ref_tag_list);
+      console.log(this.form_data.background);
+      if (this.is_initial) {
+        background_submit(this.form_data.background).then(() => {
+          this.$message({
+            message: "提交成功",
+            type: "success",
+          });
+        }).catch(error => {
+          this.$message.error(error);
+        })
+      }
+      else {
+        background_update(this.form_data.bg_id, this.form_data.background).then(() => {
+          this.$message({
+            message: "提交成功",
+            type: "success",
+          });
+        }).catch(error => {
+          this.$message.error(error);
+        })
+      }
+      // this.removeEmpty(this.form_data.background);
     },
     removeEmpty(obj) {
       Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);

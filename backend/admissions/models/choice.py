@@ -79,6 +79,7 @@ research_tag = [
 
 refer_tag = [
     'oversea_refer',
+    'bigname_refer',
     'connection'
 ]
 
@@ -86,6 +87,7 @@ rank_tag = [
     'top1%',
     'top5%',
     'top10%',
+    'top20%',
     'top30%',
     'top50%',
     'else',
