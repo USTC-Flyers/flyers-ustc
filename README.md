@@ -2,11 +2,12 @@
 
 ## Backend Usage
 
+Database settings for development
 ```text
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'flyers',   
         'USER': 'postgres',
         'PASSWORD': '666666',
         'HOST': '127.0.0.1',
@@ -18,14 +19,13 @@ DATABASES = {
 ```bash
 cd backend
 pip install -r requirements.txt 
-python manage.py init_groups
-python manage.py import_university
+python manage.py migrate
+python manage.py init_db
 python manage.py runserver
 ```
 
-backend-API: http://0.0.0.0:5959/api/swagger/
 
-### backend-API doc
+### Production
 [docker-compose](https://docs.docker.com/compose/install/) and [docker](https://docs.docker.com/engine/install/) should be installed.
 ```
 docker-compose build && docker-compose up

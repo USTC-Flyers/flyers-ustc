@@ -1,6 +1,7 @@
 version: "3.2"
 volumes:
   postgres-data-volume:
+  backend-static-volume:
 
 services:
   backend:
@@ -10,8 +11,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 666666
       POSTGRES_HOST_AUTH_METHOD: trust
+      DJANGO_SETTINGS_MODULE: flyers.settings.prod
+    volumes:
+      - backend-static-volume:/app/backend/static
     ports:
-      - 5959:5959
+      - 8000
     depends_on:
       - postgres
 
@@ -27,14 +31,14 @@ services:
     volumes:
       - postgres-data-volume:/var/lib/postgres
 
-  # nginx:
-  #   build: ./
-  #   links:
-  #     - backend
-  #   volumes:
-  #     - ./docker/nginx:/etc/nginx/conf.d
-  #     - backend-static-volume:/app/backend/static
-  #   ports:
-  #     - 2000:80
-  #   environment:
-  #     NODE_ENV: production
+  nginx:
+    build: ./
+    links:
+      - backend
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - backend-static-volume:/app/backend/static
+    ports:
+      - 2000:80
+    environment:
+      NODE_ENV: production

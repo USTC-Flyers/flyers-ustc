@@ -17,8 +17,8 @@ RUN echo \
 RUN mkdir /app
 COPY requirements.txt /app
 WORKDIR /app
-RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
-# RUN pip3 install -r requirements.txt
+# RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
+RUN pip3 install -r requirements.txt
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

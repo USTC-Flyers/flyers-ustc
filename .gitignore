@@ -108,3 +108,5 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 .DS_Store
+
+backend/flyers/settings/local_settings.py
