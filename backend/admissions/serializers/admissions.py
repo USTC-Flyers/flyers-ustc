@@ -4,6 +4,8 @@ from django.apps import apps
 from django.conf import settings
 from .background import BackgroundSerializers
 from django.core.exceptions import ObjectDoesNotExist
+from .unversity import UniversitySerializer
+from .program import ProgramSerializer
 
 class AdmissionsSerializers(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='admissions.related_user')
@@ -34,15 +36,8 @@ class AdmissionsSerializers(serializers.ModelSerializer):
 
 # for nested creation
 class AdmissionNestedSerializers(serializers.ModelSerializer):
-    related_university = serializers.SlugRelatedField(
-        slug_field="short_name",
-        queryset=models.University.objects.all(),
-        many=False,
-    )
-    related_program = serializers.SlugRelatedField(
-        slug_field="name",
-        queryset=models.Program.objects.all()
-    )
+    related_university = UniversitySerializer()
+    related_program = ProgramSerializer()
     related_background = BackgroundSerializers()
 
     class Meta:

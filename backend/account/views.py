@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from . import models
 from . import serializers
@@ -25,10 +26,20 @@ class UserProfileViewSet(
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, *args, **kwargs):
         pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
-        if pk == None:
-            result = self.request.user.userprofile
-        else:
-            result = self.queryset.filter(related_user__id=pk).get()
+        try:
+            if pk == None:
+                result = self.request.user.userprofile
+            else:
+                result = self.queryset.filter(related_user__id=pk).get()
+        except ObjectDoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={
+                    "msg": "未创建申请背景",
+                    "errono": -1
+                }
+            )
+        
         serializer_class = self.get_serializer_class()
         data = serializer_class(result).data
         return Response(
