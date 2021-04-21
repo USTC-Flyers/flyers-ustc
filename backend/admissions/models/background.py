@@ -73,6 +73,11 @@ class Background(models.Model):
         blank=True,
         default=list
     )
+    comments = models.TextField(
+        max_length=1024,
+        null=True,
+        blank=True
+    )
     summary = models.TextField(
         max_length=1024,
         null=True,
