@@ -1,14 +1,19 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Welcome from "../components/Welcome.vue"
+import Welcome from "@/components/Welcome.vue"
+import Admission from "@/components/Admission.vue"
+import Wiki from "@/components/Wiki.vue"
+import Report_Admission from "@/components/Report_Admission.vue"
 Vue.use(VueRouter);
 const routes = [
   {
+    path: "/login",
+    component: () => import("@/views/login.vue"),
+  },
+  {
     path: "/",
     redirect: "/home",
-    // name: "Home",
-    // component: Home,
   },
   {
     path: "/home",
@@ -17,18 +22,19 @@ const routes = [
     children: [
       { path: "/welcome", component: Welcome },
       { path: "/admission", component: Admission },
-      // { path: "/wiki", component: Wiki }
+      { path: "/wiki", component: Wiki },
+      { path: "/report_admission", component: Report_Admission }
     ],
   },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  },
+  // {
+  //   path: "/about",
+  //   name: "About",
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  // },
 ];
 
 const router = new VueRouter({
