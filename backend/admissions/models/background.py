@@ -47,6 +47,11 @@ class Background(models.Model):
         null=True, 
         blank=True
     )
+    score = models.CharField(
+        max_length=256,
+        null=True, 
+        blank=True
+    )
     researchSpec = models.TextField(
         max_length=1024,
         null=True,

@@ -73,7 +73,3 @@ class UserViewSet(
             },
             status=status.HTTP_200_OK
         )
-        
-    @action(methods=['get'], detail=False, url_path='ustc_cas', url_name='ustc_cas')
-    def ustc_cas(self, request, *args, **kwargs):
-        print('ok')
