@@ -125,7 +125,7 @@
         <div v-else-if="active == 1" class="form">
           <el-form
             v-for="(item, index) in admissions"
-            :key="item"
+            :key="index"
             label-position="right"
             label-width="90px"
           >
@@ -149,7 +149,11 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="入学时间" size="mini">
-                  <el-select v-model="item.enrolledSemester" filterable placeholder="请选择">
+                  <el-select
+                    v-model="item.enrolledSemester"
+                    filterable
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="semester in semester_list"
                       :key="semester"
@@ -163,19 +167,93 @@
 
             <el-row>
               <el-col :span="12">
-                <el-form-item label="录取学校" size="mini">
-                  <el-input></el-input>
+                <el-form-item label="录取学校">
+                  <!-- <el-autocomplete
+                    v-model="item.related_university"
+                    :fetch-suggestions="querySearchUniv"
+                    placeholder="请输入学校"
+                    popper-class="university"
+                    @select="handleSelect"
+                    value-key="name"
+                  >
+                    <template slot-scope="{ item }">
+                      <div class="name">{{ item.name }}</div>
+                      <div class="line2">
+                        <span class="fullname">{{ item.full_name }}</span>
+                        <span class="area">{{ item.area }}</span>
+                      </div>
+                    </template>
+                  </el-autocomplete> -->
+                  <el-select
+                    v-model="item.related_university"
+                    filterable
+                    remote
+                    placeholder="请输入学校"
+                    :remote-method="(query) => querySearchUniv(query, index)"
+                    :loading="univ_loading"
+                    popper-append-to-body="false"
+                    @change="admissions[index].related_program = null"
+                    ><el-option
+                      class="university"
+                      v-for="univ in current_univ_list[index]"
+                      :key="univ.id"
+                      :label="univ.school_name"
+                      :value="univ.id"
+                    >
+                      <div class="name">
+                        {{ univ.short_name }}-{{ univ.school_name_cn }}
+                      </div>
+                      <div class="line2">
+                        <span class="fullname">{{ univ.school_name }}</span>
+                        <span class="area">{{ univ.area }}</span>
+                      </div>
+                    </el-option></el-select
+                  >
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="录取项目" size="mini">
-                  <el-input></el-input>
+                <el-form-item label="录取项目">
+                  <el-autocomplete
+                    v-model="item.related_program"
+                    :fetch-suggestions="(query, cb) => querySearchProgram(query, index, cb)"
+                    @focus="getPrograms(index)"
+                    @clear="clearFocus(index)"
+                    placeholder="请输入项目"
+                    popper-class="program"
+                    clearable
+                    :ref="index + 'autocomplete'"
+                  >
+                    <template slot-scope="{ item }">
+                      <!-- <div class="program"> -->
+                        <div class="name">{{ item.name }}</div>
+                        <div class="fullname">{{ item.full_name }}</div>
+                      <!-- </div> -->
+                    </template>
+                  </el-autocomplete>
+                  <!-- <el-select
+                    v-model="item.related_program"
+                    filterable
+                    placeholder="请选择"
+                    @change="$forceUpdate()"
+                  >
+                    <el-option
+                      class="program"
+                      v-for="program in current_program_list[index]"
+                      :key="program.id"
+                      :label="program.full_name + ' (' + program.name + ')'"
+                      :value="program.id"
+                    >
+                      <div class="name">{{ program.name }}</div>
+                      <div class="fullname">{{ program.full_name }}</div>
+                    </el-option>
+                  </el-select> -->
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-form-item label="申请经验">
                 <el-input
+                  v-model="item.comments"
                   type="textarea"
                   :rows="3"
                   placeholder="可包括：1.申请、套磁、面试过程分享 2.项目录取偏好与特殊要求 3.最终是否选择就读该项目的考虑"
@@ -185,6 +263,7 @@
             <el-row>
               <el-form-item v-show="item.result == true" label="入学后体验">
                 <el-input
+                  v-model="item.summary"
                   type="textarea"
                   placeholder="欢迎入学就读后返场分享"
                 ></el-input>
@@ -202,7 +281,7 @@
           <el-form label-position="right" label-width="auto">
             <el-form-item label="申请方向的思考">
               <el-input
-                v-model="form_data.background.summary"
+                v-model="form_data.background.comments"
                 type="textarea"
                 :rows="5"
                 placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
@@ -210,6 +289,7 @@
             </el-form-item>
             <el-form-item label="其他申请感言">
               <el-input
+                v-model="form_data.background.summary"
                 type="textarea"
                 :rows="8"
                 placeholder="申请季感言，套磁、文书、面试、英语、中介等各方面的经验与建议"
@@ -264,7 +344,14 @@
 </template>
 
 <script>
-import { background_get_my, background_submit, background_update } from "@/api/admission";
+import {
+  background_get_my,
+  background_submit,
+  background_update,
+  university_query,
+  programs_get,
+  admissions_get_my,
+} from "@/api/admission";
 export default {
   name: "Report_Admission",
   data() {
@@ -387,6 +474,7 @@ export default {
           GRE: "",
           researchSpec: "",
           referSpec: "",
+          comments: "",
           summary: "",
           tags: [],
           research_tag_list: [],
@@ -403,12 +491,16 @@ export default {
           related_university: null,
           related_program: null,
           comments: "",
-          summary: ""
+          summary: "",
         },
       ],
+      univ_loading: false,
+      current_univ_list: [[]],
+      current_program_list: [[]],
     };
   },
-  created() {
+  
+  mounted() {
     this.getData();
   },
   methods: {
@@ -425,13 +517,116 @@ export default {
     add_admission() {
       this.admissions.push({
         result: null,
+        enrolledSemester: null,
+        related_university: null,
+        related_program: null,
+        comments: "",
+        summary: "",
       });
+      this.current_univ_list.push([]);
+      this.current_program_list.push([]);
     },
     del_admission(index) {
       this.admissions.splice(index, 1);
+      this.current_univ_list.splice(index, 1);
+      this.current_program_list.splice(index, 1);
     },
-    getData() {
-      background_get_my()
+    // querySearchUniv(query_string, callback) {
+    //   university_query(query_string).then((response) => {
+    //     console.log(response.data);
+    //     var results = [];
+    //     response.data.forEach((university) => {
+    //       results.push({
+    //         // value: university.short_name,
+    //         value: university.id,
+    //         name: university.short_name + " - " + university.school_name_cn,
+    //         area: university.area,
+    //         full_name: university.school_name,
+    //         // school_name_cn: university.school_name_cn
+    //       });
+    //     });
+    //     console.log(results);
+    //     callback(results);
+    //   });
+    // },
+    querySearchUniv(query_string, index) {
+      if (query_string != "") {
+        this.univ_loading = true;
+        university_query(query_string).then((response) => {
+          this.univ_loading = false;
+          // this.current_univ_list[index] = response.data;
+          this.$set(this.current_univ_list, index, response.data);
+        });
+      } else {
+        // this.current_univ_list[index] = [];
+        this.$set(this.current_univ_list, index, []);
+      }
+    },
+    // handleSelect(selected, index) {
+    //   this.admissions[index].related_program = null;
+    //   programs_get(selected)
+    //     .then((response) => {
+    //       // console.log(this.current_program_list);
+    //       // this.current_program_list[index] = response.data;
+    //       // this.$set(this.current_program_list, index, response.data);
+    //       var programs = [];
+    //       response.data.forEach((program) => {
+    //         programs.push({
+    //           name: program.name,
+    //           full_name: program.full_name,
+    //           value: program.full_name + ' (' + program.name + ')',
+    //         });
+    //       });
+    //       this.$set(this.current_program_list, index, programs);
+    //       // console.log(this.current_program_list);
+    //     })
+    //     .catch(() => {
+    //       // this.current_program_list[index] = [];
+    //       this.$set(this.current_program_list, index, []);
+    //     });
+    // },
+    async getPrograms(index){
+      var uid = this.admissions[index].related_university;
+      await programs_get(uid)
+        .then((response) => {
+          // console.log(this.current_program_list);
+          // this.current_program_list[index] = response.data;
+          // this.$set(this.current_program_list, index, response.data);
+          var programs = [];
+          response.data.forEach((program) => {
+            programs.push({
+              name: program.name,
+              full_name: program.full_name,
+              value: program.full_name + ' (' + program.name + ')',
+            });
+          });
+          this.$set(this.current_program_list, index, programs);
+          // console.log(this.current_program_list);
+        })
+        .catch(() => {
+          // this.current_program_list[index] = [];
+          this.$set(this.current_program_list, index, []);
+        });
+    },
+    querySearchProgram(query, index, cb) {
+      var programs = this.current_program_list[index];
+      var results = [];
+      if (query) {
+        results = programs.filter(item => {
+          return item.value.toLowerCase().indexOf(query.toLowerCase()) > -1;
+        });
+      }
+      else {
+        results = programs;
+      }
+      console.log(results);
+      cb(results);
+    },
+    clearFocus(index) {
+      this.$refs[index + 'autocomplete'][0].handleFocus();
+    },
+    async getData() {
+      await background_get_my()
         .then((response) => {
           this.is_initial = false;
           this.form_data.bg_id = response.user_detail.id;
@@ -442,6 +637,48 @@ export default {
           this.is_initial = true;
           console.log("no background data");
         });
+      if (!this.is_initial) {
+        await admissions_get_my().then((response) => {
+          let data = response.user_detail;
+          for (let i = 0; i < data.length; i++) {
+            this.$set(this.admissions, i, {
+              result: data[i].result,
+              enrolledSemester: data[i].enrolledSemester,
+              comments: data[i].comments,
+              summary: data[i].summary,
+              related_university: data[i].related_university.id,
+              related_program: data[i].related_program,
+            });
+            this.$set(this.current_univ_list, i, [data[i].related_university]);
+          }
+          // if (data.length == 0) {
+          //   this.admissions.push({
+          //     result: null,
+          //     enrolledSemester: null,
+          //     related_university: null,
+          //     related_program: null,
+          //     comments: "",
+          //     summary: "",
+          //   });
+          //   this.current_univ_list.push([]);
+          //   this.current_program_list.push([]);
+          // }
+          // else {
+          //   for (let i = 0; i < data.length; i++) {
+          //     this.admissions.push({
+          //       result: data[i].result,
+          //       enrolledSemester: data[i].enrolledSemester,
+          //       comments: data[i].comments,
+          //       summary: data[i].summary,
+          //       related_university: data[i].related_university.id,
+          //       related_program: data[i].related_program,
+          //     });
+          //     this.current_univ_list.push([data[i].related_university]);
+          //     // this.current_program_list.push([data[i].related_program]);
+          //   }
+          // }
+        });
+      }
     },
     map2form() {
       Object.assign(this.form_data.background, this.get_data.background);
@@ -459,27 +696,32 @@ export default {
       }
     },
     handleSubmit() {
-      this.form_data.background.tags = this.form_data.background.research_tag_list.concat(this.form_data.background.ref_tag_list);
+      this.form_data.background.tags = this.form_data.background.research_tag_list.concat(
+        this.form_data.background.ref_tag_list
+      );
       console.log(this.form_data.background);
       if (this.is_initial) {
-        background_submit(this.form_data.background).then(() => {
-          this.$message({
-            message: "提交成功",
-            type: "success",
+        background_submit(this.form_data.background)
+          .then(() => {
+            this.$message({
+              message: "提交成功",
+              type: "success",
+            });
+          })
+          .catch((error) => {
+            this.$message.error(error);
           });
-        }).catch(error => {
-          this.$message.error(error);
-        })
-      }
-      else {
-        background_update(this.form_data.bg_id, this.form_data.background).then(() => {
-          this.$message({
-            message: "提交成功",
-            type: "success",
+      } else {
+        background_update(this.form_data.bg_id, this.form_data.background)
+          .then(() => {
+            this.$message({
+              message: "提交成功",
+              type: "success",
+            });
+          })
+          .catch((error) => {
+            this.$message.error(error);
           });
-        }).catch(error => {
-          this.$message.error(error);
-        })
       }
       // this.removeEmpty(this.form_data.background);
     },
@@ -508,7 +750,7 @@ export default {
 .form {
   margin: 0 auto;
   margin-top: 30px;
-  width: 600px;
+  width: 650px;
 
   /* display: inline; */
   /* text-align: center; */
@@ -531,5 +773,38 @@ export default {
   /* margin-top: 12px; */
   position: absolute;
   right: 15%;
+}
+.university,
+.program li {
+  /* line-height: 10px; */
+  padding: 0px 6px;
+  height: 40px;
+  line-height: 18px;
+  font-size: xx-small;
+  vertical-align: middle;
+}
+.university .name,
+.program .name {
+  font-weight: bolder;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.university .line2 {
+  display: flex;
+  justify-content: space-between;
+}
+.university .fullname {
+  text-align: left;
+  width: 80%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.university .area {
+  text-align: right;
+  width: 20%;
+}
+.program .fullname {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>
