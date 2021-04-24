@@ -62,6 +62,29 @@ export function programs_get(univ_id) {
         params: { uid: univ_id }
     })
 }
+
+export function admissions_create(data) {
+    return request({
+        url: '/admissions/',
+        method: 'post',
+        data
+    })
+}
+
+export function admissions_update(id, data) {
+    return request({
+        url: `/admissions/${id}/`,
+        method: 'put',
+        data
+    })
+}
+
+export function admissions_delete(id) {
+    return request({
+        url: `/admissions/${id}/`,
+        method: 'delete',
+    })
+}
 // export function getInfo(token) {
 //   return request({
 //     url: '/info/',
