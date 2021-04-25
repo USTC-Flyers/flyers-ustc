@@ -26,7 +26,7 @@ SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 DEBUG = False
 
 # TODO
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -163,3 +163,4 @@ AUTHENTICATION_BACKENDS = (
 
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ysj2017/cas/index.html?id=1'
 CAS_VERSION = '3'
+CAS_APPLY_ATTRIBUTES_TO_USER = True

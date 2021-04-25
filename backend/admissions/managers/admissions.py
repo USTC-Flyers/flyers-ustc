@@ -28,4 +28,4 @@ class AdmissionsQueryset(models.QuerySet):
             if tag in kwargs:
                 query &= Q(**{tag: kwargs[tag]})
                 
-        return self.filter(query).select_related('related_university', 'related_program', 'related_background')
+        return self.filter(query).select_related('related_university', 'related_background')

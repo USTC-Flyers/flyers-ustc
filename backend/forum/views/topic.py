@@ -23,12 +23,12 @@ class TopicViewSet(
 ):
     serializer_class = serializers.TopicSerializer
     authentication_classes = [JSONWebTokenAuthentication]
-    queryset = models.Topic.objects.all()
+    queryset = models.Topic.objects.public()
     
     @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
     def create(self, request, *args, **kwargs):
         # 新建topic -> 新建topic, topic_revision
-        pk = getattr(request.data, 'related_topic', None)
+        pk = request.data['related_topic'] if 'related_topic' in request.data else None
         if pk is None:
             # new topic
             revision_number = 0
@@ -44,8 +44,8 @@ class TopicViewSet(
             topic_serializer.is_valid(raise_exception=True)
             topic = topic_serializer.save()
         else:
-            topic = get_object_or_404(pk=pk)
-            revision_set = models.Topic.objects.revision_set(pk=pk)
+            topic = get_object_or_404(models.Topic, pk=pk)
+            revision_set = models.TopicRevision.objects.revision_set(pk=pk)
             revision_number = revision_set.latest().revision_number + 1
         topic_revision_serializer = serializers.TopicRevisionSerializer(data={
             'related_topic': topic.id,
@@ -56,15 +56,32 @@ class TopicViewSet(
         topic_revision_serializer.is_valid(raise_exception=True)
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
-        models.Notification.notify_group(topic_revision, topic.group, models.Notification.PR)
-        return super().create(request, *args, **kwargs)
+        models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
+        return Response(
+            status=status.HTTP_201_CREATED,
+            data=topic_revision_serializer.data
+        )
     
     # !TODO: test this api
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
     
+    @action(methods=['get'], detail=False, url_path='follow', url_name='follow')
+    def follow(self, request, *args, **kwargs):
+        result = self.request.user.topic_followed_by.all()
+        serializer_class = self.get_serializer_class()
+        many = not isinstance(result, models.Topic)
+        result = serializer_class(result, many=many).data
+        data = {
+            'follow': result
+        }
+        return Response(
+            data=data,
+            status=status.HTTP_200_OK
+        )
+    
     @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
-    @action(methods=['put'], detail=True, url_path='action', url_name='action')
+    @action(methods=['patch'], detail=True, url_path='action', url_name='action')
     def action(self, request, pk=None, *args, **kwargs):
         topic = get_object_or_404(self.queryset, pk=pk)
         action = request.data['action']
@@ -114,15 +131,34 @@ class TopicRevisionViewSet(
             if is_valid:
                 # 审核通过
                 # !TODO: 不同版本的merge
-                if models.Topic.set_valid_and_update(topic_revision.related_topic_id, topic_revision):
-                    models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed, models.Notification.UPDATED)
+                if topic_revision.related_topic.set_valid_and_update(topic_revision):
+                    models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)
                 
             elif not is_valid:
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
-                
+    
+    # !FIXME: not validated
     def get_permissions_class(self):
         if 'is_valid' in self.request.data:
             return [permissions.IsWikiOwnerOrCannotValidate()]
         return [permissions.IsOwnerOrReadOnly()]
+    
+    @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
+    def user_detail(self, request, *args, **kwargs):
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
+        if pk == None:
+            result = self.request.user.topic_revision_author.all()
+        else:
+            result = self.queryset.filter(related_user__id=pk)
+        serializer_class = self.get_serializer_class()
+        many = not isinstance(result, models.TopicRevision)
+        result = serializer_class(result, many=many).data
+        data = {
+            'user_detail': result
+        }
+        return Response(
+            data=data,
+            status=status.HTTP_200_OK
+        )

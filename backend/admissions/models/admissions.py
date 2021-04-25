@@ -25,10 +25,8 @@ class Admissions(models.Model):
         null=False,
         blank=False
     )
-    related_program = models.ForeignKey(
-        Program,
-        verbose_name=_("related program"), 
-        on_delete=models.CASCADE,
+    related_program = models.CharField(
+        max_length=255,
         null=False,
         blank=False
     )
@@ -45,7 +43,7 @@ class Admissions(models.Model):
     )
     # !TODO: change to choiceField if applicable
     enrolledSemester = models.CharField(
-        max_length=256,
+        max_length=255,
         null=False,
         blank=False
     )
@@ -60,3 +58,6 @@ class Admissions(models.Model):
         blank=True
     )
     objects = AdmissionsQueryset.as_manager()
+    
+    class Meta:
+        unique_together = ("related_user", "related_program", "related_university", "enrolledSemester")

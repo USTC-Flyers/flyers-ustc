@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 import os
-from ..managers.topic import TopicQuerySet
+from ..managers.topic import TopicQuerySet, TopicRevisionQuerySet
 
 def image_path(instance, filename):
     ext = os.path.splitext(filename)[1].lower()
@@ -48,15 +48,14 @@ class TopicRevision(models.Model):
         upload_to=file_path,
         blank=True
     )
-    is_deleted = models.BooleanField(
-        default=False
-    )
     created_time = models.DateTimeField(
         default=timezone.now
     )
     is_valid = models.BooleanField(
         default=False
     )
+    
+    objects = TopicRevisionQuerySet.as_manager()
 
     def __str__(self):
         return "%s (%d)" % (self.title, self.revision_number)
@@ -149,10 +148,12 @@ class Topic(models.Model):
         if self.current_version is None or self.current_version.revision_number < new_revision.revision_number:
             self.current_version = new_revision
             self.is_valid = True
+            new_revision.is_valid = True
+            self.save()
+            new_revision.save()
             return True
         return False
         
-    
     def follow(self, user):
         if user not in user.topic_followed_by.all():
             user.topic_followed_by.add(self)

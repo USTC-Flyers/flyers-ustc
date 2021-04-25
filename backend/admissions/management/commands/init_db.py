@@ -27,6 +27,7 @@ class Command(BaseCommand):
                     
         for school in models.school_list:
             Group.objects.create(name=school)
+        Group.objects.create(name="general")
         
         User = apps.get_model('account.user')
         User.objects.create_superuser('test', '', 'test')

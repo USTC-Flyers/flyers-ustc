@@ -27,7 +27,7 @@ class CommentThreadViewSet(
     def perform_create(self, serializer):
         comment_thread = serializer.save(related_user=self.request.user, action=models.CommentThread.DEFAULT)
         comment_thread.related_topic.increase_comment_thread_count()
-        models.Notification.notify_group(comment_thread, comment_thread.related_topic.followed, models.Notification.REPLIED)
+        models.Notification.notify_group(comment_thread, comment_thread.related_topic.followed.all(), models.Notification.REPLIED)
     
     def perform_destroy(self, instance):
         serializer = self.get_serializer(instance, action=models.CommentThread.CLOSED)

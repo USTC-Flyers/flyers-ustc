@@ -37,7 +37,6 @@ class AdmissionsSerializers(serializers.ModelSerializer):
 # for nested creation
 class AdmissionNestedSerializers(serializers.ModelSerializer):
     related_university = UniversitySerializer()
-    related_program = ProgramSerializer()
     related_background = BackgroundSerializers()
 
     class Meta:
