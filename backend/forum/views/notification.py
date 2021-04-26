@@ -27,7 +27,6 @@ class NotificationViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.NotificationSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Notification.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     

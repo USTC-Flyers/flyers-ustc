@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'multiselectfield',
-    'django_cas_ng',
     # Custom apps
     'account',
     'admissions',
@@ -51,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_cas_ng.middleware.CASMiddleware'
 ]
 
 ROOT_URLCONF = 'flyers.urls'
@@ -111,17 +109,16 @@ AUTH_USER_MODEL = 'account.User'
 
 GROUP_MODEL = 'auth.group'
 
-JWT_AUTH = {
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=12),
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-}
-
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
-#     'AUTH_HEADER_TYPES': ('JWT',)
+# JWT_AUTH = {
+#     'JWT_ALLOW_REFRESH': True,
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=12),
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 # }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=20)
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
@@ -129,8 +126,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'account.authentication.JWTCASAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -157,6 +155,6 @@ STATIC_URL = '/static/'
 
 # for cas
 AUTHENTICATION_BACKENDS = (
+    'account.authentication.JWTCASAuthentication',
     'django.contrib.auth.backends.ModelBackend',
-    'django_cas_ng.backends.CASBackend',
 )

@@ -19,9 +19,9 @@ from rest_framework import permissions
 from rest_framework_jwt.views import obtain_jwt_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-import django_cas_ng.views
 from django.conf import settings
-from account.views import get_token
+from account.views import CASLoginView
+from account.serializers import TokenObtainPairWithoutPasswordSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -51,13 +51,6 @@ urlpatterns = [
     path('api/api-auth/', include('rest_framework.urls')),
     path('api/', include('admissions.urls')),  
     path('api/', include('forum.urls')),      
-    path('api/', include('account.urls'))
+    path('api/', include('account.urls')),
+    path('api/login/', CASLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer))
 ]
-
-if settings.DEBUG:
-    urlpatterns.append(path('api/login/', get_token))
-    # urlpatterns.append(path('api/login/', TokenObtainPairView.as_view()))
-    # urlpatterns.append(path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),)
-else:
-    urlpatterns.append(path('api/login', django_cas_ng.views.LoginView.as_view(), name='cas_ng_login'))
-    urlpatterns.append(path('api/logout', django_cas_ng.views.LogoutView.as_view(), name='cas_ng_logout'))

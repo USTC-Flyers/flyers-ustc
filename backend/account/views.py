@@ -1,18 +1,15 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_jwt.settings import api_settings
-from django_cas_ng import views as cas_views
 from django.shortcuts import get_object_or_404
-from django_cas_ng.models import ProxyGrantingTicket, SessionTicket
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
-from django_cas_ng.utils import get_protocol, get_redirect_url, get_cas_client
-from django_cas_ng.signals import cas_user_logout
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from django.http import JsonResponse, HttpRequest, HttpResponse, HttpResponseRedirect
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from urllib import parse as urllib_parse
@@ -22,9 +19,6 @@ from . import serializers
 from . import permissions
 from .models import User
 
-JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
-JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
-
 class UserProfileViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -32,7 +26,6 @@ class UserProfileViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet
 ):
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.UserProfile.objects.all()
     permission_classes = [permissions.IsAdminOrReadOnly]
     
@@ -77,7 +70,6 @@ class UserViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.UserSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.User.objects.all()
     
     @action(methods=['get'], detail=True, url_path='is_admin', url_name='is_admin')
@@ -90,68 +82,14 @@ class UserViewSet(
             },
             status=status.HTTP_200_OK
         )
-    
-@api_view() 
-@permission_classes([AllowAny])
-def get_token(request, *args, **kwargs):
-    try:
-        ticket = request.GET.get('ticket')
-        service = request.GET.get('service', 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=null')
-        user, created = User.verify(ticket, service)
-        payload = JWT_PAYLOAD_HANDLER(user)
-        jwt_token = JWT_ENCODE_HANDLER(payload)
-        update_last_login(None, user)
-    except User.DoesNotExist:
-        return Response(
-            status=status.HTTP_403_FORBIDDEN
-        )
-    return Response(
-        status=status.HTTP_200_OK if not created else status.HTTP_201_CREATED,
-        data={
-            'token': jwt_token
-        }
-    )
 
-# for djang-cas-ng
-class APILoginView(cas_views.LoginView):
-    def successful_login(self, request, next_page):
-        try:
-            user = User.objects.get(id=request.user.id)
-        except User.DoesNotExist:
-            user = request.user
-
-        # create jwt token
-        payload = JWT_PAYLOAD_HANDLER(user)
-        jwt_token = JWT_ENCODE_HANDLER(payload)
-        update_last_login(None, user)
-
-        new_next_page = settings.SUCCESS_SSO_AUTH_REDIRECT + 'login/' + jwt_token 
-        return HttpResponseRedirect(new_next_page)
-    
-class APILogoutView(cas_views.LogoutView):
+class CASLoginView(TokenObtainPairView):
     def get(self, request):
-        next_page = settings.SUCCESS_SSO_AUTH_REDIRECT
+        serializer = self.get_serializer(data=request.data)
 
-        # try to find the ticket matching current session for logout signal
         try:
-            st = SessionTicket.objects.get(session_key=request.session.session_key)
-            ticket = st.ticket
-        except SessionTicket.DoesNotExist:
-            ticket = None
-        # send logout signal
-        cas_user_logout.send(
-            sender="manual",
-            user=request.user,
-            session=request.session,
-            ticket=ticket,
-        )
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
 
-        # clean current session ProxyGrantingTicket and SessionTicket
-        ProxyGrantingTicket.objects.filter(session_key=request.session.session_key).delete()
-        SessionTicket.objects.filter(session_key=request.session.session_key).delete()
-        auth_logout(request)
-
-        next_page = next_page or get_redirect_url(request)
-        if settings.CAS_LOGOUT_COMPLETELY:
-            client = get_cas_client(request=request)
-            return HttpResponseRedirect(client.get_logout_url(next_page))
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)

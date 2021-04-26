@@ -2,6 +2,9 @@ from rest_framework import serializers
 from . import models
 from django.apps import apps
 from django.conf import settings
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.models import update_last_login
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserProfileSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='userprofile.related_user')
@@ -31,4 +34,16 @@ class UserSerializer(serializers.Serializer):
         lookup_field = 'id'
         extra_kwargs = {'password': {'write_only': True}}
 
-    
+class TokenObtainPairWithoutPasswordSerializer(TokenObtainPairSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password'].required = False
+        self.fields['username'].required = False
+
+    def validate(self, attrs):
+        attrs.update({'password': '', 'username': ''})
+        return super().validate(attrs)
+
+    @classmethod
+    def get_token(cls, user):
+        return RefreshToken.for_user(user)
