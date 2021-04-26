@@ -365,9 +365,6 @@
 
 <script>
 import {
-  background_get_my,
-  background_submit,
-  background_update,
   university_query,
   programs_get,
   admissions_get_my,
@@ -375,8 +372,13 @@ import {
   admissions_update,
   admissions_delete,
 } from "@/api/admission";
-import { 
-  getInfo, 
+import {
+  background_get_my,
+  background_submit,
+  background_update,
+} from "@/api/background";
+import {
+  getInfo,
   // update_contact,
 } from "@/api/user";
 export default {
