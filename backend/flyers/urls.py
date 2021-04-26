@@ -55,7 +55,7 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns.append(path('api/get_token/', get_token))
+    urlpatterns.append(path('api/login/', get_token))
     # urlpatterns.append(path('api/login/', TokenObtainPairView.as_view()))
     # urlpatterns.append(path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),)
 else:

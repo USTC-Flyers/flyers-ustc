@@ -10,13 +10,13 @@ class User(AbstractUser):
     id = models.CharField(max_length=255, primary_key=True)
     
     @staticmethod
-    def verify(cls, ticket, service):
-        gid, uid = User.check_ticket(ticket, service)
-        user, created = User.objects.get_or_create(gid=gid)
+    def verify(ticket, service):
+        id, uid = User.check_ticket(ticket, service)
+        user, created = User.objects.get_or_create(id=id)
         return user, created
     
     @staticmethod
-    def check_ticket(cls, ticket, service):
+    def check_ticket(ticket, service):
         validate = (settings.CAS_VALIDATE_URL + "?" +
                     urlencode({"service": service, "ticket": ticket}))
         with urlopen(validate) as req:

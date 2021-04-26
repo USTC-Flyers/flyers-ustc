@@ -8,7 +8,8 @@ from rest_framework_jwt.settings import api_settings
 from django_cas_ng import views as cas_views
 from django.shortcuts import get_object_or_404
 from django_cas_ng.models import ProxyGrantingTicket, SessionTicket
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from django_cas_ng.utils import get_protocol, get_redirect_url, get_cas_client
 from django_cas_ng.signals import cas_user_logout
 from django.http import JsonResponse, HttpRequest, HttpResponse, HttpResponseRedirect
@@ -91,10 +92,11 @@ class UserViewSet(
         )
     
 @api_view() 
+@permission_classes([AllowAny])
 def get_token(request, *args, **kwargs):
     try:
         ticket = request.GET.get('ticket')
-        service = request.GET.get('service')
+        service = request.GET.get('service', 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=null')
         user, created = User.verify(ticket, service)
         payload = JWT_PAYLOAD_HANDLER(user)
         jwt_token = JWT_ENCODE_HANDLER(payload)
@@ -114,7 +116,7 @@ def get_token(request, *args, **kwargs):
 class APILoginView(cas_views.LoginView):
     def successful_login(self, request, next_page):
         try:
-            user = User.objects.get(gid=request.user.gid)
+            user = User.objects.get(id=request.user.id)
         except User.DoesNotExist:
             user = request.user
 

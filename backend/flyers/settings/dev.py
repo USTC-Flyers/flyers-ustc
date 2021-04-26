@@ -23,7 +23,7 @@ DATABASES = {
     }
 }
 
-CAS_VALIDATE_URL = 'https://passport.ustc.edu.cn/serviceValidate'
+CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
 
 # from deployment
 try:
