@@ -36,10 +36,7 @@ class AdmissionsSerializer(serializers.ModelSerializer):
         return valid
     
 class UserInfoSerializer(serializers.ModelSerializer):
-    username = serializers.RelatedField(
-        source='userprofile.nickname', 
-        queryset=apps.get_model('account.userprofile').objects.all()
-    )
+    username = serializers.CharField(source='userprofile.nickname')
     class Meta:
         model = apps.get_model(settings.AUTH_USER_MODEL)
         db_table = 't_user'
