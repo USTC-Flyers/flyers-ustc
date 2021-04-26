@@ -21,6 +21,7 @@ class AdmissionsViewSet(
     authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Admissions.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
+    ordering = ('-created_time')
     
     def perform_create(self, serializer):
         serializer.save(related_user=self.request.user, related_background=self.request.user.background)

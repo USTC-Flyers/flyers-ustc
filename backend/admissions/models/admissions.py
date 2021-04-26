@@ -57,6 +57,9 @@ class Admissions(models.Model):
         null=True,
         blank=True
     )
+    created_time = models.DateTimeField(
+        auto_now_add=True
+    )
     objects = AdmissionsQueryset.as_manager()
     
     class Meta:

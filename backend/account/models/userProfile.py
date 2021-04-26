@@ -31,20 +31,10 @@ class UserProfile(models.Model):
         editable=True,
         null=True
     )
-    email = models.EmailField(
+    contact = models.CharField(
         max_length=254,
         null=True,
         blank=True,
-    )
-    wechat = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True
-    )
-    qq = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True
     )
     is_verified = models.BooleanField(
         verbose_name="是否通过科大统一身份验证",
