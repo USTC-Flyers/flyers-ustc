@@ -11,7 +11,7 @@
         fit
         stripe
       >
-        <el-table-column prop="username" label="用户名" align="center">
+        <el-table-column prop="username" width="100" align="center">
         </el-table-column>
         <el-table-column label="录取学校" width="100" align="center">
           <template slot-scope="{ row }">
@@ -20,9 +20,14 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="program" label="录取项目" width="180">
+        <el-table-column prop="program" label="录取项目">
         </el-table-column>
-        <el-table-column label="结果" width="80" align="center">
+        <el-table-column prop="semester" label="入学时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="result" label="结果" width="80" align="center" 
+        :filters="[{ text: 'AD', value: true }, { text: 'Reject', value: false }]"
+        :filter-method="filterResult"
+        :filter-multiple="false"
+        filter-placement="top">
           <template slot-scope="{ row }">
             <el-tag :type="row.result | adrejFilter | adrejStatusFilter">
               {{ row.result | adrejFilter }}
@@ -57,7 +62,7 @@
             </el-dialog>
           </template>
         </el-table-column>
-        <el-table-column label="专业" width="150">
+        <el-table-column label="专业" width="140">
           <template slot-scope="{ row }">
             {{ row.major | majorFilter }}
           </template>
@@ -80,7 +85,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="" label="申请总结" align="center">
+        <el-table-column prop="" label="申请总结" width="150" align="center">
           <template slot-scope="{ row, $index }">
             <el-button
               type="text"
@@ -273,9 +278,11 @@ export default {
     admissions_get_all().then((response) => {
       response.forEach((item) => {
         this.table_data.push({
+          username: item.related_user.username,
           univ: item.related_university.short_name,
           univ_fullname: item.related_university.school_name,
           program: item.related_program,
+          semester: item.enrolledSemester,
           result: item.result,
           // program_comments: {
           //   experience: item.comments,
@@ -296,6 +303,9 @@ export default {
     getHeaderClass() {
       return "table-header";
     },
+    filterResult(value, row) {
+      return value === row.result;
+    }
     // getCellClass({row,column,rowIndex,columnIndex}){
     //   if(column.label == "结果"){
     //     if(row.result == "AD"){
@@ -328,7 +338,7 @@ export default {
   margin: 0px 10px 40px 10px;
 }
 .dialog .dialog-title {
-  font-size: 18px;
+  font-size: 16px;
   color: #409eff;
   font-weight: bolder;
 }

@@ -379,7 +379,7 @@ import {
 } from "@/api/background";
 import {
   getInfo,
-  // update_contact,
+  update_contact,
 } from "@/api/user";
 export default {
   name: "Report_Admission",
@@ -758,19 +758,19 @@ export default {
           })
         );
       });
-      // edit_funcs.push(
-      //   new Promise((resolve, reject) => {
-      //     update_contact(this.user_id, { contact: this.contact })
-      //       .then((response) => {
-      //         console.log(response);
-      //         resolve();
-      //       })
-      //       .catch((error) => {
-      //         // this.$message.error(error);
-      //         reject(error);
-      //       });
-      //   })
-      // );
+      edit_funcs.push(
+        new Promise((resolve, reject) => {
+          update_contact(this.user_id, { contact: this.contact })
+            .then((response) => {
+              console.log(response);
+              resolve();
+            })
+            .catch((error) => {
+              // this.$message.error(error);
+              reject(error);
+            });
+        })
+      );
       Promise.all(edit_funcs)
         .then(() => {
           this.$message.success("提交成功");
