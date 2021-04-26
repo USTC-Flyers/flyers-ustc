@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import permissions as drf_permissions
 from drf_yasg import openapi
 from django.conf import settings
 from .. import models
@@ -22,6 +23,10 @@ class TopicViewSet(
 ):
     serializer_class = serializers.TopicSerializer
     queryset = models.Topic.objects.public()
+    
+    def retrieve(self, request, *args, **kwargs):
+        self.get_object().visit()
+        return super().retrieve(request, *args, **kwargs)
     
     @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
     def create(self, request, *args, **kwargs):
