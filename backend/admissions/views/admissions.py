@@ -1,6 +1,5 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from django.shortcuts import get_object_or_404
@@ -18,7 +17,6 @@ class AdmissionsViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Admissions.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     ordering = ('-created_time')
@@ -71,7 +69,7 @@ class AdmissionsViewSet(
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:
             return serializers.AdmissionNestedSerializers
-        return serializers.AdmissionsSerializers
+        return serializers.AdmissionsSerializer
 
     def get_serializer(self, *args, **kwargs):
         if isinstance(kwargs.get('data', {}), list):

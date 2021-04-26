@@ -16,8 +16,10 @@
           </el-menu-item>
         </el-submenu>
       </el-menu> -->
-      
-      <el-button type="text" icon="el-icon-user-solid">{{ username }}</el-button>
+
+      <el-button type="text" icon="el-icon-user-solid">{{
+        username
+      }}</el-button>
     </el-header>
     <el-container class="main">
       <!-- <el-aside width="200px">Aside</el-aside>
@@ -34,15 +36,15 @@
 export default {
   name: "Home",
   data() {
-      return {
-        activeIndex: '',
-      };
+    return {
+      activeIndex: "",
+    };
   },
   computed: {
     username() {
       return this.$store.getters.name;
     },
-  }
+  },
   // components: {
   //   HelloWorld,
   // },
