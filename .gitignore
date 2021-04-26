@@ -113,3 +113,4 @@ frontend/package-lock.json
 backend/entrypoint-local.sh
 backend/flyers/local_settings.py
 backend/flyers/settings/local_settings.py
+.vscode/settings.json

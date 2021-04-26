@@ -29,9 +29,9 @@ export default {
     editor: Editor,
   },
   data() {
-      return {
-          content: null
-      }
-  }
+    return {
+      content: null,
+    };
+  },
 };
 </script>

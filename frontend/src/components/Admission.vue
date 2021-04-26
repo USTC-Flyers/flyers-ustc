@@ -5,7 +5,12 @@
     </router-link>
     <div>
       <div class="filter-container"></div>
-      <el-table :data="table_data" :header-cell-class-name="getHeaderClass" fit stripe>
+      <el-table
+        :data="table_data"
+        :header-cell-class-name="getHeaderClass"
+        fit
+        stripe
+      >
         <el-table-column prop="username" label="用户名" align="center">
         </el-table-column>
         <el-table-column label="录取学校" width="100" align="center">
@@ -119,7 +124,7 @@
                   </el-col>
                   <el-col :span="13">
                     <el-form-item label="GRE:" size="mini">
-                      <span>{{ row.background.GRE}}</span>
+                      <span>{{ row.background.GRE }}</span>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -129,16 +134,14 @@
                     {{ row.background.researchSpec }}
                   </span>
                 </el-form-item>
-                <el-form-item label="推荐信:"> 
+                <el-form-item label="推荐信:">
                   <span>
                     {{ row.background.referSpec }}
                   </span>
                 </el-form-item>
               </el-form> </el-dialog
             ><br />
-            <el-button
-              type="text"
-              @click="$set(summary_visible, $index, true)"
+            <el-button type="text" @click="$set(summary_visible, $index, true)"
               >总结与感想</el-button
             >
             <el-dialog
