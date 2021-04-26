@@ -29,3 +29,6 @@ class UserSerializer(serializers.Serializer):
         db_table = 't_user'
         fields = '__all__'
         lookup_field = 'id'
+        extra_kwargs = {'password': {'write_only': True}}
+
+    

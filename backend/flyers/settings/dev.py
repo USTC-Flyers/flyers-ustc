@@ -23,6 +23,8 @@ DATABASES = {
     }
 }
 
+CAS_VALIDATE_URL = 'https://passport.ustc.edu.cn/serviceValidate'
+
 # from deployment
 try:
     from .local_settings import *

@@ -118,10 +118,11 @@ AUTH_USER_MODEL = 'account.User'
 
 GROUP_MODEL = 'auth.group'
 
-JWT_AUTH = {
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=12),
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'USER_ID_FIELD': 'gid',
 }
 
 REST_FRAMEWORK = {
@@ -130,7 +131,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -162,5 +164,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ysj2017/cas/index.html?id=1'
-CAS_VERSION = '3'
+CAS_VERSION = '2'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
+SUCCESS_SSO_AUTH_REDIRECT = ''
+CAS_CREATE_USER = True
