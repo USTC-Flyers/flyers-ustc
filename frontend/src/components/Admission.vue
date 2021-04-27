@@ -1,7 +1,15 @@
 <template>
+<div>
   <router-link to="/report_admission">
     <el-button type="primary" size="default">汇报我的录取结果</el-button>
   </router-link>
+  <div>
+    <div class="filter-container">
+    </div>
+    
+  </div>
+</div>
+  
   <!-- <div>
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit>
       <el-table-column :prop="col.id" :label="col.label">

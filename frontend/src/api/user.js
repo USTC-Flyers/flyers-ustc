@@ -16,6 +16,13 @@ export function getInfo() {
   });
 }
 
+export function update_contact(id, data) {
+  return request({
+    url: `/user_profile/${id}/`,
+    method: 'patch',
+    data
+})
+}
 export function logout() {
   return request({
     url: "/logout",
