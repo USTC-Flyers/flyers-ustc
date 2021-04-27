@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework import permissions as drf_permissions
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -112,6 +113,12 @@ class TopicViewSet(
                     'errono': 0
                 }
         )
+    
+    def get_serializer_class(self):
+        # for listing
+        if self.request.method in drf_permissions.SAFE_METHODS:
+            return serializers.TopicNestedSerializer
+        return serializers.TopicSerializer
 
 class TopicRevisionViewSet(
     mixins.DestroyModelMixin,

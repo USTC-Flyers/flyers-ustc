@@ -37,3 +37,12 @@ class TopicSerializer(serializers.ModelSerializer):
                     raise serializers.ValidationError({'related_user': '只允许创建本人信息哦'})
                 valid = False
         return valid
+
+class TopicNestedSerializer(serializers.ModelSerializer):
+    current_version = TopicRevisionSerializer()
+    
+    class Meta:
+        model = models.Topic
+        db_table = 't_topic'
+        fields = '__all__'
+        lookup_field = 'id'
