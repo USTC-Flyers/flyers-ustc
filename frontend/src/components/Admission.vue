@@ -14,12 +14,11 @@
 export default {
   name: "Admission",
   data() {
-    return{
+    return {
       list: null,
-    }
-  }
+    };
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

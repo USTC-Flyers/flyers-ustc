@@ -4,10 +4,8 @@
 
 <script>
 export default {
-    name: "Wiki",
-}
+  name: "Wiki",
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

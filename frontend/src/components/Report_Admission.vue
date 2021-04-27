@@ -149,7 +149,11 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="入学时间" size="mini">
-                  <el-select v-model="item.enrolledSemester" filterable placeholder="请选择">
+                  <el-select
+                    v-model="item.enrolledSemester"
+                    filterable
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="semester in semester_list"
                       :key="semester"
@@ -264,7 +268,11 @@
 </template>
 
 <script>
-import { background_get_my, background_submit, background_update } from "@/api/admission";
+import {
+  background_get_my,
+  background_submit,
+  background_update,
+} from "@/api/admission";
 export default {
   name: "Report_Admission",
   data() {
@@ -403,7 +411,7 @@ export default {
           related_university: null,
           related_program: null,
           comments: "",
-          summary: ""
+          summary: "",
         },
       ],
     };
@@ -459,27 +467,32 @@ export default {
       }
     },
     handleSubmit() {
-      this.form_data.background.tags = this.form_data.background.research_tag_list.concat(this.form_data.background.ref_tag_list);
+      this.form_data.background.tags = this.form_data.background.research_tag_list.concat(
+        this.form_data.background.ref_tag_list
+      );
       console.log(this.form_data.background);
       if (this.is_initial) {
-        background_submit(this.form_data.background).then(() => {
-          this.$message({
-            message: "提交成功",
-            type: "success",
+        background_submit(this.form_data.background)
+          .then(() => {
+            this.$message({
+              message: "提交成功",
+              type: "success",
+            });
+          })
+          .catch((error) => {
+            this.$message.error(error);
           });
-        }).catch(error => {
-          this.$message.error(error);
-        })
-      }
-      else {
-        background_update(this.form_data.bg_id, this.form_data.background).then(() => {
-          this.$message({
-            message: "提交成功",
-            type: "success",
+      } else {
+        background_update(this.form_data.bg_id, this.form_data.background)
+          .then(() => {
+            this.$message({
+              message: "提交成功",
+              type: "success",
+            });
+          })
+          .catch((error) => {
+            this.$message.error(error);
           });
-        }).catch(error => {
-          this.$message.error(error);
-        })
       }
       // this.removeEmpty(this.form_data.background);
     },

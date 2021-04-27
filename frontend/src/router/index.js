@@ -1,10 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Welcome from "@/components/Welcome.vue"
-import Admission from "@/components/Admission.vue"
-import Wiki from "@/components/Wiki.vue"
-import Report_Admission from "@/components/Report_Admission.vue"
+import Welcome from "@/components/Welcome.vue";
+import Admission from "@/components/Admission.vue";
+import Wiki from "@/components/Wiki.vue";
+import Report_Admission from "@/components/Report_Admission.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -23,7 +23,7 @@ const routes = [
       { path: "/welcome", component: Welcome },
       { path: "/admission", component: Admission },
       { path: "/wiki", component: Wiki },
-      { path: "/report_admission", component: Report_Admission }
+      { path: "/report_admission", component: Report_Admission },
     ],
   },
   // {
