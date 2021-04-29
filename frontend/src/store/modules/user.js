@@ -31,14 +31,29 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo;
+  // login({ commit }, userInfo) {
+  //   const { username, password } = userInfo;
+  //   return new Promise((resolve, reject) => {
+  //     login({ username: username.trim(), password: password })
+  //       .then((response) => {
+  //         // const { data } = response;
+  //         commit("SET_TOKEN", "Bearer " + response.token);
+  //         setToken("Bearer " + response.token);
+  //         resolve();
+  //       })
+  //       .catch((error) => {
+  //         reject(error);
+  //       });
+  //   });
+  // },
+
+  login({ commit }, ticket) {
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
+      login(ticket)
         .then((response) => {
           // const { data } = response;
-          commit("SET_TOKEN", "JWT " + response.token);
-          setToken("JWT " + response.token);
+          commit("SET_TOKEN", "Bearer " + response.access);
+          setToken("Bearer " + response.access);
           resolve();
         })
         .catch((error) => {
@@ -63,7 +78,7 @@ const actions = {
           // commit('SET_NAME', name)
           // commit('SET_AVATAR', avatar)
           // resolve(data)
-          const name = response.user_detail.related_user;
+          const name = response.user_detail.nickname;
           console.log(name);
           commit("SET_NAME", name);
           resolve();

@@ -9,15 +9,16 @@ export default {
   name: "Login",
   data() {
     return {
-      loginForm: {
-        username: "test",
-        password: "test",
-      },
+      // loginForm: {
+      //   username: "test",
+      //   password: "test",
+      // },
+      ticket: "fake-ticket",
     };
   },
   created() {
     this.$store
-      .dispatch("user/login", this.loginForm)
+      .dispatch("user/login", this.ticket)
       .then(() => {
         this.$router.push({ path: this.redirect || "/" });
       })

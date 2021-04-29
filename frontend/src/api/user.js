@@ -1,10 +1,10 @@
 import request from "@/utils/request";
 
-export function login(data) {
+export function login(ticket) {
   return request({
     url: "/login/",
-    method: "post",
-    data,
+    method: "get",
+    params: { ticket },
   });
 }
 
@@ -19,9 +19,9 @@ export function getInfo() {
 export function update_contact(id, data) {
   return request({
     url: `/user_profile/${id}/`,
-    method: 'patch',
-    data
-})
+    method: "patch",
+    data,
+  });
 }
 export function logout() {
   return request({
