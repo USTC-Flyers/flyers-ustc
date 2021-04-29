@@ -33,12 +33,23 @@ class AdmissionsSerializers(serializers.ModelSerializer):
                     raise serializers.ValidationError({'background': '请先创建申请背景'})
                 valid = False
         return valid
+    
+class UserInfoSerializer(serializers.ModelSerializer):
+    username = serializers.RelatedField(
+        source='userprofile.nickname', 
+        queryset=apps.get_model('account.userprofile').objects.all()
+    )
+    class Meta:
+        model = apps.get_model(settings.AUTH_USER_MODEL)
+        db_table = 't_user'
+        fields = ['username', 'id']
 
 # for nested creation
 class AdmissionNestedSerializers(serializers.ModelSerializer):
     related_university = UniversitySerializer()
     related_background = BackgroundSerializers()
-
+    related_user = UserInfoSerializer()
+    
     class Meta:
         model = models.Admissions
         db_table = 't_admissions'

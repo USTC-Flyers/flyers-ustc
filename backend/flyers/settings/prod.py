@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'multiselectfield',
-    'django_cas_ng',
     # Custom apps
     'account',
     'admissions',
@@ -58,7 +57,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_cas_ng.middleware.CASMiddleware'
 ]
 
 ROOT_URLCONF = 'flyers.urls'
@@ -118,10 +116,10 @@ AUTH_USER_MODEL = 'account.User'
 
 GROUP_MODEL = 'auth.group'
 
-JWT_AUTH = {
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=12),
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'AUTH_HEADER_TYPES': ('JWT',)
 }
 
 REST_FRAMEWORK = {
@@ -131,6 +129,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -155,12 +154,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# for cas
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'django_cas_ng.backends.CASBackend',
-)
-
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ysj2017/cas/index.html?id=1'
-CAS_VERSION = '3'
+CAS_VERSION = '2'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
+SUCCESS_SSO_AUTH_REDIRECT = ''
+CAS_CREATE_USER = True

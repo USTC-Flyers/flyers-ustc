@@ -26,6 +26,11 @@ class UserProfile(models.Model):
         User,
         on_delete=models.CASCADE
     )
+    nickname = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
     school = models.IntegerField(
         choices=SCHOOL_CHOICES,
         editable=True,

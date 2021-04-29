@@ -1,5 +1,4 @@
 from rest_framework import mixins, status, viewsets
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from django.contrib.postgres.search import SearchVector
 from drf_yasg.utils import swagger_auto_schema
@@ -15,7 +14,6 @@ class ProgramViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.ProgramSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Program.objects.all()
     
     @swagger_auto_schema(manual_parameters=[test_param], responses={200: user_response, 204: "请填写学校"})

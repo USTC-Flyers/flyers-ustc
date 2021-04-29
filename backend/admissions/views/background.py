@@ -1,6 +1,6 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from django.contrib.postgres.search import SearchVector
 from drf_yasg.utils import swagger_auto_schema
@@ -18,7 +18,6 @@ class BackgroundViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.BackgroundSerializers
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Background.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     

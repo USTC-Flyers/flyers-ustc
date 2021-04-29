@@ -2,8 +2,6 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from rest_framework import permissions as drf_permissions
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -23,7 +21,6 @@ class TopicViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.TopicSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Topic.objects.public()
     
     @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
@@ -127,7 +124,6 @@ class TopicRevisionViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.TopicRevisionSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.TopicRevision.objects.all()
     
     @swagger_auto_schema(operation_description="如果是审核topic的内容则需要is_valid参数，否则不需要")

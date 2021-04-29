@@ -1,7 +1,6 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -20,7 +19,6 @@ class CommentThreadViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.CommentThreadSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.CommentThread.objects.public()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     
@@ -75,7 +73,6 @@ class CommentiewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.CommentSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.Comment.objects.public()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     

@@ -1,13 +1,23 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework_jwt.settings import api_settings
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from django.http import JsonResponse, HttpRequest, HttpResponse, HttpResponseRedirect
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.conf import settings
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from urllib import parse as urllib_parse
+from django.contrib.auth.models import update_last_login
 from . import models
 from . import serializers
 from . import permissions
+from .models import User
 
 class UserProfileViewSet(
     mixins.CreateModelMixin,
@@ -16,7 +26,6 @@ class UserProfileViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet
 ):
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.UserProfile.objects.all()
     permission_classes = [permissions.IsAdminOrReadOnly]
     
@@ -57,10 +66,10 @@ class UserProfileViewSet(
     
 class UserViewSet(
     mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.UserSerializer
-    authentication_classes = [JSONWebTokenAuthentication]
     queryset = models.User.objects.all()
     
     @action(methods=['get'], detail=True, url_path='is_admin', url_name='is_admin')
@@ -73,3 +82,14 @@ class UserViewSet(
             },
             status=status.HTTP_200_OK
         )
+
+class CASLoginView(TokenObtainPairView):
+    def get(self, request):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
