@@ -206,10 +206,10 @@
             >
               {{ row.background.rank | rankFilter }}
             </el-tag>
-            <el-tag type="warning" size="mini">
+            <el-tag type="info" size="mini">
               {{ row.background.apply_for | applyFilter }}
             </el-tag>
-            <el-tag v-for="tag in row.background.tags" :key="tag" size="mini">
+            <el-tag v-for="tag in row.background.tags" :type="tag | tagTypeFilter" :key="tag" size="mini">
               {{ tag | tagFilter }}
             </el-tag>
           </template>
@@ -349,6 +349,18 @@ export default {
       const map = Object.assign({}, research_tags, ref_tags);
       return map[tag];
     },
+    tagTypeFilter(tag) {
+      const map = {
+        "oversea_research": "",
+        "first_author": "",
+        "paper": "",
+        "internship": "",
+        "oversea_refer": "warning",
+        "bigname_refer": "warning",
+        "connection": "warning"
+      };
+      return map[tag];
+    }
   },
   
   data() {

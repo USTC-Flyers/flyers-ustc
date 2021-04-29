@@ -297,20 +297,38 @@
         <div v-show="active == 2" class="form">
           <el-form label-position="right" label-width="110px">
             <el-form-item label="申请方向的思考">
-              <el-input
-                v-model="form_data.background.comments"
-                type="textarea"
-                :rows="5"
+              <editor
+                api-key="skusgmkyvt20zw0c6ywi9swko5p3gzo7wzhdaaizwbbor7tx"
+                :init="{
+                  height: 250,
+                  menubar: false,
+                  plugins: [
+                    'autolink lists link image preview fullscreen table help wordcount',
+                  ],
+                  toolbar:
+                    'undo redo | formatselect | bold italic backcolor | \
+                    bullist numlist outdent indent | preview | removeformat | table | help',
+                }"
                 placeholder="为什么选择申请这个方向（这些项目），选校/选项目的标准是什么"
-              ></el-input>
+                v-model="form_data.background.comments"
+              />
             </el-form-item>
             <el-form-item label="其他申请感言">
-              <el-input
-                v-model="form_data.background.summary"
-                type="textarea"
-                :rows="8"
+              <editor
+                api-key="skusgmkyvt20zw0c6ywi9swko5p3gzo7wzhdaaizwbbor7tx"
+                :init="{
+                  height: 450,
+                  menubar: false,
+                  plugins: [
+                    'autolink lists link image preview fullscreen table help wordcount',
+                  ],
+                  toolbar:
+                    'undo redo | formatselect | bold italic backcolor | \
+                    bullist numlist outdent indent | preview | removeformat | table | help',
+                }"
                 placeholder="申请季感言，套磁、文书、面试、英语、中介等各方面的经验与建议"
-              ></el-input>
+                v-model="form_data.background.summary"
+              />
             </el-form-item>
           </el-form>
         </div>
@@ -361,8 +379,12 @@ import {
   update_contact,
 } from "@/api/user";
 import { major_list, semester_list, rank_list, applyfor_list, result_list, research_tags, ref_tags, tags_mapper } from "@/assets/data.json";
+import Editor from "@tinymce/tinymce-vue";
 export default {
   name: "Report_Admission",
+  components: {
+    editor: Editor,
+  },
   data() {
     return {
       active: 0,
