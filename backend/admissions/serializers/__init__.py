@@ -1,4 +1,4 @@
 from .program import ProgramSerializer
 from .unversity import UniversitySerializer
-from .admissions import AdmissionsSerializers, AdmissionNestedSerializers
+from .admissions import AdmissionsSerializer, AdmissionNestedSerializers
 from .background import BackgroundSerializers

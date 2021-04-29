@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .unversity import UniversitySerializer
 from .program import ProgramSerializer
 
-class AdmissionsSerializers(serializers.ModelSerializer):
+class AdmissionsSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='admissions.related_user')
     referTag = serializers.CharField(required=False)
     related_background = serializers.ReadOnlyField(source='admissions.related_background')
@@ -17,7 +17,8 @@ class AdmissionsSerializers(serializers.ModelSerializer):
         db_table = 't_admissions'
         fields = '__all__'
         lookup_field = 'id'
-        
+
+    #!FIXME: override the default is_valid
     def is_valid(self, raise_exception=False):
         valid = super().is_valid(raise_exception=raise_exception)
         request = self.context['request']

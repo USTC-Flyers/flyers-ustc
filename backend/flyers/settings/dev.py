@@ -24,7 +24,7 @@ DATABASES = {
 }
 
 CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
-CAS_HOME_URL = 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=null'
+CAS_HOME_URL = 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1'
 
 # from deployment
 try:

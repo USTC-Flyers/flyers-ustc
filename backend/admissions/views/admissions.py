@@ -69,7 +69,7 @@ class AdmissionsViewSet(
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:
             return serializers.AdmissionNestedSerializers
-        return serializers.AdmissionsSerializers
+        return serializers.AdmissionsSerializer
 
     def get_serializer(self, *args, **kwargs):
         if isinstance(kwargs.get('data', {}), list):

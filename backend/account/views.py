@@ -27,7 +27,7 @@ class UserProfileViewSet(
     viewsets.GenericViewSet
 ):
     queryset = models.UserProfile.objects.all()
-    permission_classes = [permissions.IsAdminOrReadOnly]
+    permission_classes = [permissions.IsOwnerOrReadOnly]
     
     def perform_create(self, serializer):
         serializer.save(related_user=self.request.user)
