@@ -14,6 +14,14 @@ export function admissions_get_my() {
   });
 }
 
+export function admissions_query(data) {
+  return request({
+    url: "/admissions/condition_query/",
+    method: "post",
+    data
+  });
+}
+
 export function university_query(query_string) {
   return request({
     url: "/university/",
