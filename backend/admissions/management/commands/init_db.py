@@ -3,6 +3,7 @@ import json
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import Group
 from django.apps import apps
+from django.db import connection
 
 class Command(BaseCommand):
     help = 'import university and programs data'
@@ -31,4 +32,7 @@ class Command(BaseCommand):
         
         User = apps.get_model('account.user')
         User.objects.create_superuser('test', '', 'test')
+        
+        with connection.cursor() as cursor: 
+            cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
         print('initialize ok')

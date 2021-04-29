@@ -3,6 +3,8 @@ from django.conf import settings
 from django.utils import timezone
 import os
 from ..managers.topic import TopicQuerySet, TopicRevisionQuerySet
+from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation
 
 def image_path(instance, filename):
     ext = os.path.splitext(filename)[1].lower()
@@ -14,7 +16,7 @@ def file_path(instance, filename):
     return os.path.join(
         'topic', 'file', str(instance.revision_number), 'file' + ext)
 
-class TopicRevision(models.Model):
+class TopicRevision(models.Model, HitCountMixin):
     
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
@@ -121,8 +123,7 @@ class Topic(models.Model):
         choices=ACTIONS_CHOICES,
         default=DEFAULT,
     )
-    view_count = models.PositiveIntegerField(
-        "views count", 
+    hit_count = models.PositiveIntegerField(
         default=0
     )
     comment_count = models.PositiveIntegerField(
@@ -193,3 +194,7 @@ class Topic(models.Model):
             user.topic_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
+            
+    def visit(self):
+        self.hit_count += 1
+        self.save()

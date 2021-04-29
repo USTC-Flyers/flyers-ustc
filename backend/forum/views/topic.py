@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions as drf_permissions
+from django.contrib.contenttypes.fields import GenericRelation
 from drf_yasg import openapi
 from django.conf import settings
 from .. import models

@@ -1,7 +1,9 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, TrigramSimilarity
+from django.db.models.functions import Greatest
 from drf_yasg.utils import swagger_auto_schema
+from django.db.models import Q
 from drf_yasg import openapi
 from .. import models
 from .. import serializers
@@ -22,6 +24,11 @@ class UniversityViewSet(
         result = models.University.objects.annotate(
             search=SearchVector('school_name', 'area', 'school_name_cn', 'short_name'),
         ).filter(search=query)
+        if query != '' and result.count() == 0:
+            result = models.University.objects.annotate(similarity=Greatest(
+                TrigramSimilarity('short_name', query),
+                TrigramSimilarity('school_name', query),
+            )).filter(similarity__gt=0.3)
         result = serializers.UniversitySerializer(result, many=True).data
         data = {
             'msg': 'ok', 
