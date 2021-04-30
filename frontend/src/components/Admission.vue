@@ -285,11 +285,13 @@
             >
               <div class="dialog-block">
                 <i class="el-icon-arrow-right dialog-title"> 申请方向的思考</i>
-                <p>{{ row.background.comments }}</p>
+                <!-- <p>{{ row.background.comments }}</p> -->
+                <div v-html="row.background.comments"/>
               </div>
               <div class="dialog-block">
                 <i class="el-icon-arrow-right dialog-title"> 申请感言</i>
-                <p>{{ row.background.summary }}</p>
+                <!-- <p>{{ row.background.summary }}</p> -->
+                <div v-html="row.background.summary"/>
               </div>
             </el-dialog>
           </template>

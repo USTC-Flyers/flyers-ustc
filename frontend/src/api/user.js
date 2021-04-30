@@ -15,7 +15,20 @@ export function getInfo() {
     // params: { token }
   });
 }
-
+export function create_user_profile(data) {
+  return request({
+    url: "/user_profile/",
+    method: "post",
+    data,
+  });
+}
+export function update_user_profile(id, data) {
+  return request({
+    url: `/user_profile/${id}/`,
+    method: "put",
+    data,
+  });
+}
 export function update_contact(id, data) {
   return request({
     url: `/user_profile/${id}/`,
