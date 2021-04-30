@@ -12,6 +12,10 @@ const routes = [
     component: () => import("@/views/login.vue"),
   },
   {
+    path: "/create_user",
+    component: () => import("@/views/Create_User.vue"),
+  },
+  {
     path: "/",
     redirect: "/home",
   },
