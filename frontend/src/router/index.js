@@ -5,6 +5,7 @@ import Welcome from "@/components/Welcome.vue";
 import Admission from "@/components/Admission.vue";
 import Wiki from "@/components/Wiki.vue";
 import Report_Admission from "@/components/Report_Admission.vue";
+import UserMain from "@/userviews/UserMain.vue"
 Vue.use(VueRouter);
 const routes = [
   {
@@ -13,7 +14,12 @@ const routes = [
   },
   {
     path: "/create_user",
-    component: () => import("@/views/Create_User.vue"),
+    component: () => import("@/userviews/Create_User.vue"),
+  },
+  {
+    path: "/usermain",
+    name: "UserMain",
+    component: UserMain,
   },
   {
     path: "/",
