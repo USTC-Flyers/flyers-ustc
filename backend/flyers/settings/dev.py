@@ -11,6 +11,8 @@ ALLOWED_HOSTS = []
 
 ALLOWED_HOSTS = ['*']
 
+WEBPATH_PREFIX = 'http://101.132.163.195:8080'
+
 
 DATABASES = {
     'default': {

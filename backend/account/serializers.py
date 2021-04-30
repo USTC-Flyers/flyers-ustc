@@ -5,6 +5,7 @@ from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import update_last_login
 from rest_framework_simplejwt.tokens import RefreshToken
+import random
 
 class UserProfileSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='userprofile.related_user')
@@ -41,7 +42,7 @@ class TokenObtainPairWithoutPasswordSerializer(TokenObtainPairSerializer):
         self.fields['username'].required = False
 
     def validate(self, attrs):
-        attrs.update({'password': '', 'username': ''})
+        attrs.update({'password': '', 'username': "".join(random.choices('0123456789abcdefghijklmnopqrstuvwxyz@.+-_', k=10))})
         return super().validate(attrs)
 
     @classmethod

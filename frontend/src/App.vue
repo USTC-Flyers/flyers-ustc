@@ -15,7 +15,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
 }
-body .el-table th.gutter{
-    display: table-cell !important;
+body .el-table th.gutter {
+  display: table-cell !important;
 }
 </style>

@@ -31,8 +31,7 @@ class Command(BaseCommand):
         Group.objects.create(name="general")
         
         User = apps.get_model('account.user')
-        User.objects.create_superuser('test', '', 'test', id='fake-id')
-        
-        with connection.cursor() as cursor: 
-            cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
+        u = User.objects.create_superuser('test', '', 'test')
+        Userprofile = apps.get_model('account.userprofile')
+        Userprofile.objects.create(nickname='nickname', related_user=u)
         print('initialize ok')
