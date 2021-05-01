@@ -6,6 +6,7 @@ import Admission from "@/components/Admission.vue";
 import Wiki from "@/components/Wiki.vue";
 import Report_Admission from "@/components/Report_Admission.vue";
 import Topic from "@/components/Topic.vue"
+import Revision from "@/components/Revision.vue"
 import UserMain from "@/userviews/UserMain.vue"
 Vue.use(VueRouter);
 const routes = [
@@ -31,7 +32,8 @@ const routes = [
       { path: "/wiki", 
         component: Wiki, 
         children: [
-          { path: "/topic/:id", component: Topic },
+          { path: "/topic/:id", component: Topic, meta: { keepAlive: false } },
+          { path: "/revision/:id", component: Revision, meta: { keepAlive: false } },
         ]},
       { path: "/report_admission", component: Report_Admission },
       { path: "/usermain", component: UserMain },

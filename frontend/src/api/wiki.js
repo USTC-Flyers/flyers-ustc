@@ -26,14 +26,14 @@ export function getAllTopic(category) {
 
 export function getTopic(id) {
   return request({
-    url: `/topic/${id}`,
+    url: `/topic/${id}/`,
     method: "get",
   });
 }
 
 export function updateTopic(id, data) {
   return request({
-    url: `/topic/${id}/`,
+    url: `/topic_revision/${id}/`,
     method: "patch",
     data,
   });

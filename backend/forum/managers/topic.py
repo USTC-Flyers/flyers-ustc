@@ -122,7 +122,7 @@ class TopicQuerySet(models.QuerySet):
         return self.filter(followed__contains=user)
 
     def meta(self):
-        topics = self.public().select_related('current_version')
+        topics = self.public().select_related('current_version').order_by('id')
         meta_list = []
         meta_dict = {}
         for topic in topics:
