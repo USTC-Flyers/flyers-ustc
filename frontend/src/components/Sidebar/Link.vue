@@ -1,6 +1,6 @@
 <template>
 <!-- TODO: fix path here -->
-  <router-link :to="{path:'/topic', query: {id: id}}"><slot /></router-link>
+  <router-link :to="{path:`/topic/${id}`}"><slot/></router-link>
 </template>
 
 <script>

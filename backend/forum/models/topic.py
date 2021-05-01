@@ -82,7 +82,7 @@ class TopicRevision(models.Model, HitCountMixin):
 
     class Meta:
         get_latest_by = "revision_number"
-        ordering = ("created_time",)
+        ordering = ("-created_time",)
         unique_together = ("related_topic", "revision_number")
 
 class Topic(models.Model):

@@ -6,6 +6,7 @@ import Admission from "@/components/Admission.vue";
 // import Notification from "@/components/Notification.vue";
 import Wiki from "@/components/Wiki.vue";
 import Report_Admission from "@/components/Report_Admission.vue";
+import Topic from "@/components/Topic.vue"
 import UserMain from "@/userviews/UserMain.vue"
 Vue.use(VueRouter);
 const routes = [
@@ -33,8 +34,11 @@ const routes = [
     children: [
       { path: "/welcome", component: Welcome },
       { path: "/admission", component: Admission },
-      // { path: "/notification", component: Notification },
-      { path: "/wiki", component: Wiki },
+      { path: "/wiki", 
+        component: Wiki, 
+        children: [
+          { path: "/topic/:id", component: Topic },
+        ]},
       { path: "/report_admission", component: Report_Admission },
     ],
   },

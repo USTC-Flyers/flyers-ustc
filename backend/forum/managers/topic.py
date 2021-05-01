@@ -8,35 +8,35 @@ fake_title = [
                 "topics": [
                     {
                         "title": "选择多样性",
-                        "id": 5
+                        "id": 1
                     },
                     {
                         "title": "申请总体规划",
-                        "id": 5
+                        "id": 2
                     },
                     {
                         "title": "暑研",
-                        "id": 5
+                        "id": 3
                     },
                     {
                         "title": "套瓷",
-                        "id": 5
+                        "id": 4
                     },
                     {
                         "title": "CV、文书写作",
-                        "id": 2
+                        "id": 5
                     },
                     {
                         "title": "转专业申请",
-                        "id": 5
+                        "id": 6
                     },
                     {
                         "title": "国家/地区申请经验",
-                        "id": 5
+                        "id": 7
                     },
                     {
                         "title": "GAP",
-                        "id": 2
+                        "id": 8
                     }
                 ]
             },
@@ -45,7 +45,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 9
                     }
                 ]
             },
@@ -54,7 +54,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 10
                     }
                 ]
             },
@@ -63,7 +63,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 11
                     }
                 ]
             },
@@ -72,7 +72,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 12
                     }
                 ]
             },
@@ -81,7 +81,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 13
                     }
                 ]
             },
@@ -90,7 +90,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 14
                     }
                 ]
             },
@@ -99,7 +99,7 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 15
                     }
                 ]
             },
@@ -108,20 +108,11 @@ fake_title = [
                 "topics": [
                     {
                         "title": "申请经验",
-                        "id": 8
+                        "id": 16
                     }
                 ]
             },
-            {
-                "category": "人文与社会科学学院",
-                "topics": [
-                    {
-                        "title": "申请经验",
-                        "id": 8
-                    }
-                ]
-            },
-        ];
+        ]
 
 class TopicQuerySet(models.QuerySet):
     def public(self):
@@ -153,7 +144,7 @@ class TopicQuerySet(models.QuerySet):
                 "category": name,
                 "topics": value
             })
-        return fake_title
+        return meta_list
     
 class TopicRevisionQuerySet(models.QuerySet):
     def user_history(self, pk):

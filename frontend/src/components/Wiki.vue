@@ -1,9 +1,12 @@
 <template>
-  <div>
     <el-container>
-      <sidebar></sidebar>
+      <el-aside>
+        <sidebar></sidebar>
+      </el-aside>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
-  </div>
 </template>
 
 <script>

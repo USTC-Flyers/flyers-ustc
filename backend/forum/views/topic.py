@@ -55,11 +55,12 @@ class TopicViewSet(
             'related_topic': topic.id,
             # 'related_user': self.request.user.id,
             'revision_number': revision_number,
-            **request.data.dict()
+            **request.data.dict(),
         })
         topic_revision_serializer.is_valid(raise_exception=True)
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
+        topic.set_valid_and_update(topic_revision)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
         return Response(
             status=status.HTTP_201_CREATED,
@@ -145,6 +146,7 @@ class TopicViewSet(
         return serializers.TopicSerializer
 
 class TopicRevisionViewSet(
+    mixins.ListModelMixin,
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
