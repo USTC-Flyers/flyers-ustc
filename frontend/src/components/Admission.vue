@@ -4,7 +4,27 @@
       <el-button type="primary" size="default">汇报我的录取结果</el-button>
     </router-link>
     <div>
-      <div class="filter-container"></div>
+      <div class="filter-container">
+        <el-select placeholder="入学时间" filterable>
+          <el-option
+            v-for="semester in semester_list"
+            :key="semester"
+            :label="semester"
+            :value="semester"
+          ></el-option>
+        </el-select>
+        <el-select
+          filterable
+          placeholder="专业"
+        >
+          <el-option
+            v-for="item in major_list"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </div>
       <el-table
         :data="table_data"
         :header-cell-class-name="getHeaderClass"
@@ -268,6 +288,30 @@ export default {
   },
   data() {
     return {
+      semester_list: [
+        "2021 Fall",
+        "2021 Spring",
+        "2020 Fall",
+        "2020 Spring",
+        "2019 Fall",
+        "2019 Spring",
+        "2018 Fall",
+        "2018 Spring",
+        "2017 Fall",
+        "2017 Spring",
+        "2016 Fall",
+        "2016 Spring",
+        "2015 Fall",
+        "2015 Spring",
+        "2014 Fall",
+        "2014 Spring",
+        "2013 Fall",
+        "2013 Spring",
+        "2012 Fall",
+        "2012 Spring",
+        "2011 Fall",
+        "2011 Spring",
+      ],
       table_data: [],
       experience_visible: [],
       background_visible: [],
@@ -321,8 +365,11 @@ export default {
 .app-container {
   margin: 0 auto;
 }
-.el-table {
+.filter-container {
   margin-top: 50px;
+}
+.el-table {
+  /* margin-top: 50px; */
   width: 1200px;
 }
 .el-table .table-header {
