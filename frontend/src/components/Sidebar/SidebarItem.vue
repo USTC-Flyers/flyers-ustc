@@ -1,22 +1,23 @@
 <template>
-  <el-submenu :index="index">
+  <el-submenu :index="index+''">
       <template slot="title">{{ item.category }}</template>
-      <app-link v-for="topic in item.topics" :key="topic.id" :title="topic.title" :id="topic.id">
-          <el-menu-item :index="topic.id">
+      <el-menu-item v-for="topic in item.topics" :key="topic.id" :index="`/topic/${topic.id}`" :route="{path: `/topic/${topic.id}`}">{{ topic.title }}</el-menu-item>
+      <!-- <app-link v-for="topic in item.topics" :key="topic.id" :title="topic.title" :id="topic.id">
+          <el-menu-item :index="index+'-'+topic.id">
               {{ topic.title }}
           </el-menu-item>
-      </app-link>
+      </app-link> -->
   </el-submenu>
 </template>
 
 <script>
-import AppLink from './Link'
+// import AppLink from './Link'
 
 export default {
-    name: 'SidebaarItem',
-    components: {
-        AppLink
-    },
+    name: 'SidebarItem',
+    // components: {
+    //     AppLink
+    // },
     props: {
         item: {
             type: Object,

@@ -4,8 +4,8 @@
   <el-container class="home-container">
     <el-header>
       <el-menu :default-active="this.$route.path" mode="horizontal" router>
-        <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <el-menu-item index="/admission">录取汇报</el-menu-item>
+        <el-menu-item index="/wiki">申请 WIKI</el-menu-item>
 
         <div class="right-menu">
           <el-dropdown class="user-name">

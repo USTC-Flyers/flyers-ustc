@@ -37,6 +37,6 @@ class Command(BaseCommand):
         u = User.objects.create(username='admin', email='', password='admin', id='admin')
         ua = User.objects.create(username='test', email='', password='test', id='test')
         Userprofile = apps.get_model('account.userprofile')
-        Userprofile.objects.create(nickname='nickname', related_user=u)
-        Userprofile.objects.create(nickname='nicknameA', related_user=ua)
+        # Userprofile.objects.create(nickname='nickname', related_user=u)
+        # Userprofile.objects.create(nickname='nicknameA', related_user=ua)
         print('initialize ok')
