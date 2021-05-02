@@ -108,6 +108,7 @@ export default {
           } else {
             update_user_profile(this.user_id, this.form).then(() => {
               this.$message.success("更新成功");
+              this.$store.dispatch("user/setInfo", this.form.nickname);
               this.$router.go(-1);
             })
           }

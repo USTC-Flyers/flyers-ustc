@@ -7,7 +7,7 @@
       <!-- <div class="filter-container"> -->
           <div class="filter-container">
             
-            <el-select v-model="query.major" filterable placeholder="专业" size="small">
+            <el-select v-model="query.major" filterable clearable placeholder="专业" size="small">
             <el-option
               v-for="[value, label] in Object.entries(major_list)"
               :key="value"
@@ -15,7 +15,7 @@
               :value="value"
             ></el-option>
           </el-select>
-            <el-select v-model="query.rank" placeholder="成绩排名" size="small">
+            <el-select v-model="query.rank" clearable placeholder="成绩排名" size="small">
             <el-option
               v-for="[value, label] in Object.entries(rank_list)"
               :key="value"
@@ -24,7 +24,7 @@
             >
             </el-option>
           </el-select>
-            <el-select v-model="query.apply_for" placeholder="主申方向" size="small">
+            <el-select v-model="query.apply_for" clearable placeholder="主申方向" size="small">
             <el-option
               v-for="[value, label] in Object.entries(applyfor_filter)"
               :key="value"
@@ -33,7 +33,7 @@
             >
             </el-option>
           </el-select>
-            <el-select v-model="query.tags" multiple placeholder="背景 Tag" style="width: 25%" size="small">
+            <el-select v-model="query.tags" multiple clearable placeholder="背景 Tag" style="width: 25%" size="small">
             <el-option
               v-for="[value, label] in Object.entries(tag_list)"
               :key="value"
@@ -50,6 +50,7 @@
           <el-select
             v-model="query.related_university"
             filterable
+            clearable
             remote
             placeholder="请输入学校"
             :remote-method="querySearchUniv"
@@ -92,6 +93,7 @@
             v-model="query.enrolledSemester"
             placeholder="入学时间"
             filterable
+            clearable
             size="small"
           >
             <el-option
@@ -131,7 +133,7 @@
       >
         <el-table-column prop="username" width="100" align="center">
         </el-table-column>
-        <el-table-column label="录取学校" width="100" align="center">
+        <el-table-column label="录取学校" width="105" align="center">
           <template slot-scope="{ row }">
             <el-tooltip :content="row.univ_fullname" placement="top">
               <div>{{ row.univ }}</div>
@@ -140,6 +142,7 @@
         </el-table-column>
         <el-table-column prop="program" label="录取项目"> </el-table-column>
         <el-table-column
+          sortable
           prop="semester"
           label="入学时间"
           width="110"
@@ -200,13 +203,13 @@
         <el-table-column label="背景" width="220" align="center">
           <template slot-scope="{ row }">
             <el-tag
-              v-if="row.background.rank != 'else'"
+              v-if="row.background.rank && row.background.rank != 'else'"
               type="success"
               size="mini"
             >
               {{ row.background.rank | rankFilter }}
             </el-tag>
-            <el-tag type="info" size="mini">
+            <el-tag v-if="row.background.apply_for" type="info" size="mini">
               {{ row.background.apply_for | applyFilter }}
             </el-tag>
             <el-tag v-for="tag in row.background.tags" :type="tag | tagTypeFilter" :key="tag" size="mini">

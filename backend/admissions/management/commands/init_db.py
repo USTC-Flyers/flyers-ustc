@@ -26,9 +26,9 @@ class Command(BaseCommand):
                         full_name=program['program_full_name']
                     )
                     
-        for school in models.school_list:
-            Group.objects.create(name=school)
-        Group.objects.create(name="general")
+        for group in models.group_list:
+            Group.objects.create(name=group)
+        # Group.objects.create(name="general")
         
         User = apps.get_model('account.user')
         # u = User.objects.create_superuser('admin', '', 'admin')

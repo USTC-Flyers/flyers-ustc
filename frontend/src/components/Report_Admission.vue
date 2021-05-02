@@ -12,7 +12,7 @@
     </el-header>
     <el-main>
       <div>
-        <div v-show="active == 0" class="form">
+        <div v-if="active == 0" class="form">
           <el-form
             :model="form_data.background"
             label-position="right"
@@ -23,6 +23,7 @@
                 <el-select
                   v-model="form_data.background.major"
                   filterable
+                  clearable
                   placeholder="请选择"
                 >
                   <el-option
@@ -48,6 +49,7 @@
             <el-form-item label="排名" size="mini">
               <el-col :span="9">
                 <el-select
+                  clearable
                   v-model="form_data.background.rank"
                   placeholder="请选择"
                 >
@@ -115,6 +117,7 @@
             <el-form-item label="主申方向" size="mini">
               <el-col :span="9">
                 <el-select
+                  clearable
                   v-model="form_data.background.apply_for"
                   placeholder="请选择"
                 >
@@ -203,6 +206,7 @@
                   <el-select
                     v-model="item.related_university"
                     filterable
+                    clearable
                     remote
                     placeholder="请输入学校"
                     :remote-method="(query) => querySearchUniv(query, index)"
@@ -294,7 +298,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-show="active == 2" class="form">
+        <div v-if="active == 2" class="form">
           <el-form label-position="right" label-width="110px">
             <el-form-item label="申请方向的思考">
               <editor
@@ -332,7 +336,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-show="active == 3" class="form">
+        <div v-else-if="active == 3" class="form">
           <el-form label-position="right" label-width="70px">
             <el-form-item label="联系方式">
               <el-input
@@ -408,7 +412,7 @@ export default {
           { required: true, message: "请输入录取学校", trigger: "blur" },
         ],
         related_program: [
-          { required: true, message: "请输入录取项目", trigger: "blur" },
+          { required: true, message: "请输入录取项目", trigger: "change" },
         ],
       },
       form_data: {
@@ -577,6 +581,9 @@ export default {
       this.form_data.background.tags = this.form_data.background.research_tag_list.concat(
         this.form_data.background.ref_tag_list
       );
+      if(!this.form_data.background.major){
+        this.form_data.background.major = null;
+      }
       var ad_forms = this.$refs["admission_forms"];
       var valid_funcs = [];
       ad_forms.forEach((form, index) => {
@@ -605,7 +612,9 @@ export default {
         });
       console.log(is_valid);
       if (!is_valid) return;
-
+      if(!this.form_data.background.gpa){
+        this.form_data.background.gpa = null;
+      }
       if (this.is_initial) {
         await background_submit(this.form_data.background)
           .then((response) => {
@@ -627,6 +636,7 @@ export default {
       var edit_funcs = [];
       var func = null;
       this.admissions.forEach((item) => {
+        if (item.result == false) item.summary = "";
         if (item.id) {
           func = new Promise((resolve, reject) => {
             admissions_update(item.id, item)

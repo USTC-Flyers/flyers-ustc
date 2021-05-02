@@ -25,7 +25,7 @@ export function create_user_profile(data) {
 export function update_user_profile(id, data) {
   return request({
     url: `/user_profile/${id}/`,
-    method: "put",
+    method: "patch",
     data,
   });
 }
