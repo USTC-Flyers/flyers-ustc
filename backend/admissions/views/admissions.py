@@ -2,7 +2,10 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.exceptions import NotAcceptable
 from django.shortcuts import get_object_or_404
+from django.db.utils import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .. import models
@@ -30,9 +33,13 @@ class AdmissionsViewSet(
     queryset = models.Admissions.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     ordering = ('-created_time')
+    pagination_class = PageNumberPagination
     
     def perform_create(self, serializer):
-        serializer.save(related_user=self.request.user, related_background=self.request.user.background)
+        try:
+            serializer.save(related_user=self.request.user, related_background=self.request.user.background)
+        except IntegrityError:
+            raise NotAcceptable(detail="不能重复填写录取信息哦", code=status.HTTP_400_BAD_REQUEST)
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, *args, **kwargs):
