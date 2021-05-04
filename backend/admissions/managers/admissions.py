@@ -5,9 +5,6 @@ from ..models.choice import rank_tag
 
 class AdmissionsQueryset(models.QuerySet):
     def condition(self, *args, **kwargs):
-        # 可选的filter项
-        # background: major, rankTag, researchTag, referTag, applyFor
-        # admission: related_university, related_program, result, enrolledSemester
         admission_filter = ['related_university', 'related_program', 'result', 'enrolledSemester']
         query = Q()
         if 'tags' in kwargs:

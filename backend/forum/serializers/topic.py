@@ -22,7 +22,7 @@ class TopicRevisionSerializer(serializers.ModelSerializer):
         return valid
         
 class TopicSerializer(serializers.ModelSerializer):
-    hit_count = serializers.ReadOnlyField(source='hit_count', required=False)
+    hit_count = serializers.ReadOnlyField()
     
     class Meta:
         model = models.Topic

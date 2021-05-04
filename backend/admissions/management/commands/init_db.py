@@ -31,7 +31,7 @@ class Command(BaseCommand):
         Group.objects.create(name="general")
         
         User = apps.get_model('account.user')
-        User.objects.create_superuser('test', '', 'test')
+        User.objects.create_superuser('test', '', 'test', id='fake-id')
         
         with connection.cursor() as cursor: 
             cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')

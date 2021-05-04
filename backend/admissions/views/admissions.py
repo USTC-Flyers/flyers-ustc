@@ -9,6 +9,16 @@ from .. import models
 from .. import serializers
 from .. import permissions
 
+related_university = openapi.Parameter('related_university', openapi.IN_QUERY, description="University ID", type=openapi.TYPE_INTEGER)
+related_program = openapi.Parameter('related_program', openapi.IN_QUERY, description="Program ID", type=openapi.TYPE_INTEGER)
+result = openapi.Parameter('result', openapi.IN_QUERY, description="admissions result", type=openapi.TYPE_STRING)
+enrolledSemester = openapi.Parameter('enrolledSemester', openapi.IN_QUERY, description="enrolledSemester", type=openapi.TYPE_STRING)
+rank = openapi.Parameter('rank', openapi.IN_QUERY, description="rank包括其之前的", type=openapi.TYPE_STRING)
+apply_for = openapi.Parameter('apply_for', openapi.IN_QUERY, description="apply_for", type=openapi.TYPE_STRING)
+major = openapi.Parameter('major', openapi.IN_QUERY, description="major", type=openapi.TYPE_STRING)
+tags = openapi.Parameter('tags', openapi.IN_QUERY, description="tags", type=openapi.TYPE_STRING)
+user_response = openapi.Response('data', serializers.AdmissionNestedSerializers(many=True))
+
 class AdmissionsViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -41,7 +51,8 @@ class AdmissionsViewSet(
             data=data,
             status=status.HTTP_200_OK
         )
-        
+    
+    @swagger_auto_schema(manual_parameters=[related_program, related_university, result, apply_for, major, tags, rank, enrolledSemester], responses={200: user_response})
     @action(methods=['post'], detail=False, url_path='condition_query', url_name='condition_query')
     def condition_query(self, request, *args, **kwargs):
         result = models.Admissions.objects.condition(**request.data)
