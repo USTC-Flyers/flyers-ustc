@@ -26,10 +26,10 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in major_list"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="[value, label] in Object.entries(major_list)"
+                    :key="value"
+                    :label="label"
+                    :value="value"
                   ></el-option>
                 </el-select>
               </el-col>
@@ -52,10 +52,10 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in rank_list"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="[value, label] in Object.entries(rank_list)"
+                    :key="value"
+                    :label="label"
+                    :value="value"
                   ></el-option>
                 </el-select>
               </el-col>
@@ -83,10 +83,10 @@
                 v-model="form_data.background.research_tag_list"
               >
                 <el-checkbox
-                  v-for="tag in research_tags"
-                  :key="tag.value"
-                  :label="tag.value"
-                  >{{ tag.label }}</el-checkbox
+                  v-for="[value, label] in Object.entries(research_tags)"
+                  :key="value"
+                  :label="value"
+                  >{{ label }}</el-checkbox
                 >
               </el-checkbox-group>
               <el-input
@@ -99,10 +99,10 @@
             <el-form-item label="推荐信">
               <el-checkbox-group v-model="form_data.background.ref_tag_list">
                 <el-checkbox
-                  v-for="tag in ref_tags"
-                  :key="tag.value"
-                  :label="tag.value"
-                  >{{ tag.label }}</el-checkbox
+                  v-for="[value, label] in Object.entries(ref_tags)"
+                  :key="value"
+                  :label="value"
+                  >{{ label }}</el-checkbox
                 >
               </el-checkbox-group>
               <el-input
@@ -119,10 +119,10 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in applyfor_list"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="[value, label] in Object.entries(applyfor_list)"
+                    :key="value"
+                    :label="label"
+                    :value="value"
                   ></el-option>
                 </el-select>
               </el-col>
@@ -151,10 +151,10 @@
                 <el-form-item label="录取结果" size="mini" prop="result">
                   <el-select placeholder="请选择" v-model="item.result"
                     ><el-option
-                      v-for="result in result_list"
-                      :key="result.value"
-                      :label="result.label"
-                      :value="result.value"
+                      v-for="[label, value] in Object.entries(result_list)"
+                      :key="label"
+                      :label="label"
+                      :value="value"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -324,27 +324,6 @@
                 placeholder="QQ，微信，邮箱等任何方便学弟学妹联系你的方式"
               ></el-input>
             </el-form-item>
-            <!-- <el-row type="flex" justify="center">
-              <el-col :span="9">
-                <el-form-item label="QQ">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row type="flex" justify="center">
-              <el-col :span="9">
-                <el-form-item label="微信">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row type="flex" justify="center">
-              <el-col :span="9">
-                <el-form-item label="邮箱">
-                  <el-input></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row> -->
           </el-form>
         </div>
       </div>
@@ -381,6 +360,7 @@ import {
   getInfo,
   update_contact,
 } from "@/api/user";
+import { major_list, semester_list, rank_list, applyfor_list, result_list, research_tags, ref_tags, tags_mapper } from "@/assets/data.json";
 export default {
   name: "Report_Admission",
   data() {
@@ -388,110 +368,14 @@ export default {
       active: 0,
       is_initial: true,
       steps: ["个人背景", "录取信息", "申请总结与感想", "联系方式"],
-      research_tags: [
-        { value: "oversea_research", label: "海外科研" },
-        { value: "first_author", label: "顶会/顶刊一作" },
-        { value: "paper", label: "有Paper" },
-        { value: "internship", label: "工业界实习" },
-      ],
-      ref_tags: [
-        { value: "oversea_refer", label: "海外推" },
-        { value: "bigname_refer", label: "牛推" },
-        { value: "connection", label: "强Connection推" },
-      ],
-      tags_mapper: {
-        oversea_research: 0,
-        first_author: 0,
-        paper: 0,
-        internship: 0,
-        oversea_refer: 1,
-        bigname_refer: 1,
-        connection: 1,
-      },
-      major_list: [
-        { value: "045", label: "045: 数学系" },
-        { value: "046", label: "046: 计算与应用数学系" },
-        { value: "047", label: "047: 概率统计系" },
-        { value: "002", label: "002: 物理学系" },
-        { value: "004", label: "004: 近代物理系" },
-        { value: "022", label: "022: 天文学系" },
-        { value: "038", label: "038: 光学与光学工程系" },
-        { value: "048", label: "048: 工程与应用物理系" },
-        { value: "015", label: "015: 工商管理系" },
-        { value: "016", label: "016: 管理科学系" },
-        { value: "017", label: "017: 统计与金融系" },
-        { value: "034", label: "034: MBA中心" },
-        { value: "035", label: "035: MPA中心" },
-        { value: "039", label: "039: EMBA" },
-        { value: "003", label: "003: 化学物理系" },
-        { value: "012", label: "012: 应用化学系" },
-        { value: "014", label: "014: 材料科学与工程系" },
-        { value: "019", label: "019: 化学系" },
-        { value: "020", label: "020: 高分子科学与工程系" },
-        { value: "008", label: "008: 分子生物学与细胞生物学系" },
-        { value: "021", label: "021: 神经生物学与生物物理学系" },
-        { value: "031", label: "031: 系统生物学系" },
-        { value: "032", label: "032: 医药生物技术系" },
-        { value: "071", label: "071: 地球物理与行星科学技术系" },
-        { value: "072", label: "072: 地球化学与环境科学系" },
-        { value: "005", label: "005: 近代力学系" },
-        { value: "009", label: "009: 精密机械与精密仪器系" },
-        { value: "013", label: "013: 热科学和能源工程系" },
-        { value: "030", label: "030: 安全科学与工程系" },
-        { value: "006", label: "006: 电子工程与信息科学系" },
-        { value: "010", label: "010: 自动化系" },
-        { value: "023", label: "023: 电子科学与技术系" },
-        { value: "033", label: "033: 信息安全" },
-        { value: "018", label: "018: 外语系" },
-        { value: "024", label: "024: 科技史与科技考古系" },
-        { value: "025", label: "025: 科技传播与科技政策系" },
-        { value: "055", label: "055: 科技哲学系" },
-        { value: "056", label: "056: 心理学系" },
-        { value: "011", label: "011: 计算机科学与技术系" },
-        { value: "044", label: "044: 物流工程硕士中心" },
-      ],
-      rank_list: [
-        { value: "top1%", label: "Top 1%" },
-        { value: "top5%", label: "Top 5%" },
-        { value: "top10%", label: "Top 10%" },
-        { value: "top20%", label: "Top 20%" },
-        { value: "top30%", label: "Top 30%" },
-        { value: "top50%", label: "Top 50%" },
-        { value: "else", label: "其他" },
-      ],
-      applyfor_list: [
-        { value: "phd", label: "Ph.D." },
-        { value: "ms", label: "Master" },
-        { value: "ms_phd", label: "混申" },
-      ],
-      result_list: [
-        { label: "AD", value: true },
-        { label: "Reject", value: false },
-      ],
-      semester_list: [
-        "2021 Fall",
-        "2021 Spring",
-        "2020 Fall",
-        "2020 Spring",
-        "2019 Fall",
-        "2019 Spring",
-        "2018 Fall",
-        "2018 Spring",
-        "2017 Fall",
-        "2017 Spring",
-        "2016 Fall",
-        "2016 Spring",
-        "2015 Fall",
-        "2015 Spring",
-        "2014 Fall",
-        "2014 Spring",
-        "2013 Fall",
-        "2013 Spring",
-        "2012 Fall",
-        "2012 Spring",
-        "2011 Fall",
-        "2011 Spring",
-      ],
+      research_tags,
+      ref_tags,
+      tags_mapper,
+      major_list,
+      rank_list,
+      applyfor_list,
+      result_list,
+      semester_list,
       admission_rules: {
         result: [{ required: true, message: "请选择结果", trigger: "blur" }],
         enrolledSemester: [
@@ -547,6 +431,7 @@ export default {
 
   mounted() {
     this.getData();
+    console.log(this.major_list);
   },
   methods: {
     add_admission() {
@@ -817,9 +702,7 @@ export default {
       //   });
       // this.removeEmpty(this.form_data.background);
     },
-    removeEmpty(obj) {
-      Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
-    },
+    
   },
 };
 </script>
