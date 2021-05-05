@@ -61,13 +61,3 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
-    last_post_hash = models.CharField(
-        "last post hash",
-        max_length=32,
-        blank=True
-    )
-    last_post_on = models.DateTimeField(
-        "last post on",
-        null=True,
-        blank=True
-    )
