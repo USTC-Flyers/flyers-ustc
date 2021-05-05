@@ -6,11 +6,8 @@ from .models import User
 class JWTCASAuthentication(JWTAuthentication):
     def get_user(self, validated_token):
         return super().get_user(validated_token)
-    
-    def authenticate(self, request, token=None):
-        return self.authenticate(request)
 
-    def authenticate(self, request, username=None, password=None):
+    def authenticate(self, request, *args, **kwargs):
         header = self.get_header(request)
         ticket = request.GET.get('ticket', None)
         service = request.GET.get('service', settings.CAS_HOME_URL)
@@ -28,6 +25,7 @@ class JWTCASAuthentication(JWTAuthentication):
         if ticket is not None:
             try:
                 user, created = User.verify(ticket, service)
+                print('get user', created)
             except User.DoesNotExist:
                 # !TODO: comment in production
                 if ticket == 'fake-ticket':

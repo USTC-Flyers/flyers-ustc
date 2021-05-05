@@ -5,7 +5,6 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY ./frontend/ /app/frontend
-# COPY ./frontend/course-app /app/course-app
 
 RUN cd /app/frontend && npm install --registry=https://registry.npm.taobao.org/
 

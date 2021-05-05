@@ -13,10 +13,7 @@
             :value="semester"
           ></el-option>
         </el-select>
-        <el-select
-          filterable
-          placeholder="专业"
-        >
+        <el-select filterable placeholder="专业">
           <el-option
             v-for="item in major_list"
             :key="item.value"
@@ -40,14 +37,26 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="program" label="录取项目">
-        </el-table-column>
-        <el-table-column prop="semester" label="入学时间" width="100" align="center"></el-table-column>
-        <el-table-column prop="result" label="结果" width="80" align="center" 
-        :filters="[{ text: 'AD', value: true }, { text: 'Reject', value: false }]"
-        :filter-method="filterResult"
-        :filter-multiple="false"
-        filter-placement="top">
+        <el-table-column prop="program" label="录取项目"> </el-table-column>
+        <el-table-column
+          prop="semester"
+          label="入学时间"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="result"
+          label="结果"
+          width="80"
+          align="center"
+          :filters="[
+            { text: 'AD', value: true },
+            { text: 'Reject', value: false },
+          ]"
+          :filter-method="filterResult"
+          :filter-multiple="false"
+          filter-placement="top"
+        >
           <template slot-scope="{ row }">
             <el-tag :type="row.result | adrejFilter | adrejStatusFilter">
               {{ row.result | adrejFilter }}
@@ -349,7 +358,7 @@ export default {
     },
     filterResult(value, row) {
       return value === row.result;
-    }
+    },
     // getCellClass({row,column,rowIndex,columnIndex}){
     //   if(column.label == "结果"){
     //     if(row.result == "AD"){

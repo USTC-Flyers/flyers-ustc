@@ -1,5 +1,6 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
+from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from django.core.exceptions import ObjectDoesNotExist
@@ -85,11 +86,13 @@ class UserViewSet(
 
 class CASLoginView(TokenObtainPairView):
     def get(self, request):
+        if 'service' in request.query_params:
+            return redirect(f"{settings.WEBPATH_PREFIX}?ticket={request.query_params['ticket']}")
+        home_url = settings.WEBPATH_PREFIX
         serializer = self.get_serializer(data=request.data)
-
+        
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
             raise InvalidToken(e.args[0])
-
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
