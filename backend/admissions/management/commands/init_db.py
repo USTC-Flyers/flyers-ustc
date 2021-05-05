@@ -30,5 +30,7 @@ class Command(BaseCommand):
         Group.objects.create(name="general")
         
         User = apps.get_model('account.user')
-        User.objects.create_superuser('test', '', 'test')
+        u = User.objects.create_superuser('test', '', 'test')
+        Userprofile = apps.get_model('account.userprofile')
+        Userprofile.objects.create(nickname='nickname', related_user=u)
         print('initialize ok')

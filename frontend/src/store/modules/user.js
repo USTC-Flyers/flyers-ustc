@@ -52,6 +52,7 @@ const actions = {
       login(ticket)
         .then((response) => {
           // const { data } = response;
+          console.log(response, response.access);
           commit("SET_TOKEN", "Bearer " + response.access);
           setToken("Bearer " + response.access);
           resolve();

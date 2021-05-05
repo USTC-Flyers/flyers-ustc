@@ -377,10 +377,7 @@ import {
   background_submit,
   background_update,
 } from "@/api/background";
-import {
-  getInfo,
-  update_contact,
-} from "@/api/user";
+import { getInfo, update_contact } from "@/api/user";
 export default {
   name: "Report_Admission",
   data() {
