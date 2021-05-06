@@ -1,11 +1,12 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
+        :default-active="1"
         :unique-opened="true"
         :collapse-transition="true"
         mode="vertical"
       >
-        <sidebar-item v-for="title in title_list" :key="title.category" :item="title"/>
+        <sidebar-item v-for="(title, index) in title_list" :key="title.category" :item="title" :index="index"/>
       </el-menu>
   </el-scrollbar>
 </template>

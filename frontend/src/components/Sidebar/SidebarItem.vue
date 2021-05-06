@@ -1,5 +1,5 @@
 <template>
-  <el-submenu>
+  <el-submenu :index="index">
       <template slot="title">{{ item.category }}</template>
       <app-link v-for="topic in item.topics" :key="topic.id" :title="topic.title" :id="topic.id">
           <el-menu-item :index="topic.id">
@@ -19,16 +19,12 @@ export default {
     },
     props: {
         item: {
-        type: Object,
-        required: true
+            type: Object,
+            required: true
         },
-        isNest: {
-        type: Boolean,
-        default: false
-        },
-        basePath: {
-        type: String,
-        default: ''
+        index: {
+            type: Number,
+            required: true
         }
     }
 }
