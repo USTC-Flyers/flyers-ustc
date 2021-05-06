@@ -13,8 +13,8 @@
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>个人主页</el-dropdown-item>
-              <el-dropdown-item>个人信息</el-dropdown-item>
+              <el-dropdown-item @click.native="clickUserMain">个人主页</el-dropdown-item>
+              <el-dropdown-item @click.native="clickUserProfile">个人信息</el-dropdown-item>
               <el-dropdown-item divided @click.native="logout">
                 退出登录
               </el-dropdown-item>
@@ -53,6 +53,13 @@ export default {
     },
   },
   methods: {
+    clickUserMain: function () {
+      console.log("clickUserMain");
+      this.$router.push('/usermain')
+    },
+    clickUserProfile: function () {
+      console.log("clickUserProfile");
+    },
     logout: function () {
       console.log("click logout");
     },
