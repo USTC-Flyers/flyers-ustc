@@ -18,7 +18,7 @@ export function createTopic(data) {
 
 export function getAllTopic(category) {
   return request({
-    url: "/topic",
+    url: "/topic/",
     method: "get",
     params: { category: category },
   });
@@ -37,4 +37,11 @@ export function updateTopic(id, data) {
     method: "patch",
     data,
   });
+}
+
+export function getTopicMeta() {
+  return request({
+    url: "/topic/get_meta_title/",
+    method: "get"
+  })
 }
