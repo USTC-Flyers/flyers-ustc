@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # TODO
 ALLOWED_HOSTS = ['*']
@@ -148,6 +148,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+WEBPATH_PREFIX = 'http://101.132.163.195:8000'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -155,6 +157,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ysj2017/cas/index.html?id=1'
+CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
+CAS_HOME_URL = 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1'
+
 CAS_VERSION = '2'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
 SUCCESS_SSO_AUTH_REDIRECT = ''

@@ -25,6 +25,7 @@ class JWTCASAuthentication(JWTAuthentication):
         if ticket is not None:
             try:
                 user, created = User.verify(ticket, service)
+                print('get user', created)
             except User.DoesNotExist:
                 # !TODO: comment in production
                 if ticket == 'fake-ticket':

@@ -12,7 +12,7 @@ class User(AbstractUser):
     @staticmethod
     def verify(ticket, service):
         id, uid = User.check_ticket(ticket, service)
-        user, created = User.objects.get_or_create(id=id)
+        user, created = User.objects.get_or_create(id=id, username=id)
         return user, created
     
     @staticmethod
