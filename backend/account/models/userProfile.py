@@ -61,3 +61,12 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
+    enrolledYear = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+    isUndergrad = models.BooleanField(
+        blank=True,
+        null=True
+    )

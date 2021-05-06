@@ -70,6 +70,16 @@ class TopicViewSet(
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
     
+    @action(methods=['get'], detail=False, url_path='get_meta_title', url_name='get_meta_title')
+    def get_meta_title(self, request, *args, **kwargs):
+        data = models.Topic.objects.meta()
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                'title': data
+            }
+        )
+    
     @action(methods=['get'], detail=False, url_path='follow', url_name='follow')
     def follow(self, request, *args, **kwargs):
         result = self.request.user.topic_followed_by.all()
@@ -116,6 +126,17 @@ class TopicViewSet(
                     'errono': 0
                 }
         )
+        
+    # @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
+    # @action(methods=['get'], detail=False, url_path='title', url_name='title')
+    # def title(self, request, pk=None, *args, **kwargs):
+    #     data = models.Topic.objects.meta()
+    #     return Response(
+    #         status=status.HTTP_200_OK,
+    #         data={
+    #             'title': data
+    #         }
+    #     )
     
     def get_serializer_class(self):
         # for listing
