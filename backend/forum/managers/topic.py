@@ -153,7 +153,7 @@ class TopicQuerySet(models.QuerySet):
                 "category": name,
                 "topics": value
             })
-        return fake_title
+        return meta_list
     
 class TopicRevisionQuerySet(models.QuerySet):
     def user_history(self, pk):
