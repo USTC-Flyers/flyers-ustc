@@ -3,6 +3,7 @@ from .. import models
 
 class NotificationSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='notification.related_user')
+    message = serializers.CharField(source='get_message', read_only=True)
     class Meta:
         model = models.Notification
         db_table = 't_notification'
