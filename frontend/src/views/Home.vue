@@ -115,10 +115,11 @@ export default {
   methods: {
     clickUserMain: function () {
       console.log("clickUserMain");
-      this.$router.push('/usermain')
+      this.$router.push('/usermain');
     },
     clickUserProfile: function () {
       console.log("clickUserProfile");
+      this.$router.push('/create_user');
     },
     logout: function () {
       console.log("click logout");
