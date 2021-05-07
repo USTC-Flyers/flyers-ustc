@@ -14,7 +14,7 @@ class AdmissionsQueryset(models.QuerySet):
             rank_dict = dict(zip(rank_tag, range(len(rank_tag))))
             rank_num = rank_dict[kwargs['rank']]
             rank_list = []
-            for i in range(rank_num):
+            for i in range(rank_num + 1):
                 rank_list.append(rank_tag[i])
             query &= Q(related_background__rank__in=rank_list)
         if 'apply_for' in kwargs:
@@ -25,4 +25,4 @@ class AdmissionsQueryset(models.QuerySet):
             if tag in kwargs:
                 query &= Q(**{tag: kwargs[tag]})
                 
-        return self.filter(query).select_related('related_university', 'related_background').order_by('created_time')
+        return self.filter(query).select_related('related_university', 'related_background').order_by('-created_time')

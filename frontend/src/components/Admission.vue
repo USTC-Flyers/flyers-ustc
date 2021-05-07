@@ -142,7 +142,7 @@
         <el-table-column
           prop="semester"
           label="入学时间"
-          width="100"
+          width="110"
           align="center"
         ></el-table-column>
         <el-table-column

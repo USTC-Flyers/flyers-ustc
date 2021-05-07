@@ -1,12 +1,13 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
-        :default-active="1"
+        :default-active="'0-1'"
         :unique-opened="true"
         :collapse-transition="true"
         mode="vertical"
+        router
       >
-        <sidebar-item v-for="(title, index) in title_list" :key="title.category" :item="title" :index="index"/>
+        <sidebar-item v-for="(title, index) in title_list" :key="index" :item="title" :index="index"/>
       </el-menu>
   </el-scrollbar>
 </template>
@@ -24,10 +25,9 @@ export default {
         }
     },
     created() {
-        console.log('get meta!');
         getTopicMeta().then((resp) => {
+            console.log(resp);
             this.title_list = resp.title;
-            console.log('get meta!');
         })
     }
     }

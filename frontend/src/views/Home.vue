@@ -4,8 +4,8 @@
   <el-container class="home-container">
     <el-header>
       <el-menu :default-active="this.$route.path" mode="horizontal" router>
-        <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <el-menu-item index="/admission">录取汇报</el-menu-item>
+        <el-menu-item index="/wiki">申请 WIKI</el-menu-item>
 
         <div class="right-menu">
           <el-dropdown class="user-name">
@@ -55,10 +55,11 @@ export default {
   methods: {
     clickUserMain: function () {
       console.log("clickUserMain");
-      this.$router.push('/usermain')
+      this.$router.push('/usermain');
     },
     clickUserProfile: function () {
       console.log("clickUserProfile");
+      this.$router.push('/create_user');
     },
     logout: function () {
       console.log("click logout");
