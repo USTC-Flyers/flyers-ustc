@@ -17,11 +17,6 @@ const routes = [
     component: () => import("@/userviews/Create_User.vue"),
   },
   {
-    path: "/usermain",
-    name: "UserMain",
-    component: UserMain,
-  },
-  {
     path: "/",
     redirect: "/home",
   },
@@ -34,6 +29,7 @@ const routes = [
       { path: "/admission", component: Admission },
       { path: "/wiki", component: Wiki },
       { path: "/report_admission", component: Report_Admission },
+      { path: "/usermain", component: UserMain },
     ],
   },
   // {
