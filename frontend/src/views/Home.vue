@@ -125,7 +125,8 @@ export default {
     },
     clickNotification(index) {
       console.log("click notification");
-      console.log('index :>> ', index);
+      const notification = this.notificationList[index];
+      this.$router.push({ 'path': '/' + notification.ref_obj_name,  query: {id: notification.id}});
     }
   },
 };

@@ -17,3 +17,6 @@ class NotificationQueryset(models.QuerySet):
         
     def users(self, user):
         return self.filter(related_user=user)
+    
+    def get_queryset(self):
+        return self.users(self.request.user)

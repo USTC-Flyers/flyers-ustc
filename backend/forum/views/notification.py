@@ -25,13 +25,15 @@ class NotificationViewSet(
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.NotificationSerializer
-    queryset = models.Notification.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly]
     pagination_class = PageNumberPagination
     
     def list(self, request, *args, **kwargs):
         models.Notification.objects.read(user=request.user)
         return super().list(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        return models.Notification.objects.users(self.request.user)
     
     @swagger_auto_schema(responses={200: resp})
     @action(methods=['get'], detail=False, url_path='unread_count', url_name='unread_count')

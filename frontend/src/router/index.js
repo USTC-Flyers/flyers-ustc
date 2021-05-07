@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Welcome from "@/components/Welcome.vue";
 import Admission from "@/components/Admission.vue";
+// import Notification from "@/components/Notification.vue";
 import Wiki from "@/components/Wiki.vue";
 import Report_Admission from "@/components/Report_Admission.vue";
 import UserMain from "@/userviews/UserMain.vue"
@@ -32,6 +33,7 @@ const routes = [
     children: [
       { path: "/welcome", component: Welcome },
       { path: "/admission", component: Admission },
+      // { path: "/notification", component: Notification },
       { path: "/wiki", component: Wiki },
       { path: "/report_admission", component: Report_Admission },
     ],
