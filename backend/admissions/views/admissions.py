@@ -7,6 +7,12 @@ from rest_framework.exceptions import NotAcceptable
 from django.shortcuts import get_object_or_404
 from django.db.utils import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
+from django.contrib.postgres.search import SearchVector, TrigramSimilarity
+from django.db.models.functions import Greatest
+from ..serializers import ProgramSerializer
+from django.apps import apps
+from django.db.models import Q, Prefetch
+from ..models import rank_tag
 from drf_yasg import openapi
 from .. import models
 from .. import serializers
@@ -73,7 +79,34 @@ class AdmissionsViewSet(
     @swagger_auto_schema(manual_parameters=[related_program, related_university, result, apply_for, major, tags, rank, enrolledSemester], responses={200: user_response})
     @action(methods=['post'], detail=False, url_path='condition_query', url_name='condition_query')
     def condition_query(self, request, *args, **kwargs):
-        result = models.Admissions.objects.condition(**request.data)
+        kwargs = request.data
+        admission_filter = ['related_university', 'result', 'enrolledSemester']
+        query = Q()
+        if 'tags' in kwargs:
+            tags = kwargs['tags']
+            query &= Q(related_background__tags__contains=tags)
+        if 'rank' in kwargs:
+            rank_dict = dict(zip(rank_tag, range(len(rank_tag))))
+            rank_num = rank_dict[kwargs['rank']]
+            rank_list = []
+            for i in range(rank_num + 1):
+                rank_list.append(rank_tag[i])
+            query &= Q(related_background__rank__in=rank_list)
+        if 'apply_for' in kwargs:
+            query &= Q(related_background__apply_for=kwargs['apply_for'])
+        if 'major' in kwargs:
+            query &= Q(related_background__major=kwargs['major'])
+        for tag in admission_filter:
+            if tag in kwargs:
+                query &= Q(**{tag: kwargs[tag]})
+        if 'related_program' in kwargs:
+            program = kwargs['related_program']
+            result = models.Admissions.objects.annotate(similarity=
+                    TrigramSimilarity('related_program', program),
+                ).filter(similarity__gt=0.1)
+        else:
+            result = self.queryset
+        result = result.filter(query).select_related('related_university', 'related_background').order_by('-created_time')
         data = serializers.AdmissionNestedSerializers(result, many=True).data
         return Response(
             status=status.HTTP_200_OK,
