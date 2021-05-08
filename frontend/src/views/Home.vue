@@ -144,7 +144,7 @@ export default {
           return name
     },
     handleMessageMore() {
-      this.$router.push({ path: "/notificaiton" });
+      this.$router.push({ path: "/notificaiton" }, () => {});
     },
   },
 };
