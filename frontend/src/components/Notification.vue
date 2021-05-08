@@ -16,8 +16,13 @@
     <el-table-column
       label=""
       width="100">
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+       <template v-slot:default="table">
+        <router-link :to="{ path: `${notificationList[table.row._id].ref_obj_name}`, params: { id: `${notificationList[table.row._id].ref_obj_id}` }}" tag="span">
+          <el-button type="text" size="small">
+            查看
+            <i class="el-icon-edit" />
+          </el-button>
+        </router-link>
       </template>
     </el-table-column>
     
@@ -55,6 +60,10 @@ export default {
         
         getNotification().then((resp) => {
           console.log(resp);
+            let results = resp.results;
+            for (let i = 0; i < results.length; i++) {
+              results[i]['ref_obj_name'] = this.pathMap(results[i]['ref_obj_name']);
+            }
             this.notificationList = resp.results;
         }).catch((err) => {
             console.log(err);
@@ -69,6 +78,11 @@ export default {
         },
         handleClick(row) {
             console.log(row);
+        },
+        pathMap(name) {
+          if (name === 'TopicRevision')
+            return 'topic_revision'
+          return name
         }
     },
 }

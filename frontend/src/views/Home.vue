@@ -6,16 +6,25 @@
       <el-menu :default-active="this.$route.path" mode="horizontal" router>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style=" float: right;">
           <el-dropdown>
           <el-badge :value="notificationCount" class="item">
             <el-button size="small">通知</el-button>
           </el-badge>
-          <!-- <span class="el-dropdown-link">
-              {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
-            </span> -->
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(message, index) in messageList" :key="message" :id="index + '-' + notificationList[index].ref_obj_id" @click.native="clickNotification(index)"> {{message}} </el-dropdown-item>
+            <el-dropdown-item v-for="(message, index) in messageList" :key="message + index" :id="index + '-' + notificationList[index].id"> 
+              <template>
+                <router-link :to="{ path: `${pathMap(notificationList[index].obj_name)}/${notificationList[index].id}/`}">
+                  <el-button type="text" size="small">
+                    {{message}} 
+                  </el-button>
+                </router-link>
+              </template>
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="handleMessageMore">
+                更多
+            </el-dropdown-item>
           </el-dropdown-menu>
           </el-dropdown>
           <el-dropdown class="user-name">
@@ -128,7 +137,15 @@ export default {
       console.log("click notification");
       const notification = this.notificationList[index];
       this.$router.push({ 'path': '/' + notification.ref_obj_name,  query: {id: notification.id}});
-    }
+    },
+    pathMap(name) {
+          if (name === 'TopicRevision')
+            return 'topic_revision'
+          return name
+    },
+    handleMessageMore() {
+      this.$router.push({ path: "/notificaiton" });
+    },
   },
 };
 </script>
