@@ -102,7 +102,7 @@ class AdmissionsViewSet(
         if 'related_program' in kwargs:
             program = kwargs['related_program']
             result = models.Admissions.objects.annotate(similarity=
-                    TrigramSimilarity('related_program', program),
+                    TrigramSimilarity('related_program__unaccent', program),
                 ).filter(similarity__gt=0.1)
         else:
             result = self.queryset
