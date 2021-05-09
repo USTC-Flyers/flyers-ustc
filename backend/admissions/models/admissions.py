@@ -61,6 +61,3 @@ class Admissions(models.Model):
         auto_now_add=True
     )
     objects = AdmissionsQueryset.as_manager()
-    
-    class Meta:
-        unique_together = ("related_user", "related_program", "related_university", "enrolledSemester")

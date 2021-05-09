@@ -9,11 +9,6 @@ SCHOOL_CHOICES = []
 for i, school in enumerate(school_list):
     SCHOOL_CHOICES.append((i, school))
     
-def avatar_path(instance, filename):
-    ext = os.path.splitext(filename)[1].lower()
-    return os.path.join(
-        'flyers', 'avatars', str(instance.user_id), 'pic' + ext)
-
 class UserProfile(models.Model):
     STUDENT, TEACHER, ALUMNI, ADMIN = range(4)
     ROLE_CHOICES = (
@@ -48,12 +43,6 @@ class UserProfile(models.Model):
     role = models.IntegerField(
         choices=ROLE_CHOICES,
         default=STUDENT
-    )
-    # !TODO: storage
-    avatar = models.ImageField(
-        upload_to=avatar_path,
-        max_length=255, 
-        blank=True
     )
     followed = models.ManyToManyField(
         'account.UserProfile',
