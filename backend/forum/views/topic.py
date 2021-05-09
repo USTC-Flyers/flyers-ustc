@@ -60,7 +60,6 @@ class TopicViewSet(
         topic_revision_serializer.is_valid(raise_exception=True)
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
-        topic.set_valid_and_update(topic_revision)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
         return Response(
             status=status.HTTP_201_CREATED,
@@ -127,18 +126,7 @@ class TopicViewSet(
                     'errono': 0
                 }
         )
-        
-    # @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
-    # @action(methods=['get'], detail=False, url_path='title', url_name='title')
-    # def title(self, request, pk=None, *args, **kwargs):
-    #     data = models.Topic.objects.meta()
-    #     return Response(
-    #         status=status.HTTP_200_OK,
-    #         data={
-    #             'title': data
-    #         }
-    #     )
-    
+
     def get_serializer_class(self):
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:
