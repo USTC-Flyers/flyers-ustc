@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from .university import University
 from .program import Program
 from .background import Background
-# from ..managers import AdmissionsQueryset
 
 class Admissions(models.Model):
     related_user = models.ForeignKey(
@@ -60,7 +59,3 @@ class Admissions(models.Model):
     created_time = models.DateTimeField(
         auto_now_add=True
     )
-    # objects = AdmissionsQueryset.as_manager()
-    
-    class Meta:
-        unique_together = ("related_user", "related_program", "related_university", "enrolledSemester")

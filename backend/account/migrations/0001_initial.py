@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('contact', models.CharField(blank=True, max_length=254, null=True)),
                 ('is_verified', models.BooleanField(default=False, verbose_name='是否通过科大统一身份验证')),
                 ('role', models.IntegerField(choices=[(0, 'Student'), (1, 'Teacher'), (2, 'Alumni'), (3, 'Admin')], default=0)),
-                ('avatar', models.ImageField(blank=True, max_length=255, upload_to=account.models.userProfile.avatar_path)),
+                # ('avatar', models.ImageField(blank=True, max_length=255, upload_to=account.models.userProfile.avatar_path)),
                 ('last_post_hash', models.CharField(blank=True, max_length=32, verbose_name='last post hash')),
                 ('last_post_on', models.DateTimeField(blank=True, null=True, verbose_name='last post on')),
                 ('followed', models.ManyToManyField(blank=True, null=True, related_name='followed_by', to='account.UserProfile')),

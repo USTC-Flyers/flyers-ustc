@@ -26,8 +26,8 @@ class UniversityViewSet(
         ).filter(search=query)
         if query != '' and result.count() == 0:
             result = models.University.objects.annotate(similarity=Greatest(
-                TrigramSimilarity('short_name', query),
-                TrigramSimilarity('school_name', query),
+                TrigramSimilarity('short_name__unaccent', query),
+                TrigramSimilarity('school_name__unaccent', query),
             )).filter(similarity__gt=0.3)
         result = serializers.UniversitySerializer(result, many=True).data
         data = {

@@ -127,7 +127,6 @@ class TopicViewSet(
                     'errono': 0
                 }
         )
-    
     def get_serializer_class(self):
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:
