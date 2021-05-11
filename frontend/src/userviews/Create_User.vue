@@ -58,7 +58,8 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm">立即创建</el-button>
+      <el-button v-if="is_initial" type="primary" @click="submitForm">立即创建</el-button>
+      <el-button v-else type="primary" @click="submitForm">立即更新</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -87,13 +88,13 @@ export default {
     };
   },
   async created() {
-    this.is_initial = await getInfo().then((response) => {
-      this.form = response.user_detail;
-      this.user_id = response.user_detail.id;
-      return false
-    }).catch(() => {
-      return true
-    })
+    this.is_initial = (this.$route.params.is_initial === "initial")? true : false;
+    if(!this.is_initial){
+      getInfo().then((response) => {
+        this.form = response.user_detail;
+        this.user_id = response.user_detail.id;
+      })
+    }
   },
   methods: {
     submitForm() {

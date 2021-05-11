@@ -54,7 +54,6 @@ export default {
         console.log('created');
         
         getNotification().then((resp) => {
-          let results = resp.results;
           this.notificationList = resp.results;
         }).catch((err) => {
             console.log(err);

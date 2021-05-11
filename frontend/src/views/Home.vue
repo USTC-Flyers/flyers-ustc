@@ -128,7 +128,7 @@ export default {
     },
     clickUserProfile: function () {
       console.log("clickUserProfile");
-      this.$router.push('/create_user');
+      this.$router.push('/create_user/not_initial');
     },
     logout: function () {
       console.log("click logout");

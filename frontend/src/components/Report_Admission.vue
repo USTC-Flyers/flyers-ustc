@@ -457,8 +457,8 @@ export default {
   },
 
   mounted() {
+    this.is_initial = (this.$route.params.is_initial === "initial")? true : false;
     this.getData();
-    console.log(this.major_list);
   },
   methods: {
     add_admission() {
@@ -528,19 +528,17 @@ export default {
       this.$refs[index + "autocomplete"][0].handleFocus();
     },
 
-    async getData() {
-      this.is_initial = await background_get_my()
-        .then((response) => {
-          this.form_data.bg_id = response.user_detail.id;
-          this.get_data.background = response.user_detail;
-          this.map2form();
-          return false;
-        })
-        .catch((error) => {
-          console.log(error);
-          return true;
-        });
-      if (!this.is_initial) {
+    getData() {
+      if(this.is_initial == false){
+        background_get_my()
+          .then((response) => {
+            this.form_data.bg_id = response.user_detail.id;
+            this.get_data.background = response.user_detail;
+            this.map2form();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         admissions_get_my().then((response) => {
           let data = response.user_detail;
           for (let i = 0; i < data.length; i++) {
@@ -557,6 +555,34 @@ export default {
           }
         });
       }
+      // this.is_initial = await background_get_my()
+      //   .then((response) => {
+      //     this.form_data.bg_id = response.user_detail.id;
+      //     this.get_data.background = response.user_detail;
+      //     this.map2form();
+      //     return false;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     return true;
+      //   });
+      // if (!this.is_initial) {
+      //   admissions_get_my().then((response) => {
+      //     let data = response.user_detail;
+      //     for (let i = 0; i < data.length; i++) {
+      //       this.$set(this.admissions, i, {
+      //         result: data[i].result,
+      //         enrolledSemester: data[i].enrolledSemester,
+      //         comments: data[i].comments,
+      //         summary: data[i].summary,
+      //         related_university: data[i].related_university.id,
+      //         related_program: data[i].related_program,
+      //         id: data[i].id,
+      //       });
+      //       this.$set(this.current_univ_list, i, [data[i].related_university]);
+      //     }
+      //   });
+      // }
       getInfo().then((response) => {
         this.user_id = response.user_detail.id;
         this.contact = response.user_detail.contact;

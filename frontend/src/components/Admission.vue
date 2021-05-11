@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
-    <router-link to="/report_admission">
-      <el-button type="success" size="default" style="margin-bottom: 20px">汇报我的录取结果</el-button>
+    <router-link :to="`/report_admission/${is_initial? 'initial':'not_initial'}`">
+      <el-button v-if="is_initial" type="success" size="default" style="margin-bottom: 20px">汇报我的录取结果</el-button>
+      <el-button v-else type="warning" size="default" style="margin-bottom: 20px">更新我的录取结果</el-button>
     </router-link>
     <div>
       <!-- <div class="filter-container"> -->
@@ -311,6 +312,9 @@ import {
   university_query,
   programs_get,
 } from "@/api/admission";
+import {
+  background_get_my
+} from "@/api/background";
 // import { getInfo } from "@/api/user"
 import {
   major_list,
@@ -324,6 +328,13 @@ import {
 export default {
   name: "Admission",
   filters: {
+    isInitialFilter(value) {
+      const map = {
+        true: 1,
+        false: 0,
+      };
+      return map[value];
+    },
     adrejFilter(value) {
       const map = {
         true: "AD",
@@ -393,10 +404,18 @@ export default {
       univ_loading: false,
       current_univ_list: [],
       current_program_list: [],
+      is_initial: true,
     };
   },
-  mounted() {
+  created() {
     this.tag_list = Object.assign({}, research_tags, ref_tags);
+    background_get_my()
+      .then(() => {
+        this.is_initial = false;
+      })
+      .catch(() => {
+        this.is_initial = true;
+      });
     this.getTable(true);
   },
   methods: {

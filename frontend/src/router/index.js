@@ -16,7 +16,7 @@ const routes = [
     component: () => import("@/views/login.vue"),
   },
   {
-    path: "/create_user",
+    path: "/create_user/:is_initial",
     component: () => import("@/userviews/Create_User.vue"),
   },
   {
@@ -34,9 +34,9 @@ const routes = [
         component: Wiki, 
         children: [
           { path: "/topic/:id", component: Topic, meta: { keepAlive: false } },
-          { path: "/topic_revision/:id", component: Revision, meta: { keepAlive: false } },
+          { path: "/revision/:id", component: Revision, meta: { keepAlive: false } },
         ]},
-      { path: "/report_admission", component: Report_Admission },
+      { path: "/report_admission/:is_initial", component: Report_Admission },
       { path: "/usermain", component: UserMain },
       { path: "/notificaiton", 
         component: Notification,
