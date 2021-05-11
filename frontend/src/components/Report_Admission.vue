@@ -721,7 +721,7 @@ export default {
   /* left: 10%; */
 }
 .el-form-item {
-  font-weight: bolder;
+  font-weight: 500;
 }
 .el-form {
   margin: auto;

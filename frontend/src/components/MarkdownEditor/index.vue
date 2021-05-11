@@ -31,7 +31,7 @@ export default {
     },
     mode: {
       type: String,
-      default: 'markdown'
+      default: 'wysiwyg'
     },
     height: {
       type: String,
@@ -85,8 +85,6 @@ export default {
     initEditor() {
       this.editor = new Editor({
         el: document.getElementById(this.id),
-        initialEditType: 'wysiwyg',
-        value:'asdf',
         ...this.editorOptions//acquired in <markdown-editor .../>?
       })
       if (this.value) {
