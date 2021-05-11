@@ -9,6 +9,9 @@ from django.db import models
 class User(AbstractUser):
     id = models.CharField(max_length=255, primary_key=True)
     
+    def is_admin(self):
+        return 'flyers-admin' in self.groups.all()
+    
     @staticmethod
     def verify(ticket, service):
         id, uid = User.check_ticket(ticket, service)

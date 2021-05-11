@@ -79,7 +79,7 @@ class UserViewSet(
             data={
                 'msg': 'ok',
                 'errno': 0,
-                'role': request.user.is_admin
+                'role': request.user.is_admin()
             },
             status=status.HTTP_200_OK
         )

@@ -60,7 +60,10 @@ class TopicViewSet(
         topic_revision_serializer.is_valid(raise_exception=True)
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
-        topic.set_valid_and_update(topic_revision)
+        # 管理员自动更新
+        if self.user.is_admin():
+            topic.set_valid_and_update(topic_revision)
+            models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
         return Response(
             status=status.HTTP_201_CREATED,

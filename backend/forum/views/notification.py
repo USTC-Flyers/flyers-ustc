@@ -49,8 +49,8 @@ class NotificationViewSet(
         )
     
     @swagger_auto_schema(responses={200: resp})
-    @action(methods=['get'], detail=False, url_path='unread', url_name='unread')
-    def unread(self, request, *args, **kwargs):
+    @action(methods=['get'], detail=False, url_path='unread_set', url_name='unread_set')
+    def unread_set(self, request, *args, **kwargs):
         result = models.Notification.objects.unread_set(user=request.user)
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.Notification)
@@ -60,6 +60,18 @@ class NotificationViewSet(
             data={
                 'msg': 'ok',
                 'errno': 0,
-                'unread': result
+                'unread_set': result
+            }
+        )
+        
+    @action(methods=['post'], detail=True, url_path='read', url_name='read')
+    def read(self, request, pk=None, *args, **kwargs):
+        n = get_object_or_404(self.queryset, pk=pk)
+        n.read()
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                'msg': 'ok',
+                'errno': 0,
             }
         )
