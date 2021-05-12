@@ -33,7 +33,11 @@
           :label="year"
           :value="year"></el-option>
       </el-select> -->
-        <el-date-picker v-model="form.enrolledYear" type="year" placeholder="选择年">
+        <el-date-picker
+          v-model="form.enrolledYear"
+          type="year"
+          placeholder="选择年"
+        >
         </el-date-picker>
       </el-col>
     </el-form-item>
@@ -58,7 +62,9 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button v-if="is_initial" type="primary" @click="submitForm">立即创建</el-button>
+      <el-button v-if="is_initial" type="primary" @click="submitForm"
+        >立即创建</el-button
+      >
       <el-button v-else type="primary" @click="submitForm">立即更新</el-button>
     </el-form-item>
   </el-form>
@@ -83,17 +89,20 @@ export default {
       school_list,
       student_role_list,
       rules: {
-        nickname: [{ required: true, message: "请填写用户名", trigger: "blur" }],
-      }
+        nickname: [
+          { required: true, message: "请填写用户名", trigger: "blur" },
+        ],
+      },
     };
   },
   async created() {
-    this.is_initial = (this.$route.params.is_initial === "initial")? true : false;
-    if(!this.is_initial){
+    this.is_initial =
+      this.$route.params.is_initial === "initial" ? true : false;
+    if (!this.is_initial) {
       getInfo().then((response) => {
         this.form = response.user_detail;
         this.user_id = response.user_detail.id;
-      })
+      });
     }
   },
   methods: {
@@ -101,7 +110,7 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           console.log(this.form);
-          if(this.is_initial) {
+          if (this.is_initial) {
             create_user_profile(this.form).then(() => {
               this.$message.success("创建成功");
               this.$router.push({ path: "/home" });
@@ -111,9 +120,8 @@ export default {
               this.$message.success("更新成功");
               this.$store.dispatch("user/setInfo", this.form.nickname);
               this.$router.go(-1);
-            })
+            });
           }
-          
         } else {
           return false;
         }

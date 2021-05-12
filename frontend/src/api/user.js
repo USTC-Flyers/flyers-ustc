@@ -46,20 +46,20 @@ export function logout() {
 export function initNotification() {
   return request({
     url: "/notification/unread/",
-    method: "get"
+    method: "get",
   });
 }
 
 export function initNotificationCount() {
   return request({
     url: "/notification/unread_count/",
-    method: "get"
+    method: "get",
   });
 }
 
 export function getNotification() {
   return request({
     url: "/notification/",
-    method: "get"
+    method: "get",
   });
 }

@@ -134,7 +134,33 @@
         </div>
 
         <div v-show="active == 1" class="form">
-          <el-form
+          <report-item
+            v-for="(item, index) in admissions"
+            :key="index"
+            :id="index"
+            ref="admission_forms"
+            :data="item"
+            :univ_list="univ_list[index]"
+          >
+            <!-- <el-button
+              v-if="index > 0 || admissions.length > 1"
+              type="danger"
+              size="mini"
+              @click="del_admission(index)"
+              >删除此项</el-button
+            > -->
+            <el-button
+              v-if="index > 0 || admissions.length > 1"
+              type="danger"
+              size="small"
+              @click="del_admission(index)"
+              icon="el-icon-delete"
+              style="position: relative; left: 640px"
+              circle
+            >
+            </el-button>
+          </report-item>
+          <!-- <el-form
             :rules="admission_rules"
             v-for="(item, index) in admissions"
             :key="index"
@@ -187,22 +213,6 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="录取学校" prop="related_university">
-                  <!-- <el-autocomplete
-                    v-model="item.related_university"
-                    :fetch-suggestions="querySearchUniv"
-                    placeholder="请输入学校"
-                    popper-class="university"
-                    @select="handleSelect"
-                    value-key="name"
-                  >
-                    <template slot-scope="{ item }">
-                      <div class="name">{{ item.name }}</div>
-                      <div class="line2">
-                        <span class="fullname">{{ item.full_name }}</span>
-                        <span class="area">{{ item.area }}</span>
-                      </div>
-                    </template>
-                  </el-autocomplete> -->
                   <el-select
                     v-model="item.related_university"
                     filterable
@@ -245,29 +255,10 @@
                     :ref="index + 'autocomplete'"
                   >
                     <template slot-scope="{ item }">
-                      <!-- <div class="program"> -->
                       <div class="name">{{ item.name }}</div>
                       <div class="fullname">{{ item.full_name }}</div>
-                      <!-- </div> -->
                     </template>
                   </el-autocomplete>
-                  <!-- <el-select
-                    v-model="item.related_program"
-                    filterable
-                    placeholder="请选择"
-                    @change="$forceUpdate()"
-                  >
-                    <el-option
-                      class="program"
-                      v-for="program in current_program_list[index]"
-                      :key="program.id"
-                      :label="program.full_name + ' (' + program.name + ')'"
-                      :value="program.id"
-                    >
-                      <div class="name">{{ program.name }}</div>
-                      <div class="fullname">{{ program.full_name }}</div>
-                    </el-option>
-                  </el-select> -->
                 </el-form-item>
               </el-col>
             </el-row>
@@ -296,7 +287,16 @@
                 >新增录取项</el-button
               >
             </el-form-item>
-          </el-form>
+          </el-form> -->
+          <el-button
+            type="success"
+            icon="el-icon-plus"
+            size="medium"
+            @click="add_admission()"
+            round
+            style="position: relative; left: 20px"
+            >新增录取项</el-button
+          >
         </div>
         <div v-if="active == 2" class="form">
           <el-form label-position="right" label-width="110px">
@@ -320,7 +320,6 @@
             </el-form-item>
           </el-form>
         </div>
-        
       </div>
     </el-main>
     <el-footer>
@@ -339,11 +338,11 @@
 
 <script>
 import {
-  university_query,
-  programs_get,
+  // university_query,
+  // programs_get,
   admissions_get_my,
-  admissions_create,
-  admissions_update,
+  // admissions_create,
+  // admissions_update,
   admissions_delete,
 } from "@/api/admission";
 import {
@@ -351,16 +350,24 @@ import {
   background_submit,
   background_update,
 } from "@/api/background";
+import { getInfo, update_contact } from "@/api/user";
 import {
-  getInfo,
-  update_contact,
-} from "@/api/user";
-import { major_list, semester_list, rank_list, applyfor_list, result_list, research_tags, ref_tags, tags_mapper } from "@/assets/data.json";
-import MarkdownEditor from './MarkdownEditor';
+  major_list,
+  semester_list,
+  rank_list,
+  applyfor_list,
+  result_list,
+  research_tags,
+  ref_tags,
+  tags_mapper,
+} from "@/assets/data.json";
+import MarkdownEditor from "./MarkdownEditor";
+import ReportItem from "./ReportItem";
 export default {
   name: "Report_Admission",
   components: {
     MarkdownEditor,
+    ReportItem,
   },
   data() {
     return {
@@ -419,17 +426,20 @@ export default {
           summary: "",
         },
       ],
+      univ_list: [[]],
+      // program_list:[[]],
       delete_ids: [],
-      univ_loading: false,
-      current_univ_list: [[]],
-      current_program_list: [[]],
+      // univ_loading: false,
+      // current_univ_list: [[]],
+      // current_program_list: [[]],
       user_id: null,
       contact: "",
     };
   },
 
-  mounted() {
-    this.is_initial = (this.$route.params.is_initial === "initial")? true : false;
+  created() {
+    this.is_initial =
+      this.$route.params.is_initial === "initial" ? true : false;
     this.getData();
   },
   methods: {
@@ -442,66 +452,71 @@ export default {
         comments: "",
         summary: "",
       });
-      this.current_univ_list.push([]);
-      this.current_program_list.push([]);
+      this.univ_list.push([]);
+      // this.program_list.push([]);
+      // this.current_univ_list.push([]);
+      // this.current_program_list.push([]);
     },
     del_admission(index) {
+      console.log(index);
       if (this.admissions[index].id) {
         this.delete_ids.push(this.admissions[index].id);
       }
       this.admissions.splice(index, 1);
-      this.current_univ_list.splice(index, 1);
-      this.current_program_list.splice(index, 1);
+      this.univ_list.splice(index, 1);
+      // this.program_list.splice(index, 1);
+      // this.current_univ_list.splice(index, 1);
+      // this.current_program_list.splice(index, 1);
     },
 
-    querySearchUniv(query_string, index) {
-      if (query_string != "") {
-        this.univ_loading = true;
-        university_query(query_string).then((response) => {
-          this.univ_loading = false;
-          this.$set(this.current_univ_list, index, response.data);
-        });
-      } else {
-        this.$set(this.current_univ_list, index, []);
-      }
-    },
+    // querySearchUniv(query_string, index) {
+    //   if (query_string != "") {
+    //     this.univ_loading = true;
+    //     university_query(query_string).then((response) => {
+    //       this.univ_loading = false;
+    //       this.$set(this.current_univ_list, index, response.data);
+    //     });
+    //   } else {
+    //     this.$set(this.current_univ_list, index, []);
+    //   }
+    // },
 
-    async getPrograms(index) {
-      var uid = this.admissions[index].related_university;
-      await programs_get(uid)
-        .then((response) => {
-          var programs = [];
-          response.data.forEach((program) => {
-            programs.push({
-              name: program.name,
-              full_name: program.full_name,
-              value: program.full_name + " (" + program.name + ")",
-            });
-          });
-          this.$set(this.current_program_list, index, programs);
-        })
-        .catch(() => {
-          this.$set(this.current_program_list, index, []);
-        });
-    },
-    querySearchProgram(query, index, cb) {
-      var programs = this.current_program_list[index];
-      var results = [];
-      if (query) {
-        results = programs.filter((item) => {
-          return item.value.toLowerCase().indexOf(query.toLowerCase()) > -1;
-        });
-      } else {
-        results = programs;
-      }
-      cb(results);
-    },
-    clearFocus(index) {
-      this.$refs[index + "autocomplete"][0].handleFocus();
-    },
+    // async getPrograms(index) {
+    //   var uid = this.admissions[index].related_university;
+    //   await programs_get(uid)
+    //     .then((response) => {
+    //       var programs = [];
+    //       response.data.forEach((program) => {
+    //         programs.push({
+    //           name: program.name,
+    //           full_name: program.full_name,
+    //           value: program.full_name + " (" + program.name + ")",
+    //         });
+    //       });
+    //       this.$set(this.current_program_list, index, programs);
+    //     })
+    //     .catch(() => {
+    //       this.$set(this.current_program_list, index, []);
+    //     });
+    // },
+    // querySearchProgram(query, index, cb) {
+    //   var programs = this.current_program_list[index];
+    //   var results = [];
+    //   if (query) {
+    //     results = programs.filter((item) => {
+    //       return item.value.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    //     });
+    //   } else {
+    //     results = programs;
+    //   }
+    //   cb(results);
+    // },
+    // clearFocus(index) {
+    //   this.$refs[index + "autocomplete"][0].handleFocus();
+    // },
 
     getData() {
-      if(this.is_initial == false){
+      if (this.is_initial == false) {
         background_get_my()
           .then((response) => {
             this.form_data.bg_id = response.user_detail.id;
@@ -520,41 +535,15 @@ export default {
               comments: data[i].comments,
               summary: data[i].summary,
               related_university: data[i].related_university.id,
+              related_university_full: data[i].related_university,
               related_program: data[i].related_program,
               id: data[i].id,
             });
-            this.$set(this.current_univ_list, i, [data[i].related_university]);
+            this.$set(this.univ_list, i, [data[i].related_university]);
+            // this.$set(this.univ_list, i, [data[i].related_university]);
           }
         });
       }
-      // this.is_initial = await background_get_my()
-      //   .then((response) => {
-      //     this.form_data.bg_id = response.user_detail.id;
-      //     this.get_data.background = response.user_detail;
-      //     this.map2form();
-      //     return false;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     return true;
-      //   });
-      // if (!this.is_initial) {
-      //   admissions_get_my().then((response) => {
-      //     let data = response.user_detail;
-      //     for (let i = 0; i < data.length; i++) {
-      //       this.$set(this.admissions, i, {
-      //         result: data[i].result,
-      //         enrolledSemester: data[i].enrolledSemester,
-      //         comments: data[i].comments,
-      //         summary: data[i].summary,
-      //         related_university: data[i].related_university.id,
-      //         related_program: data[i].related_program,
-      //         id: data[i].id,
-      //       });
-      //       this.$set(this.current_univ_list, i, [data[i].related_university]);
-      //     }
-      //   });
-      // }
       getInfo().then((response) => {
         this.user_id = response.user_detail.id;
         this.contact = response.user_detail.contact;
@@ -579,38 +568,47 @@ export default {
       this.form_data.background.tags = this.form_data.background.research_tag_list.concat(
         this.form_data.background.ref_tag_list
       );
-      if(!this.form_data.background.major){
+      if (!this.form_data.background.major) {
         this.form_data.background.major = null;
       }
       var ad_forms = this.$refs["admission_forms"];
       var valid_funcs = [];
       ad_forms.forEach((form, index) => {
         valid_funcs.push(
-          new Promise((resolve, reject) => {
-            form.validate((valid) => {
-              if (valid) {
-                resolve(index);
-              } else {
-                reject(index);
-              }
-            });
+          form.validateForm().catch(() => {
+            throw index;
           })
+          // new Promise((resolve, reject) => {
+          //   form.validateForm((valid) => {
+          //     if (valid) {
+          //       resolve(index);
+          //     } else {
+          //       reject(index);
+          //     }
+          //   });
+          // })
         );
       });
-      var is_valid = await Promise.all(valid_funcs)
-        .then(() => {
+      var is_valid = await Promise.all(valid_funcs).then(
+        () => {
           console.log("AD validated");
           return true;
-        })
-        .catch((index) => {
-          console.log("AD form error in form " + index);
+        },
+        (error_index) => {
+          console.log("AD form error in form " + error_index);
           this.active = 1;
-          window.location.hash = "#" + index;
+          window.location.hash = "#" + error_index;
           return false;
-        });
-      console.log(is_valid);
+        }
+      );
+      // .catch((index) => {
+      //   console.log("AD form error in form " + index);
+      //   this.active = 1;
+      //   window.location.hash = "#" + index;
+      //   return false;
+      // });
       if (!is_valid) return;
-      if(!this.form_data.background.gpa){
+      if (!this.form_data.background.gpa) {
         this.form_data.background.gpa = null;
       }
       if (this.is_initial) {
@@ -632,34 +630,37 @@ export default {
       }
 
       var edit_funcs = [];
-      var func = null;
-      this.admissions.forEach((item) => {
-        if (item.result == false) item.summary = "";
-        if (item.id) {
-          func = new Promise((resolve, reject) => {
-            admissions_update(item.id, item)
-              .then((response) => {
-                console.log(response);
-                resolve();
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          });
-        } else {
-          func = new Promise((resolve, reject) => {
-            admissions_create(item)
-              .then((response) => {
-                console.log(response);
-                resolve();
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          });
-        }
-        edit_funcs.push(func);
+      // var func = null;
+      ad_forms.forEach((form) => {
+        edit_funcs.push(form.submitForm());
       });
+      // this.admissions.forEach((item) => {
+      //   if (item.result == false) item.summary = "";
+      //   if (item.id) {
+      //     func = new Promise((resolve, reject) => {
+      //       admissions_update(item.id, item)
+      //         .then((response) => {
+      //           console.log(response);
+      //           resolve();
+      //         })
+      //         .catch((error) => {
+      //           reject(error);
+      //         });
+      //     });
+      //   } else {
+      //     func = new Promise((resolve, reject) => {
+      //       admissions_create(item)
+      //         .then((response) => {
+      //           console.log(response);
+      //           resolve();
+      //         })
+      //         .catch((error) => {
+      //           reject(error);
+      //         });
+      //     });
+      //   }
+      //   edit_funcs.push(func);
+      // });
       this.delete_ids.forEach((id) => {
         edit_funcs.push(
           new Promise((resolve, reject) => {
@@ -682,7 +683,6 @@ export default {
               resolve();
             })
             .catch((error) => {
-              // this.$message.error(error);
               reject(error);
             });
         })
@@ -695,45 +695,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-
-      // this.admissions.forEach((item) => {
-      //   if (item.id) {
-      //     admissions_update(item.id, item)
-      //       .then((response) => {
-      //         console.log(response);
-      //       })
-      //       .catch((error) => {
-      //         this.$message.error(error);
-      //       });
-      //   } else {
-      //     admissions_create(item)
-      //       .then((response) => {
-      //         console.log(response);
-      //       })
-      //       .catch((error) => {
-      //         this.$message.error(error);
-      //       });
-      //   }
-      // });
-      // this.delete_ids.forEach((id) => {
-      //   admissions_delete(id)
-      //     .then((response) => {
-      //       console.log(response);
-      //     })
-      //     .catch((error) => {
-      //       this.$message.error(error);
-      //     });
-      // });
-      // update_contact(this.user_id, { contact: this.contact })
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((error) => {
-      //     this.$message.error(error);
-      //   });
-      // this.removeEmpty(this.form_data.background);
     },
-    
   },
 };
 </script>
@@ -747,7 +709,7 @@ export default {
   /* left: 10%; */
 }
 .el-form-item {
-  font-weight: 500;
+  font-weight: bolder;
 }
 .el-form {
   margin: auto;
