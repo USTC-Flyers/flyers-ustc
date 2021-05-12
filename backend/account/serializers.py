@@ -21,10 +21,13 @@ class UserProfileNestedSerializer(serializers.ModelSerializer):
         queryset=apps.get_model(settings.AUTH_USER_MODEL).objects.all(),
         many=False
     )
+    all_votes_cnt = serializers.IntegerField(source='get_all_votes_cnt', read_only=True)
     class Meta:
         model = models.UserProfile
         db_table = 't_user_profile'
-        fields = '__all__'
+        fields = ['id', 'related_user', 'nickname', 'school', 'contact', 'is_verified', \
+            'role', 'followed', 'enrolledYear', 'isUndergrad', 'final_university', \
+            'final_program', 'university', 'all_votes_cnt']
         lookup_field = 'id'
         
 class UserSerializer(serializers.Serializer):
