@@ -86,3 +86,24 @@ class Background(models.Model):
         null=True,
         blank=True,
     )
+    upvoted = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="background_upvoted_by",
+        null=True,
+        blank=True
+    )
+    upvoted_count = models.PositiveIntegerField(
+        default=0
+    )
+    
+    def upvote(self, user):
+        if self not in user.background_upvoted_by.all():
+            user.background_upvoted_by.add(self)
+            self.upvoted_count += 1
+            self.save()
+        
+    def downvote(self, user):
+        if self in user.background_upvoted_by.all():
+            user.background_upvoted_by.remove(self)
+            self.upvoted_count -= 1
+            self.save()

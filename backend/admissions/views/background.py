@@ -1,14 +1,15 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from django.contrib.auth import authenticate
 from rest_framework.response import Response
-from django.contrib.postgres.search import SearchVector
 from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
+from django.apps import apps
 from drf_yasg import openapi
 from .. import permissions
 from .. import models
 from .. import serializers
+
+param = openapi.Parameter('action', openapi.IN_QUERY, description="是('upvote', 'downvote')中的一个", type=openapi.TYPE_STRING)
 
 class BackgroundViewSet(
     mixins.RetrieveModelMixin,
@@ -40,11 +41,8 @@ class BackgroundViewSet(
         
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, *args, **kwargs):
-        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
-        if pk == None:
-            result = get_object_or_404(self.queryset, related_user=self.request.user.id)
-        else:
-            result = self.queryset.filter(related_user__id=pk).get()
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
+        result = get_object_or_404(self.queryset, related_user__id=pk)
         result = serializers.BackgroundSerializers(result).data
         data = {
             'user_detail': result
@@ -52,4 +50,31 @@ class BackgroundViewSet(
         return Response(
             data=data,
             status=status.HTTP_200_OK
+        )
+        
+    @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
+    @action(methods=['put'], detail=True, url_path='action', url_name='action')
+    def action(self, request, pk=None):
+        model_notification = apps.get_model('forum.notification')
+        bg = get_object_or_404(self.queryset, pk=pk)
+        action = request.data['action']
+        if action == 'upvote':
+            bg.upvote(user=request.user)
+            model_notification.notify(bg, to_user=bg.related_user, operation=model_notification.UPVOTED)
+        elif action == 'downvote':
+            bg.downvote(user=request.user)
+        else:
+            return Response(
+                status=status.HTTP_304_NOT_MODIFIED,
+                data={
+                    'msg': 'action不存在',
+                    'errono': -1
+                }
+            )
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                    'msg': 'ok',
+                    'errono': 0
+                }
         )

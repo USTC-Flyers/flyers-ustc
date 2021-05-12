@@ -35,22 +35,10 @@ class UserProfileViewSet(
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, *args, **kwargs):
-        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
-        try:
-            if pk == None:
-                result = self.request.user.userprofile
-            else:
-                result = self.queryset.filter(related_user__id=pk).get()
-        except ObjectDoesNotExist:
-            return Response(
-                status=status.HTTP_404_NOT_FOUND,
-                data={
-                    "msg": "未创建申请背景",
-                    "errono": -1
-                }
-            )
-        
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
+        result = get_object_or_404(self.queryset, related_user__id=pk)
         serializer_class = self.get_serializer_class()
+        # !TODO: check duplicate user profile
         data = serializer_class(result).data
         return Response(
             status=status.HTTP_200_OK,

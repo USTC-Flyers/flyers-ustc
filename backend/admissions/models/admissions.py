@@ -1,11 +1,7 @@
 from django.conf import settings
 from django.db import models
-from multiselectfield import MultiSelectField
-from .choice import AdmissionChoices
-from .validators import enrolled_semester
 from django.utils.translation import gettext_lazy as _
 from .university import University
-from .program import Program
 from .background import Background
 
 class Admissions(models.Model):
@@ -58,4 +54,13 @@ class Admissions(models.Model):
     )
     created_time = models.DateTimeField(
         auto_now_add=True
+    )
+    upvoted = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="admissions_upvoted_by",
+        null=True,
+        blank=True
+    )
+    upvoted_count = models.PositiveIntegerField(
+        default=0
     )
