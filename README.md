@@ -24,6 +24,14 @@ python manage.py init_db
 python manage.py runserver
 ```
 
+Make migrations
+```bash
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+python manage.py makemigrations
+```
+
+
 
 ### Production
 [docker-compose](https://docs.docker.com/compose/install/) and [docker](https://docs.docker.com/engine/install/) should be installed.
