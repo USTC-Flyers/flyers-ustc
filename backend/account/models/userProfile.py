@@ -1,9 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from .choice import school_list
-from .validators import contact_email_qq_wechat
-import os
 from .user import User
+from django.apps import apps
 
 SCHOOL_CHOICES = []
 for i, school in enumerate(school_list):
@@ -59,3 +57,43 @@ class UserProfile(models.Model):
         blank=True,
         null=True
     )
+    final_university = models.ForeignKey(
+        "admissions.university",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+    final_program = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+    university = models.CharField(
+        max_length=255,
+        default='ustc'
+    )
+    
+    def get_all_votes_cnt(self):
+        user = self.related_user
+        count_objects = ['admissions', 'background', 'comment_thread', 'comment', 'topic_revision']
+        model_name = ['admissions.admissions', 'admissions.background', 'forum.commentthread', 'forum.comment', 'forum.topicrevision']
+        cnt = 0
+        for i, obj_name in enumerate(count_objects):
+            objs = getattr(user, obj_name)
+            # check is queryset or instance
+            obj_model = apps.get_model(model_name[i])
+            if isinstance(objs, obj_model):
+                cnt += self.get_related_upvoted_count(obj)
+            else:
+                for obj in objs.all():
+                    cnt += self.get_related_upvoted_count(obj)
+        return cnt
+    
+    def get_related_upvoted_count(self, obj):
+        try:
+            return obj.upvoted_count
+        except AttributeError:
+            try:
+                return obj.related_topic.upvoted_count
+            except AttributeError:
+                return 0

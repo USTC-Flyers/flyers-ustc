@@ -170,11 +170,8 @@ class TopicRevisionViewSet(
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, *args, **kwargs):
-        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
-        if pk == None:
-            result = self.request.user.topic_revision_author.all()
-        else:
-            result = self.queryset.filter(related_user__id=pk)
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
+        result = get_object_or_404(self.queryset, related_user__id=pk)
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.TopicRevision)
         result = serializer_class(result, many=many).data

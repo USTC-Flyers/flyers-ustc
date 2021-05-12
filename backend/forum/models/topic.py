@@ -22,7 +22,7 @@ class TopicRevision(models.Model, HitCountMixin):
     copy, do NEVER create m2m relationships."""
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        related_name='topic_revision_author',
+        related_name='topic_revision',
         on_delete=models.CASCADE
     )
     related_topic = models.ForeignKey(

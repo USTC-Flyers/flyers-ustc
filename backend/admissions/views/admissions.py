@@ -27,6 +27,7 @@ apply_for = openapi.Parameter('apply_for', openapi.IN_QUERY, description="apply_
 major = openapi.Parameter('major', openapi.IN_QUERY, description="major", type=openapi.TYPE_STRING)
 tags = openapi.Parameter('tags', openapi.IN_QUERY, description="tags", type=openapi.TYPE_STRING)
 user_response = openapi.Response('data', serializers.AdmissionNestedSerializers(many=True))
+param = openapi.Parameter('action', openapi.IN_QUERY, description="是('upvote', 'downvote')中的一个", type=openapi.TYPE_STRING)
 
 class AdmissionsViewSet(
     mixins.ListModelMixin,
@@ -60,11 +61,8 @@ class AdmissionsViewSet(
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
     def user_detail(self, request, *args, **kwargs):
-        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else None
-        if pk == None:
-            result = self.request.user.admissions.all()
-        else:
-            result = self.queryset.filter(related_user__id=pk)
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
+        result = get_object_or_404(self.queryset, related_user__id=pk)
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.Admissions)
         result = serializer_class(result, many=many).data
@@ -125,6 +123,34 @@ class AdmissionsViewSet(
             data={
                 'admission': admission
             }
+        )
+    
+    # !TODO: refractor
+    @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
+    @action(methods=['put'], detail=True, url_path='action', url_name='action')
+    def action(self, request, pk=None):
+        model_notification = apps.get_model('forum.notification')
+        bg = get_object_or_404(self.queryset, pk=pk)
+        action = request.data['action']
+        if action == 'upvote':
+            bg.upvote(user=request.user)
+            model_notification.notify(bg, to_user=bg.related_user, operation=model_notification.UPVOTED)
+        elif action == 'downvote':
+            bg.downvote(user=request.user)
+        else:
+            return Response(
+                status=status.HTTP_304_NOT_MODIFIED,
+                data={
+                    'msg': 'action不存在',
+                    'errono': -1
+                }
+            )
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                    'msg': 'ok',
+                    'errono': 0
+                }
         )
         
     def get_serializer_class(self):
