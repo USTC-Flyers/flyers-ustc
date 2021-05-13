@@ -2,6 +2,7 @@ from django.db import models
 from .choice import school_list
 from .user import User
 from django.apps import apps
+from django.db.utils import ProgrammingError
 
 SCHOOL_CHOICES = []
 for i, school in enumerate(school_list):
@@ -79,21 +80,24 @@ class UserProfile(models.Model):
         model_name = ['admissions.admissions', 'admissions.background', 'forum.commentthread', 'forum.comment', 'forum.topicrevision']
         cnt = 0
         for i, obj_name in enumerate(count_objects):
-            objs = getattr(user, obj_name)
-            # check is queryset or instance
             obj_model = apps.get_model(model_name[i])
+            try:
+                objs = getattr(user, obj_name)
+            except ProgrammingError:
+                continue
+            # check is queryset or instance
             if isinstance(objs, obj_model):
-                cnt += self.get_related_upvoted_count(obj, obj_model)
+                cnt += self.get_related_upvoted_count(obj)
             else:
                 for obj in objs.all():
-                    cnt += self.get_related_upvoted_count(obj, obj_model)
+                    cnt += self.get_related_upvoted_count(obj)
         return cnt
     
-    def get_related_upvoted_count(self, obj, obj_model):
+    def get_related_upvoted_count(self, obj):
         try:
             return obj.upvoted_count
-        except (AttributeError, obj_model.DoesNotExist):
+        except AttributeError:
             try:
                 return obj.related_topic.upvoted_count
-            except (AttributeError, obj_model.DoesNotExist):
+            except AttributeError:
                 return 0
