@@ -83,17 +83,17 @@ class UserProfile(models.Model):
             # check is queryset or instance
             obj_model = apps.get_model(model_name[i])
             if isinstance(objs, obj_model):
-                cnt += self.get_related_upvoted_count(obj)
+                cnt += self.get_related_upvoted_count(obj, obj_model)
             else:
                 for obj in objs.all():
-                    cnt += self.get_related_upvoted_count(obj)
+                    cnt += self.get_related_upvoted_count(obj, obj_model)
         return cnt
     
-    def get_related_upvoted_count(self, obj):
+    def get_related_upvoted_count(self, obj, obj_model):
         try:
             return obj.upvoted_count
-        except AttributeError:
+        except (AttributeError, obj_model.DoesNotExist):
             try:
                 return obj.related_topic.upvoted_count
-            except AttributeError:
+            except (AttributeError, obj_model.DoesNotExist):
                 return 0
