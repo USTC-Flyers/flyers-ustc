@@ -301,7 +301,7 @@
         <div v-if="active == 2" class="form">
           <el-form label-position="right" label-width="110px">
             <el-form-item label="申请方向的思考">
-              <el-tiptap 
+                <el-tiptap 
                 v-model="form_data.background.comments"
                 placeholder="请输入文章内容"
                 height="300"
@@ -575,20 +575,23 @@ export default {
           });
         admissions_get_my().then((response) => {
           let data = response.user_detail;
+          console.log(data, data.length);
           for (let i = 0; i < data.length; i++) {
+            console.log(data[i]);
             this.$set(this.admissions, i, {
               result: data[i].result,
               enrolledSemester: data[i].enrolledSemester,
               comments: data[i].comments,
               summary: data[i].summary,
               related_university: data[i].related_university.id,
-              related_university_full: data[i].related_university,
+              // related_university_full: data[i].related_university,
               related_program: data[i].related_program,
               id: data[i].id,
             });
             this.$set(this.univ_list, i, [data[i].related_university]);
             // this.$set(this.univ_list, i, [data[i].related_university]);
           }
+          console.log(response, this.admissions, this.univ_list);
         });
       }
       getInfo().then((response) => {
@@ -755,7 +758,8 @@ export default {
   position: relative;
   /* left: 10%; */
 }
-.el-form-item {
+
+.el-form-item__label {
   font-weight: bolder;
 }
 .el-form {
