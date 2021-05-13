@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import Editor from "@tinymce/tinymce-vue";
+// import Editor from "@tinymce/tinymce-vue";
 import { getTopic, updateTopic } from "@/api/wiki";
 export default {
   name: "Revision",
-  components: {
-    Editor,
-  },
+  // components: {
+  //   Editor,
+  // },
   data() {
     return {
       topic_id: null,
@@ -53,5 +53,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

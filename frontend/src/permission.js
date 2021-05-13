@@ -23,7 +23,7 @@ router.beforeEach(async (to, from, next) => {
       // if is logged in, redirect to the home page
       next({ path: "/" });
       NProgress.done();
-    } else if (to.path === "/create_user") {
+    } else if (to.path === "/create_user/initial") {
       next();
     } else {
       const hasGetUserInfo = store.getters.name;
@@ -36,7 +36,7 @@ router.beforeEach(async (to, from, next) => {
 
           next();
         } catch (error) {
-          next({ path: "/create_user" });
+          next({ path: "/create_user/initial" });
           NProgress.done();
           console.log(error);
           // remove token and go to login page to re-login
@@ -44,8 +44,6 @@ router.beforeEach(async (to, from, next) => {
           // Message.error(error || "Has Error");
           // next(`/login?redirect=${to.path}`);
           // NProgress.done();
-
-
         }
       }
     }

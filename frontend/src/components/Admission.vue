@@ -1,109 +1,146 @@
 <template>
   <div class="app-container">
-    <router-link to="/report_admission">
-      <el-button type="success" size="default" style="margin-bottom: 20px">汇报我的录取结果</el-button>
+    <router-link
+      :to="`/report_admission/${is_initial ? 'initial' : 'not_initial'}`"
+    >
+      <el-button
+        v-if="is_initial"
+        type="success"
+        size="default"
+        style="margin-bottom: 20px"
+        icon="el-icon-edit"
+        >汇报我的录取结果</el-button
+      >
+      <el-button
+        v-else
+        type="warning"
+        size="default"
+        style="margin-bottom: 20px"
+        icon="el-icon-edit"
+        >更新我的录取结果</el-button
+      >
     </router-link>
     <div>
       <!-- <div class="filter-container"> -->
-          <div class="filter-container">
-            
-            <el-select v-model="query.major" filterable clearable placeholder="专业" size="small">
-            <el-option
-              v-for="[value, label] in Object.entries(major_list)"
-              :key="value"
-              :label="label"
-              :value="value"
-            ></el-option>
-          </el-select>
-            <el-select v-model="query.rank" clearable placeholder="成绩排名" size="small">
-            <el-option
-              v-for="[value, label] in Object.entries(rank_list)"
-              :key="value"
-              :label="label"
-              :value="value"
-            >
-            </el-option>
-          </el-select>
-            <el-select v-model="query.apply_for" clearable placeholder="主申方向" size="small">
-            <el-option
-              v-for="[value, label] in Object.entries(applyfor_filter)"
-              :key="value"
-              :label="label"
-              :value="value"
-            >
-            </el-option>
-          </el-select>
-            <el-select v-model="query.tags" multiple clearable placeholder="背景 Tag" style="width: 25%" size="small">
-            <el-option
-              v-for="[value, label] in Object.entries(tag_list)"
-              :key="value"
-              :label="label"
-              :value="value"
-            >
-            </el-option>
-          </el-select>
-        </div>
-          
-          
-          
-        <div class="filter-container">
-          <el-select
-            v-model="query.related_university"
-            filterable
-            clearable
-            remote
-            placeholder="请输入学校"
-            :remote-method="querySearchUniv"
-            :loading="univ_loading"
-            @change="query.related_program = null"
-            size="small"
-            ><el-option
-              class="university"
-              v-for="univ in current_univ_list"
-              :key="univ.id"
-              :label="univ.school_name"
-              :value="univ.id"
-            >
-              <div class="name">
-                {{ univ.short_name }}-{{ univ.school_name_cn }}
-              </div>
-              <div class="line2">
-                <span class="fullname">{{ univ.school_name }}</span>
-                <span class="area">{{ univ.area }}</span>
-              </div>
-            </el-option>
-          </el-select>
-          <el-autocomplete
-            v-model="query.related_program"
-            :fetch-suggestions="querySearchProgram"
-            @focus="getPrograms"
-            @clear="clearFocus"
-            placeholder="请输入项目"
-            popper-class="program"
-            clearable
-            :ref="'autocomplete'"
-            size="small"
+      <div class="filter-container">
+        <el-select
+          v-model="query.major"
+          filterable
+          clearable
+          placeholder="专业"
+          size="small"
+        >
+          <el-option
+            v-for="[value, label] in Object.entries(major_list)"
+            :key="value"
+            :label="label"
+            :value="value"
+          ></el-option>
+        </el-select>
+        <el-select
+          v-model="query.rank"
+          clearable
+          placeholder="成绩排名"
+          size="small"
+        >
+          <el-option
+            v-for="[value, label] in Object.entries(rank_list)"
+            :key="value"
+            :label="label"
+            :value="value"
           >
-            <template slot-scope="{ item }">
-              <div class="name">{{ item.name }}</div>
-              <div class="fullname">{{ item.full_name }}</div>
-            </template>
-          </el-autocomplete>
-          <el-select
-            v-model="query.enrolledSemester"
-            placeholder="入学时间"
-            filterable
-            clearable
-            size="small"
+          </el-option>
+        </el-select>
+        <el-select
+          v-model="query.apply_for"
+          clearable
+          placeholder="主申方向"
+          size="small"
+        >
+          <el-option
+            v-for="[value, label] in Object.entries(applyfor_filter)"
+            :key="value"
+            :label="label"
+            :value="value"
           >
-            <el-option
-              v-for="semester in semester_list"
-              :key="semester"
-              :label="semester"
-              :value="semester"
-            ></el-option>
-          </el-select>
-          <!-- <el-select v-model="query.result" placeholder="录取结果">
+          </el-option>
+        </el-select>
+        <el-select
+          v-model="query.tags"
+          multiple
+          clearable
+          placeholder="背景 Tag"
+          style="width: 25%"
+          size="small"
+        >
+          <el-option
+            v-for="[value, label] in Object.entries(tag_list)"
+            :key="value"
+            :label="label"
+            :value="value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+
+      <div class="filter-container">
+        <el-select
+          v-model="query.related_university"
+          filterable
+          clearable
+          remote
+          placeholder="请输入学校"
+          :remote-method="querySearchUniv"
+          :loading="univ_loading"
+          @change="query.related_program = null"
+          size="small"
+          ><el-option
+            class="university"
+            v-for="univ in current_univ_list"
+            :key="univ.id"
+            :label="univ.school_name"
+            :value="univ.id"
+          >
+            <div class="name">
+              {{ univ.short_name }}-{{ univ.school_name_cn }}
+            </div>
+            <div class="line2">
+              <span class="fullname">{{ univ.school_name }}</span>
+              <span class="area">{{ univ.area }}</span>
+            </div>
+          </el-option>
+        </el-select>
+        <el-autocomplete
+          v-model="query.related_program"
+          :fetch-suggestions="querySearchProgram"
+          @focus="getPrograms"
+          @clear="clearFocus"
+          placeholder="请输入项目"
+          popper-class="program"
+          clearable
+          :ref="'autocomplete'"
+          size="small"
+        >
+          <template slot-scope="{ item }">
+            <div class="name">{{ item.name }}</div>
+            <div class="fullname">{{ item.full_name }}</div>
+          </template>
+        </el-autocomplete>
+        <el-select
+          v-model="query.enrolledSemester"
+          placeholder="入学时间"
+          filterable
+          clearable
+          size="small"
+        >
+          <el-option
+            v-for="semester in semester_list"
+            :key="semester"
+            :label="semester"
+            :value="semester"
+          ></el-option>
+        </el-select>
+        <!-- <el-select v-model="query.result" placeholder="录取结果">
             <el-option
               v-for="[label, value] in Object.entries(result_list)"
               :key="label"
@@ -111,17 +148,25 @@
               :value="value"
             ></el-option>
           </el-select> -->
-          <el-button-group>
-            <el-button type="primary" icon="el-icon-search" @click="handleSearch" size="small">
-             搜索
+        <el-button-group>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="handleSearch"
+            size="small"
+          >
+            搜索
           </el-button>
-          <el-button type="primary" icon="el-icon-refresh-right" @click="clearSearch" size="small">
-             重置
+          <el-button
+            type="primary"
+            icon="el-icon-refresh-right"
+            @click="clearSearch"
+            size="small"
+          >
+            重置
           </el-button>
-          </el-button-group>
-            
-          
-        </div>
+        </el-button-group>
+      </div>
       <!-- </div> -->
 
       <el-table
@@ -212,7 +257,12 @@
             <el-tag v-if="row.background.apply_for" type="info" size="mini">
               {{ row.background.apply_for | applyFilter }}
             </el-tag>
-            <el-tag v-for="tag in row.background.tags" :type="tag | tagTypeFilter" :key="tag" size="mini">
+            <el-tag
+              v-for="tag in row.background.tags"
+              :type="tag | tagTypeFilter"
+              :key="tag"
+              size="mini"
+            >
               {{ tag | tagFilter }}
             </el-tag>
           </template>
@@ -289,12 +339,12 @@
               <div class="dialog-block">
                 <i class="el-icon-arrow-right dialog-title"> 申请方向的思考</i>
                 <!-- <p>{{ row.background.comments }}</p> -->
-                <div v-html="row.background.comments"/>
+                <div v-html="row.background.comments" />
               </div>
               <div class="dialog-block">
                 <i class="el-icon-arrow-right dialog-title"> 申请感言</i>
                 <!-- <p>{{ row.background.summary }}</p> -->
-                <div v-html="row.background.summary"/>
+                <div v-html="row.background.summary" />
               </div>
             </el-dialog>
           </template>
@@ -311,6 +361,7 @@ import {
   university_query,
   programs_get,
 } from "@/api/admission";
+import { background_get_my } from "@/api/background";
 // import { getInfo } from "@/api/user"
 import {
   major_list,
@@ -324,6 +375,13 @@ import {
 export default {
   name: "Admission",
   filters: {
+    isInitialFilter(value) {
+      const map = {
+        true: 1,
+        false: 0,
+      };
+      return map[value];
+    },
     adrejFilter(value) {
       const map = {
         true: "AD",
@@ -356,18 +414,18 @@ export default {
     },
     tagTypeFilter(tag) {
       const map = {
-        "oversea_research": "",
-        "first_author": "",
-        "paper": "",
-        "internship": "",
-        "oversea_refer": "warning",
-        "bigname_refer": "warning",
-        "connection": "warning"
+        oversea_research: "",
+        first_author: "",
+        paper: "",
+        internship: "",
+        oversea_refer: "warning",
+        bigname_refer: "warning",
+        connection: "warning",
       };
       return map[tag];
-    }
+    },
   },
-  
+
   data() {
     return {
       semester_list,
@@ -393,10 +451,18 @@ export default {
       univ_loading: false,
       current_univ_list: [],
       current_program_list: [],
+      is_initial: true,
     };
   },
-  mounted() {
+  created() {
     this.tag_list = Object.assign({}, research_tags, ref_tags);
+    background_get_my()
+      .then(() => {
+        this.is_initial = false;
+      })
+      .catch(() => {
+        this.is_initial = true;
+      });
     this.getTable(true);
   },
   methods: {
@@ -425,16 +491,16 @@ export default {
     },
     getTable(is_init) {
       this.table_loading = true;
-      if(is_init) {
+      if (is_init) {
         admissions_get_all().then((response) => {
           this.getTableData(response.results);
           this.table_loading = false;
         });
       } else {
         admissions_query(this.query).then((response) => {
-        this.getTableData(response.condition_query)
-        this.table_loading = false;
-      })
+          this.getTableData(response.condition_query);
+          this.table_loading = false;
+        });
       }
     },
     getTableData(data) {
@@ -460,7 +526,7 @@ export default {
         this.summary_visible.push(false);
       });
     },
-    
+
     querySearchUniv(query_string) {
       if (query_string != "") {
         this.univ_loading = true;
@@ -543,6 +609,6 @@ export default {
   font-weight: bolder;
 }
 .el-button-group {
-  margin-left:15px;
+  margin-left: 15px;
 }
 </style>

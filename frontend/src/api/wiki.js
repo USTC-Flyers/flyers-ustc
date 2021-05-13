@@ -42,6 +42,6 @@ export function updateTopic(id, data) {
 export function getTopicMeta() {
   return request({
     url: "/topic/get_meta_title/",
-    method: "get"
-  })
+    method: "get",
+  });
 }
