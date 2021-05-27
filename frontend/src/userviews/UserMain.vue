@@ -88,7 +88,12 @@
               <el-tag type="info" size="mini">
                 {{ row.background.apply_for | applyFilter }}
               </el-tag>
-              <el-tag v-for="tag in row.background.tags" :type="tag" :key="tag | tagTypeFilter" size="mini">
+              <el-tag
+                v-for="tag in row.background.tags"
+                :type="tag"
+                :key="tag | tagTypeFilter"
+                size="mini"
+              >
                 {{ tag | tagFilter }}
               </el-tag>
             </template>
@@ -96,15 +101,10 @@
 
           <el-table-column prop="" label="申请总结" width="150" align="center">
             <template slot-scope="{ row }">
-              <el-button
-                type="text"
-                @click="backgroundVisible = true"
+              <el-button type="text" @click="backgroundVisible = true"
                 >完整申请背景</el-button
               >
-              <el-dialog
-                title="个人背景"
-                :visible.sync="backgroundVisible"
-              >
+              <el-dialog title="个人背景" :visible.sync="backgroundVisible">
                 <el-form label-position="right" label-width="auto">
                   <el-row>
                     <el-col :span="11">
@@ -114,7 +114,9 @@
                     </el-col>
                     <el-col :span="13">
                       <el-form-item label="方向:" size="mini">
-                        <span>{{ row.background.apply_for | applyFilter }}</span>
+                        <span>{{
+                          row.background.apply_for | applyFilter
+                        }}</span>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -158,19 +160,18 @@
               <el-button type="text" @click="summaryVisible = true"
                 >总结与感想</el-button
               >
-              <el-dialog
-                :visible.sync="summaryVisible"
-                custom-class="dialog"
-              >
+              <el-dialog :visible.sync="summaryVisible" custom-class="dialog">
                 <div class="dialog-block">
-                  <i class="el-icon-arrow-right dialog-title"> 申请方向的思考</i>
+                  <i class="el-icon-arrow-right dialog-title">
+                    申请方向的思考</i
+                  >
                   <!-- <p>{{ row.background.comments }}</p> -->
-                  <div v-html="row.background.comments"/>
+                  <div v-html="row.background.comments" />
                 </div>
                 <div class="dialog-block">
                   <i class="el-icon-arrow-right dialog-title"> 申请感言</i>
                   <!-- <p>{{ row.background.summary }}</p> -->
-                  <div v-html="row.background.summary"/>
+                  <div v-html="row.background.summary" />
                 </div>
               </el-dialog>
             </template>
@@ -205,7 +206,7 @@
         </el-table-column>
       </el-table> -->
     </el-row>
-    
+
     <el-row>
       <h3>我的问答</h3>
     </el-row>
@@ -263,16 +264,16 @@ export default {
     },
     tagTypeFilter(tag) {
       const map = {
-        "oversea_research": "",
-        "first_author": "",
-        "paper": "",
-        "internship": "",
-        "oversea_refer": "warning",
-        "bigname_refer": "warning",
-        "connection": "warning"
+        oversea_research: "",
+        first_author: "",
+        paper: "",
+        internship: "",
+        oversea_refer: "warning",
+        bigname_refer: "warning",
+        connection: "warning",
       };
       return map[tag];
-    }
+    },
   },
   data: function () {
     return {
@@ -280,7 +281,7 @@ export default {
       experienceVisible: false,
       backgroundVisible: false,
       summaryVisible: false,
-    }
+    };
   },
   mounted() {
     this.getTable();
@@ -318,8 +319,8 @@ export default {
         this.summaryVisible = false;
       });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

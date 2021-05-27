@@ -61,7 +61,7 @@ const actions = {
         });
     });
   },
-  
+
   // get user info
   getInfo({ commit }) {
     return new Promise((resolve, reject) => {
@@ -88,7 +88,7 @@ const actions = {
         });
     });
   },
-  setInfo({ commit }, name){
+  setInfo({ commit }, name) {
     commit("SET_NAME", name);
   },
   // user logout

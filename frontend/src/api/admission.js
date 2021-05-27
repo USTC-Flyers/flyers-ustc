@@ -18,7 +18,7 @@ export function admissions_query(data) {
   return request({
     url: "/admissions/condition_query/",
     method: "post",
-    data
+    data,
   });
 }
 
@@ -27,6 +27,13 @@ export function university_query(query_string) {
     url: "/university/",
     method: "get",
     params: { query: query_string },
+  });
+}
+
+export function university_get(univ_id) {
+  return request({
+    url: `/university/${univ_id}/`,
+    method: "get",
   });
 }
 

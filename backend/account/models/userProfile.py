@@ -83,7 +83,7 @@ class UserProfile(models.Model):
             obj_model = apps.get_model(model_name[i])
             try:
                 objs = getattr(user, obj_name)
-            except (ProgrammingError, obj_name.DoesNotExist, ValueError):
+            except (ProgrammingError, obj_model.DoesNotExist, ValueError):
                 continue
             # check is queryset or instance
             if isinstance(objs, obj_model):

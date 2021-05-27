@@ -7,40 +7,53 @@
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
-        <div style=" float: right;">
+        <div style="float: right">
           <el-dropdown>
-          <el-badge :value="notificationCount" class="item">
-            <el-button size="small">通知</el-button>
-          </el-badge>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(message, index) in messageList" :key="message + index" :id="index + '-' + notificationList[index].id"> 
-              <template>
-                <router-link :to="{ path: `${pathMap(notificationList[index].obj_name)}/${notificationList[index].id}/`}">
-                  <el-button type="text" size="small">
-                    {{message}} 
-                  </el-button>
-                </router-link>
-              </template>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleMessageMore">
+            <el-badge :value="notificationCount" class="item">
+              <el-button size="small">通知</el-button>
+            </el-badge>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="(message, index) in messageList"
+                :key="message + index"
+                :id="index + '-' + notificationList[index].id"
+              >
+                <template>
+                  <router-link
+                    :to="{
+                      path: `${pathMap(notificationList[index].obj_name)}/${
+                        notificationList[index].id
+                      }/`,
+                    }"
+                  >
+                    <el-button type="text" size="small">
+                      {{ message }}
+                    </el-button>
+                  </router-link>
+                </template>
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="handleMessageMore">
                 更多
-            </el-dropdown-item>
-          </el-dropdown-menu>
+              </el-dropdown-item>
+            </el-dropdown-menu>
           </el-dropdown>
           <el-dropdown class="user-name">
             <span class="el-dropdown-link">
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="clickUserMain">个人主页</el-dropdown-item>
-              <el-dropdown-item @click.native="clickUserProfile">个人信息</el-dropdown-item>
+              <el-dropdown-item @click.native="clickUserMain"
+                >个人主页</el-dropdown-item
+              >
+              <el-dropdown-item @click.native="clickUserProfile"
+                >个人信息</el-dropdown-item
+              >
               <el-dropdown-item divided @click.native="logout">
                 退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        
 
         <!-- <div class="right-menu" v-if="notificationCount > 0 ">
           
@@ -80,7 +93,7 @@
 </template>
 
 <script>
-import {initNotification, initNotificationCount} from "@/api/user"
+import { initNotification, initNotificationCount } from "@/api/user";
 export default {
   name: "Home",
   data() {
@@ -88,7 +101,7 @@ export default {
       activeIndex: "",
       notificationCount: 0,
       messageList: null,
-      notificationList: null
+      notificationList: null,
     };
   },
   computed: {
@@ -98,37 +111,41 @@ export default {
   },
   created() {
     // fetch notification
-    initNotificationCount().then((resp) => {
-      this.notificationCount = resp.unread_count;
-    }).catch((err) => {
-      console.log(err);
-    });
+    initNotificationCount()
+      .then((resp) => {
+        this.notificationCount = resp.unread_count;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    initNotification().then((resp) => {
-      console.log("initNotification");
-      let data = resp.unread;
-      this.messageList = new Array();
-      this.notificationList = new Array();
-      for (let i = 0; i < data.length; ++i) {
-        this.messageList.push(data[i].message);
-        this.notificationList.push({
-          "id": data[i].ref_obj_id,
-          "obj_name": data[i].ref_obj_name,
-          "operation": data[i].operation
-        });
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
+    initNotification()
+      .then((resp) => {
+        console.log("initNotification");
+        let data = resp.unread;
+        this.messageList = new Array();
+        this.notificationList = new Array();
+        for (let i = 0; i < data.length; ++i) {
+          this.messageList.push(data[i].message);
+          this.notificationList.push({
+            id: data[i].ref_obj_id,
+            obj_name: data[i].ref_obj_name,
+            operation: data[i].operation,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     clickUserMain: function () {
       console.log("clickUserMain");
-      this.$router.push('/usermain');
+      this.$router.push("/usermain");
     },
     clickUserProfile: function () {
       console.log("clickUserProfile");
-      this.$router.push('/create_user');
+      this.$router.push("/create_user/not_initial");
     },
     logout: function () {
       console.log("click logout");
@@ -136,12 +153,14 @@ export default {
     clickNotification(index) {
       console.log("click notification");
       const notification = this.notificationList[index];
-      this.$router.push({ 'path': '/' + notification.ref_obj_name,  query: {id: notification.id}});
+      this.$router.push({
+        path: "/" + notification.ref_obj_name,
+        query: { id: notification.id },
+      });
     },
     pathMap(name) {
-          if (name === 'TopicRevision')
-            return 'topic_revision'
-          return name
+      if (name === "TopicRevision") return "topic_revision";
+      return name;
     },
     handleMessageMore() {
       this.$router.push({ path: "/notificaiton" }, () => {});

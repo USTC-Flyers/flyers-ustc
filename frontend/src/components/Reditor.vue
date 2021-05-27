@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import Editor from "@tinymce/tinymce-vue";
+// import Editor from "@tinymce/tinymce-vue";
 
 export default {
   name: "blog",
-  components: {
-    editor: Editor,
-  },
+  // components: {
+  //   editor: Editor,
+  // },
   data() {
     return {
       content: null,
