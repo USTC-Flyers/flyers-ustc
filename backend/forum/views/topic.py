@@ -61,7 +61,7 @@ class TopicViewSet(
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
         # 管理员自动更新
-        if self.user.is_admin():
+        if self.request.user.is_admin():
             topic.set_valid_and_update(topic_revision)
             models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)

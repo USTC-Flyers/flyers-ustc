@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.conf import settings
 from urllib.request import urlopen
 from urllib.parse import urlencode
@@ -10,8 +10,12 @@ class User(AbstractUser):
     id = models.CharField(max_length=255, primary_key=True)
     
     def is_admin(self):
-        return 'flyers-admin' in self.groups.all()
-    
+        try:
+            g = self.groups.get(name='flyers-admin')
+            return True
+        except Group.DoesNotExist:
+            return False
+            
     @staticmethod
     def verify(ticket, service):
         id, uid = User.check_ticket(ticket, service)
