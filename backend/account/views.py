@@ -61,7 +61,7 @@ class UserViewSet(
     serializer_class = serializers.UserSerializer
     queryset = models.User.objects.all()
     
-    @action(methods=['get'], detail=True, url_path='is_admin', url_name='is_admin')
+    @action(methods=['get'], detail=False, url_path='is_admin', url_name='is_admin')
     def role(self, request, pk=None, *args, **kwargs):
         return Response(
             data={

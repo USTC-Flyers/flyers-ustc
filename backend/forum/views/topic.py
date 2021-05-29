@@ -55,7 +55,7 @@ class TopicViewSet(
             'related_topic': topic.id,
             # 'related_user': self.request.user.id,
             'revision_number': revision_number,
-            **request.data.dict(),
+            **request.data,
         })
         topic_revision_serializer.is_valid(raise_exception=True)
         # ! TODO: clean content
