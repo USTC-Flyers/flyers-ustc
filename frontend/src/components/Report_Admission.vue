@@ -301,19 +301,17 @@
         <div v-if="active == 2" class="form">
           <el-form label-position="right" label-width="110px">
             <el-form-item label="申请方向的思考">
-                <el-tiptap 
+              <tiptap-editor
                 v-model="form_data.background.comments"
                 placeholder="请输入文章内容"
                 height="300"
-                :extensions="extensions" 
               />
             </el-form-item>
             <el-form-item label="其他申请感言">
-              <el-tiptap 
+              <tiptap-editor
                 v-model="form_data.background.summary"
                 placeholder="请输入文章内容"
                 height="300"
-                :extensions="extensions" 
               />
             </el-form-item>
           </el-form>
@@ -371,32 +369,13 @@ import {
   ref_tags,
   tags_mapper,
 } from "@/assets/data.json";
-
-import {
-  // 需要的 extensions
-  Doc,
-  Text,
-  Paragraph,
-  Heading,
-  Bold,
-  Underline,
-  Italic,
-  Strike,
-  HardBreak,
-  Indent,
-  Blockquote,
-  Link,
-  ListItem,
-  BulletList,
-  OrderedList,
-  FormatClear
-} from 'element-tiptap'
-
+import TiptapEditor from "./TiptapEditor"
 import ReportItem from "./ReportItem";
 export default {
   name: "Report_Admission",
   components: {
     ReportItem,
+    TiptapEditor
   },
   data() {
     return {
@@ -463,24 +442,7 @@ export default {
       // current_program_list: [[]],
       user_id: null,
       contact: "",
-      extensions: [
-        new Doc(),
-        new Text(),
-        new Paragraph(),
-        new Heading({ level: 5 }),
-        new Bold({ bubble: true }), // 在气泡菜单中渲染菜单按钮
-        new Underline({ bubble: true}), // 在气泡菜单而不在菜单栏中渲染菜单按钮
-        new Italic(),
-        new Strike(),
-        new HardBreak(),
-        new Indent(),
-        new Blockquote(),
-        new Link(),
-        new ListItem(),
-        new BulletList(),
-        new OrderedList(),
-        new FormatClear(),
-      ],
+      
     };
   },
 
