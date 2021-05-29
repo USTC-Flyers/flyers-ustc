@@ -1,5 +1,5 @@
 from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
@@ -61,7 +61,7 @@ class TopicViewSet(
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
         # 管理员自动更新
-        if self.user.is_admin():
+        if self.request.user.is_admin():
             topic.set_valid_and_update(topic_revision)
             models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
@@ -82,6 +82,32 @@ class TopicViewSet(
             data={
                 'title': data
             }
+        )
+        
+    @action(methods=['get'], detail=False, url_path='category', url_name='category')
+    def get_category(self, request):
+        groups = Group.objects.all()
+        group_name = []
+        for group in groups:
+            if group.name == 'flyers-admin':
+                continue
+            group_name.append(group.name)
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                'category': group_name
+            }
+        )
+    
+    @action(methods=['patch'], detail=False, url_path='category', url_name='category') 
+    def change_category(self, request):
+        old_name = request.data['old_category']
+        new_name = request.data['new_category']
+        group = get_object_or_404(Group.objects.all(), name=old_name)
+        group.name = new_name
+        group.save()
+        return Response(
+            status=status.HTTP_200_OK
         )
     
     @action(methods=['get'], detail=False, url_path='follow', url_name='follow')
@@ -130,6 +156,7 @@ class TopicViewSet(
                     'errono': 0
                 }
         )
+        
     def get_serializer_class(self):
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:

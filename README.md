@@ -30,7 +30,11 @@ find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 find . -path "*/migrations/*.pyc"  -delete
 python manage.py makemigrations
 ```
-
+Register super user 
+```shell
+echo "from account.models import User; User.objects.create_superuser('flyers', '', 'flyers')" | python manage.py shell
+```
+`admin` site should be accessed with `/api/admin`. 
 
 
 ### Production
