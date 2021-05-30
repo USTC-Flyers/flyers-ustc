@@ -11,11 +11,12 @@ import {
     HardBreak,
     Indent,
     Blockquote,
-    Link,
+    //Link,
+    Image,
     ListItem,
     BulletList,
-    //OrderedList,
-    FormatClear
+    OrderedList,
+    FormatClear,
   } from 'element-tiptap'
 
   export default{
@@ -31,10 +32,11 @@ import {
         new HardBreak(),
         new Indent(),
         new Blockquote(),
-        new Link(),
+        new Image(),
+        //new Link(),
         new ListItem(),
         new BulletList(),
-        //new OrderedList(),
+        new OrderedList(),
         new FormatClear(),
     ],
   }
