@@ -10,7 +10,7 @@
 
 <script>
 //import 'element-tiptap';
-import 'element-tiptap/lib/index.css';
+import './tiptap.css';
 import defaultExtensions from './default-extensions'
 import {ElementTiptap } from 'element-tiptap'
 
