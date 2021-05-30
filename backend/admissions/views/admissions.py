@@ -7,11 +7,9 @@ from rest_framework.exceptions import NotAcceptable
 from django.shortcuts import get_object_or_404
 from django.db.utils import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
-from django.contrib.postgres.search import SearchVector, TrigramSimilarity
-from django.db.models.functions import Greatest
-from ..serializers import ProgramSerializer
+from django.contrib.postgres.search import TrigramSimilarity
 from django.apps import apps
-from django.db.models import Q, Prefetch
+from django.db.models import Q
 from ..models import rank_tag
 from drf_yasg import openapi
 from .. import models
@@ -127,7 +125,7 @@ class AdmissionsViewSet(
     
     # !TODO: refractor
     @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
-    @action(methods=['put'], detail=True, url_path='action', url_name='action')
+    @action(methods=['patch'], detail=True, url_path='action', url_name='action')
     def action(self, request, pk=None):
         model_notification = apps.get_model('forum.notification')
         bg = get_object_or_404(self.queryset, pk=pk)

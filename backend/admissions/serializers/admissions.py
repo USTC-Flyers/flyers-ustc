@@ -11,12 +11,18 @@ class AdmissionsSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='admissions.related_user')
     referTag = serializers.CharField(required=False)
     related_background = serializers.ReadOnlyField(source='admissions.related_background')
-        
+    upvoted = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = models.Admissions
         db_table = 't_admissions'
         fields = '__all__'
         lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
 
     #!FIXME: override the default is_valid
     def is_valid(self, raise_exception=False):
@@ -47,12 +53,18 @@ class AdmissionNestedSerializers(serializers.ModelSerializer):
     related_university = UniversitySerializer()
     related_background = BackgroundSerializers()
     related_user = UserInfoSerializer()
+    upvoted = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = models.Admissions
         db_table = 't_admissions'
         fields = '__all__'
         lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
         
     def is_valid(self, raise_exception=False):
         valid = super().is_valid(raise_exception=raise_exception)

@@ -3,11 +3,18 @@ from .. import models
 
 class BackgroundSerializers(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='background.related_user')
+    upvoted = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = models.Background
         db_table = 't_background'
         fields = '__all__'
         lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
         
     def is_valid(self, raise_exception=False):
         valid = super().is_valid(raise_exception=raise_exception)

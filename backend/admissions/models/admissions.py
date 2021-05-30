@@ -64,3 +64,15 @@ class Admissions(models.Model):
     upvoted_count = models.PositiveIntegerField(
         default=0
     )
+    
+    def upvote(self, user):
+        if self not in user.admissions_upvoted_by.all():
+            user.admissions_upvoted_by.add(self)
+            self.upvoted_count += 1
+            self.save()
+        
+    def downvote(self, user):
+        if self in user.admissions_upvoted_by.all():
+            user.admissions_upvoted_by.remove(self)
+            self.upvoted_count -= 1
+            self.save()

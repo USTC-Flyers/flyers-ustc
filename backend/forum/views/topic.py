@@ -13,6 +13,8 @@ from .. import serializers
 from .. import permissions
 
 param = openapi.Parameter('action', openapi.IN_QUERY, description="是('upvote', 'downvote', 'pin', 'unpin', 'follow', 'unfollow')中的一个", type=openapi.TYPE_STRING)
+param_category = openapi.Parameter('old_category', openapi.IN_QUERY, description="被更改的类别名，如果为空 则为新增类别", type=openapi.TYPE_STRING)
+param_category_new = openapi.Parameter('new_category', openapi.IN_QUERY, description="更改的类别名", type=openapi.TYPE_STRING)
 
 class TopicViewSet(
     mixins.ListModelMixin,
@@ -84,7 +86,7 @@ class TopicViewSet(
             }
         )
         
-    @action(methods=['get'], detail=False, url_path='category', url_name='category')
+    @action(methods=['get'], detail=False, url_path='get_category', url_name='get_category')
     def get_category(self, request):
         groups = Group.objects.all()
         group_name = []
@@ -99,16 +101,24 @@ class TopicViewSet(
             }
         )
     
-    @action(methods=['patch'], detail=False, url_path='category', url_name='category') 
+    @swagger_auto_schema(method='patch', manual_parameters=[param_category, param_category_new], responses={'200': '更改成功', '201': '新建成功'})
+    @action(methods=['patch'], detail=False, url_path='change_category', url_name='change_category') 
     def change_category(self, request):
-        old_name = request.data['old_category']
+        old_name = request.data.get('old_category', None)
         new_name = request.data['new_category']
-        group = get_object_or_404(Group.objects.all(), name=old_name)
-        group.name = new_name
-        group.save()
-        return Response(
-            status=status.HTTP_200_OK
-        )
+        if old_name is None:
+            group = Group.objects.create(name=new_name)
+            group.save()
+            return Response(
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            group = get_object_or_404(Group.objects.all(), name=old_name)
+            group.name = new_name
+            group.save()
+            return Response(
+                status=status.HTTP_200_OK
+            )
     
     @action(methods=['get'], detail=False, url_path='follow', url_name='follow')
     def follow(self, request, *args, **kwargs):
@@ -128,7 +138,14 @@ class TopicViewSet(
     @action(methods=['patch'], detail=True, url_path='action', url_name='action')
     def action(self, request, pk=None, *args, **kwargs):
         topic = get_object_or_404(self.queryset, pk=pk)
-        action = request.data['action']
+        action = request.data.get('action', None)
+        if action is None:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={
+                    'msg': 'action不存在',
+                }
+            )
         if action == 'upvote':
             topic.upvote(user=request.user)
         elif action == 'downvote':

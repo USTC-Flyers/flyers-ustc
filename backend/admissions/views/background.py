@@ -53,7 +53,7 @@ class BackgroundViewSet(
         )
         
     @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
-    @action(methods=['put'], detail=True, url_path='action', url_name='action')
+    @action(methods=['patch'], detail=True, url_path='action', url_name='action')
     def action(self, request, pk=None):
         model_notification = apps.get_model('forum.notification')
         bg = get_object_or_404(self.queryset, pk=pk)
