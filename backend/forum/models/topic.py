@@ -154,16 +154,24 @@ class Topic(models.Model):
             new_revision.save()
             return True
         return False
+    
+    def get_followed(self):
+        user = self.context['request']
+        return user in self.followed.all()
+    
+    def get_upvote(self):
+        user = self.context['request']
+        return user in self.upvoted.all()
         
     def follow(self, user):
-        if user not in user.topic_followed_by.all():
-            user.topic_followed_by.add(self)
+        if user not in self.followed.all():
+            self.followed.add(user)
             self.followed_count += 1
             self.save()
             
     def unfollow(self, user):
-        if user in user.topic_followed_by.all():
-            user.topic_followed_by.remove(self)
+        if user in self.followed.all():
+            self.followed.add(user)
             self.followed_count -= 1
             self.save()
             
