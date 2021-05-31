@@ -7,6 +7,7 @@ import Notification from "@/components/Notification.vue";
 import Wiki from "@/components/Wiki.vue";
 import Report_Admission from "@/components/Report_Admission.vue";
 import Topic from "@/components/Topic.vue";
+import AddTopic from "@/components/AddTopic.vue";
 import Revision from "@/components/Revision.vue";
 import UserMain from "@/userviews/UserMain.vue";
 Vue.use(VueRouter);
@@ -34,6 +35,7 @@ const routes = [
         path: "/wiki",
         component: Wiki,
         children: [
+          { path: "/add_topic/", component: AddTopic, meta: { keepAlive: false } },
           { path: "/topic/:id", component: Topic, meta: { keepAlive: false } },
           {
             path: "/revision/:id",

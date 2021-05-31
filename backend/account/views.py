@@ -3,7 +3,6 @@ from rest_framework.decorators import action
 from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_jwt.settings import api_settings
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
@@ -18,7 +17,6 @@ from django.contrib.auth.models import update_last_login
 from . import models
 from . import serializers
 from . import permissions
-from .models import User
 
 class UserProfileViewSet(
     mixins.CreateModelMixin,
@@ -61,7 +59,7 @@ class UserViewSet(
     serializer_class = serializers.UserSerializer
     queryset = models.User.objects.all()
     
-    @action(methods=['get'], detail=True, url_path='is_admin', url_name='is_admin')
+    @action(methods=['get'], detail=False, url_path='is_admin', url_name='is_admin')
     def role(self, request, pk=None, *args, **kwargs):
         return Response(
             data={

@@ -1,12 +1,13 @@
 import Vue from "vue";
-
+//
 import ElementUI from "element-ui";
-import { ElementTiptapPlugin } from 'element-tiptap';
-
 import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/en"; // lang i18n
-// import this package's styles
-import 'element-tiptap/lib/index.css';
+// import this package's 
+
+
+import { ElementTiptapPlugin } from 'element-tiptap';
+
 
 import App from "./App";
 import store from "./store";

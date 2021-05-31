@@ -22,13 +22,19 @@ class TopicRevisionSerializer(serializers.ModelSerializer):
         return valid
         
 class TopicSerializer(serializers.ModelSerializer):
-    hit_count = serializers.ReadOnlyField()
+    followed = serializers.BooleanField(read_only=True)
+    upvoted = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = models.Topic
         db_table = 't_topic'
         fields = '__all__'
         lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
         
     def is_valid(self, raise_exception=False):
         valid = super().is_valid(raise_exception=raise_exception)
@@ -43,6 +49,18 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class TopicNestedSerializer(serializers.ModelSerializer):
     current_version = TopicRevisionSerializer()
+    followed = serializers.SerializerMethodField(read_only=True)
+    upvoted = serializers.SerializerMethodField(read_only=True)
+    
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
+    
+    def get_followed(self, obj):
+        user = self.context['request'].user
+        res = user in obj.followed.all()
+        return res
     
     class Meta:
         model = models.Topic

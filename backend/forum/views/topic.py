@@ -1,5 +1,5 @@
 from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
@@ -13,9 +13,10 @@ from .. import serializers
 from .. import permissions
 
 param = openapi.Parameter('action', openapi.IN_QUERY, description="是('upvote', 'downvote', 'pin', 'unpin', 'follow', 'unfollow')中的一个", type=openapi.TYPE_STRING)
+param_category = openapi.Parameter('old_category', openapi.IN_QUERY, description="被更改的类别名，如果为空 则为新增类别", type=openapi.TYPE_STRING)
+param_category_new = openapi.Parameter('new_category', openapi.IN_QUERY, description="更改的类别名", type=openapi.TYPE_STRING)
 
 class TopicViewSet(
-    mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,
@@ -55,13 +56,13 @@ class TopicViewSet(
             'related_topic': topic.id,
             # 'related_user': self.request.user.id,
             'revision_number': revision_number,
-            **request.data.dict(),
+            **request.data,
         })
         topic_revision_serializer.is_valid(raise_exception=True)
         # ! TODO: clean content
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
         # 管理员自动更新
-        if self.user.is_admin():
+        if self.request.user.is_admin():
             topic.set_valid_and_update(topic_revision)
             models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
@@ -83,13 +84,47 @@ class TopicViewSet(
                 'title': data
             }
         )
+        
+    @action(methods=['get'], detail=False, url_path='get_category', url_name='get_category')
+    def get_category(self, request):
+        groups = Group.objects.all()
+        group_name = []
+        for group in groups:
+            if group.name == 'flyers-admin':
+                continue
+            group_name.append(group.name)
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                'category': group_name
+            }
+        )
+    
+    @swagger_auto_schema(method='patch', manual_parameters=[param_category, param_category_new], responses={'200': '更改成功', '201': '新建成功'})
+    @action(methods=['patch'], detail=False, url_path='change_category', url_name='change_category') 
+    def change_category(self, request):
+        old_name = request.data.get('old_category', None)
+        new_name = request.data['new_category']
+        if old_name is None:
+            group = Group.objects.create(name=new_name)
+            group.save()
+            return Response(
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            group = get_object_or_404(Group.objects.all(), name=old_name)
+            group.name = new_name
+            group.save()
+            return Response(
+                status=status.HTTP_200_OK
+            )
     
     @action(methods=['get'], detail=False, url_path='follow', url_name='follow')
     def follow(self, request, *args, **kwargs):
         result = self.request.user.topic_followed_by.all()
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.Topic)
-        result = serializer_class(result, many=many).data
+        result = serializer_class(result, many=many, context={'request': request}).data
         data = {
             'follow': result
         }
@@ -102,7 +137,14 @@ class TopicViewSet(
     @action(methods=['patch'], detail=True, url_path='action', url_name='action')
     def action(self, request, pk=None, *args, **kwargs):
         topic = get_object_or_404(self.queryset, pk=pk)
-        action = request.data['action']
+        action = request.data.get('action', None)
+        if action is None:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={
+                    'msg': 'action不存在',
+                }
+            )
         if action == 'upvote':
             topic.upvote(user=request.user)
         elif action == 'downvote':
@@ -114,7 +156,7 @@ class TopicViewSet(
         elif action == 'follow':
             topic.follow(user=request.user)
         elif action == 'unfollow':
-            topic.follow(user=request.user)
+            topic.unfollow(user=request.user)
         else:
             return Response(
                 status=status.HTTP_304_NOT_MODIFIED,
@@ -130,6 +172,7 @@ class TopicViewSet(
                     'errono': 0
                 }
         )
+        
     def get_serializer_class(self):
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:
@@ -174,7 +217,7 @@ class TopicRevisionViewSet(
         result = self.queryset.filter(related_user__id=pk)
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.TopicRevision)
-        result = serializer_class(result, many=many).data
+        result = serializer_class(result, many=many, context={'request': request}).data
         data = {
             'user_detail': result
         }

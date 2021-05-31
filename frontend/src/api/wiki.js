@@ -1,13 +1,5 @@
 import request from "@/utils/request";
 
-export function background_create(data) {
-  return request({
-    url: "/background/",
-    method: "post",
-    data,
-  });
-}
-
 export function createTopic(data) {
   return request({
     url: "/topic/",
@@ -43,5 +35,45 @@ export function getTopicMeta() {
   return request({
     url: "/topic/get_meta_title/",
     method: "get",
+  });
+}
+
+export function getTopicCategory() {
+  return request({
+    url: "/topic/get_category/",
+    method: "get",
+  });
+}
+
+export function upvoteTopic(id) {
+  return request({
+    url: `/topic/${id}/action/`,
+    method: "patch",
+    data: { action: "upvote"},
+  });
+}
+
+export function downvoteTopic(id) {
+  return request({
+    url: `/topic/${id}/action/`,
+    method: "patch",
+    data: { action: "downvote"},
+  });
+}
+
+
+export function followTopic(id) {
+  return request({
+    url: `/topic/${id}/action/`,
+    method: "patch",
+    data: { action: "follow"},
+  });
+}
+
+export function unfollowTopic(id) {
+  return request({
+    url: `/topic/${id}/action/`,
+    method: "patch",
+    data: { action: "unfollow" },
   });
 }
