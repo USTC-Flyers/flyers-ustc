@@ -3,6 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotAcceptable
+from django.db.utils import IntegrityError
 from django.apps import apps
 from drf_yasg import openapi
 from .. import permissions
@@ -31,6 +33,12 @@ class BackgroundViewSet(
             data=models.major,
             status=status.HTTP_200_OK
         )
+        
+    def perform_create(self, serializer):
+        try:
+            serializer.save(related_user=self.request.user)
+        except IntegrityError:
+            raise NotAcceptable(detail="不能重复创建申请背景哦", code=status.HTTP_400_BAD_REQUEST)
     
     @action(methods=['get'], detail=True, url_path='get_school', url_name='get_school')
     def get_school(self, request, pk=None, *args, **kwargs):
@@ -43,7 +51,7 @@ class BackgroundViewSet(
     def user_detail(self, request, *args, **kwargs):
         pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
         result = get_object_or_404(self.queryset, related_user__id=pk)
-        result = serializers.BackgroundSerializers(result).data
+        result = serializers.BackgroundSerializers(result, context={'request': request}).data
         data = {
             'user_detail': result
         }

@@ -17,7 +17,6 @@ param_category = openapi.Parameter('old_category', openapi.IN_QUERY, description
 param_category_new = openapi.Parameter('new_category', openapi.IN_QUERY, description="更改的类别名", type=openapi.TYPE_STRING)
 
 class TopicViewSet(
-    mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,

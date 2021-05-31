@@ -83,3 +83,17 @@ export function admissions_downvote(id) {
     data: { action: "downvote"},
   });
 }
+export function admissions_query_page(data, page) {
+  return request({
+    url: `/admissions/condition_query/?page=${page}`,
+    method: "post",
+    data,
+  });
+}
+
+export function admissions_get_all_page(page) {
+  return request({
+    url: `/admissions/?page=${page}`,
+    method: "get",
+  });
+}

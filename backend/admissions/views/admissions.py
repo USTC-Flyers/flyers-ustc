@@ -3,8 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.exceptions import NotAcceptable
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotAcceptable
 from django.db.utils import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.postgres.search import TrigramSimilarity
@@ -54,6 +54,8 @@ class AdmissionsViewSet(
     def perform_create(self, serializer):
         try:
             serializer.save(related_user=self.request.user, related_background=self.request.user.background)
+        except models.Background.DoesNotExist:
+            raise NotAcceptable(detail="请先创建申请背景", code=status.HTTP_400_BAD_REQUEST)
         except IntegrityError:
             raise NotAcceptable(detail="不能重复填写录取信息哦", code=status.HTTP_400_BAD_REQUEST)
     
@@ -103,26 +105,19 @@ class AdmissionsViewSet(
         else:
             result = self.queryset
         result = result.filter(query).select_related('related_university', 'related_background').order_by('-created_time')
-        data = serializers.AdmissionNestedSerializers(result, many=True).data
+        page = self.paginate_queryset(result)
+        if page is not None:
+            data = serializers.AdmissionNestedSerializers(page, many=True, context={'request': request}).data
+            return self.get_paginated_response(data)
+        else:
+            data = serializers.AdmissionNestedSerializers(result, many=True, context={'request': request}).data
         return Response(
             status=status.HTTP_200_OK,
             data={
                 'condition_query': data
             }
         )
-        
-    @action(methods=['post'], detail=False, url_path='join', url_name='join')
-    def join_creation(self, request, pk=None, *args, **kwargs):
-        serializer = serializers.AdmissionNestedSerializers(data=request.data, many=True)
-        serializer.is_valid(raise_exception=True)
-        admission = serializer.save()
-        return Response(
-            status=status.HTTP_201_CREATED,
-            data={
-                'admission': admission
-            }
-        )
-    
+
     # !TODO: refractor
     @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
     @action(methods=['patch'], detail=True, url_path='action', url_name='action')
