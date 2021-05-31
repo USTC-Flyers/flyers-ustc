@@ -1,36 +1,29 @@
 <template>
   <div>
-    <editor
-      api-key="skusgmkyvt20zw0c6ywi9swko5p3gzo7wzhdaaizwbbor7tx"
-      :init="{
-        height: 450,
-        menubar: false,
-        plugins: [
-          'autolink lists link image preview fullscreen table help wordcount',
-        ],
-        toolbar:
-          'undo redo | formatselect | bold italic backcolor | \
-                    bullist numlist outdent indent | preview | removeformat | table | help',
-      }"
-      placeholder="申请季感言，套磁、文书、面试、英语、中介等各方面的经验与建议"
+    <el-input v-model="title"></el-input>
+    <tiptap-editor
       v-model="content"
+      placeholder="请输入文章内容"
+      height="800"
     />
-    <el-button type="primary" @click="submitForm">提交</el-button>
+    <el-button type="primary" @click="submitForm" style="margin-top:30px">提交</el-button>
   </div>
 </template>
 
 <script>
 // import Editor from "@tinymce/tinymce-vue";
+import TiptapEditor from "./TiptapEditor"
 import { getTopic, updateTopic } from "@/api/wiki";
 export default {
   name: "Revision",
-  // components: {
-  //   Editor,
-  // },
+  components: {
+    TiptapEditor,
+  },
   data() {
     return {
       topic_id: null,
       revision_id: null,
+      title: "",
       content: "",
     };
   },
@@ -38,13 +31,14 @@ export default {
     console.log("yes", this.$route.params.id);
     this.topic_id = this.$route.params.id;
     getTopic(this.topic_id).then((response) => {
+      this.title = response.current_version.title;
       this.content = response.current_version.content;
       this.revision_id = response.current_version.id;
     });
   },
   methods: {
     submitForm() {
-      updateTopic(this.revision_id, { content: this.content }).then(() => {
+      updateTopic(this.revision_id, { title: this.title, content: this.content }).then(() => {
         this.$message.success("更新成功");
         this.$router.go(-1);
       });

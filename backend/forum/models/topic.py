@@ -171,7 +171,7 @@ class Topic(models.Model):
             
     def unfollow(self, user):
         if user in self.followed.all():
-            self.followed.add(user)
+            self.followed.remove(user)
             self.followed_count -= 1
             self.save()
             

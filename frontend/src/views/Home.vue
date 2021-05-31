@@ -1,8 +1,8 @@
 <template>
   <!-- <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-  <el-container class="home-container">
-    <el-header>
+  <div class="home-container">
+    <div class="header">
       <el-menu :default-active="this.$route.path" mode="horizontal" router>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
@@ -85,11 +85,11 @@
           </el-menu-item>
         </el-submenu>
       </el-menu> -->
-    </el-header>
-    <el-container class="main">
+    </div>
+    <div class="main">
       <router-view></router-view>
-    </el-container>
-  </el-container>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -173,7 +173,7 @@ export default {
 .home-container {
   height: 100vh;
 }
-.el-header {
+.header {
   /* background-color: #409eff; */
   /* display: flex; */
   justify-content: space-between;
@@ -183,7 +183,7 @@ export default {
 .main {
   margin: auto;
   margin-top: 30px;
-  width: 90%;
+  width: 100%;
 }
 /* .el-aside {
   background-color: #409eff;

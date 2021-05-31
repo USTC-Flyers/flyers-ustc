@@ -15,7 +15,7 @@ export default {
       //   username: "test",
       //   password: "test",
       // },
-      ticket: "fake-ticket",
+      ticket: "fake-ticket-admin",
     };
   },
   created() {

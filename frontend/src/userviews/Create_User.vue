@@ -26,13 +26,6 @@
     </el-form-item>
     <el-form-item label="入学年份" prop="">
       <el-col :span="10">
-        <!-- <el-select>
-        <el-option
-          v-for="year in enrollyear_list"
-          :key="year"
-          :label="year"
-          :value="year"></el-option>
-      </el-select> -->
         <el-date-picker
           v-model="form.enrolledYear"
           type="year"

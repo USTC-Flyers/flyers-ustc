@@ -157,7 +157,7 @@ class TopicViewSet(
         elif action == 'follow':
             topic.follow(user=request.user)
         elif action == 'unfollow':
-            topic.follow(user=request.user)
+            topic.unfollow(user=request.user)
         else:
             return Response(
                 status=status.HTTP_304_NOT_MODIFIED,

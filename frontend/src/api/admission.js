@@ -67,3 +67,19 @@ export function admissions_delete(id) {
     method: "delete",
   });
 }
+
+export function admissions_upvote(id) {
+  return request({
+    url: `/admissions/${id}/action/`,
+    method: "patch",
+    data: { action: "upvote"},
+  });
+}
+
+export function admissions_downvote(id) {
+  return request({
+    url: `/admissions/${id}/action/`,
+    method: "patch",
+    data: { action: "downvote"},
+  });
+}
