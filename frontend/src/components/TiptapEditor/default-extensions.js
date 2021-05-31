@@ -8,15 +8,17 @@ import {
     Underline,
     Italic,
     Strike,
-    HardBreak,
+    HorizontalRule,
     Indent,
+    TextAlign,
     Blockquote,
     //Link,
     Image,
     ListItem,
     BulletList,
     OrderedList,
-    FormatClear,
+    //FormatClear,
+    History,
   } from 'element-tiptap'
 
   export default{
@@ -29,14 +31,16 @@ import {
         new Underline({ bubble: true}), // 在气泡菜单而不在菜单栏中渲染菜单按钮
         new Italic(),
         new Strike(),
-        new HardBreak(),
+        new HorizontalRule(),
         new Indent(),
+        new TextAlign(),
         new Blockquote(),
         new Image(),
         //new Link(),
         new ListItem(),
         new BulletList(),
         new OrderedList(),
-        new FormatClear(),
+        //new FormatClear(),
+        new History(),
     ],
   }
