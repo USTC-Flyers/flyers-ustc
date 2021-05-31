@@ -171,9 +171,9 @@ margin-top:0
 margin-bottom:0
 }
 
-.el-tiptap-editor__content h1{
+/* .el-tiptap-editor__content h1{
     font-size:25px;
-}
+} */
 
 .el-tiptap-editor__content ol,.el-tiptap-editor__content ul{
 counter-reset:none;

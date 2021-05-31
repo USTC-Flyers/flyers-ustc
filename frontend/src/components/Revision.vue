@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-input v-model="title"></el-input>
+    <el-input v-model="title" id="wiki-title"></el-input>
     <tiptap-editor
       v-model="content"
-      placeholder="请输入文章内容"
+      placeholder="请勿使用一级标题(Heading 1)，从Heading 2开始使用"
       height="800"
     />
     <el-button type="primary" @click="submitForm" style="margin-top:30px">提交</el-button>
@@ -47,4 +47,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#wiki-title {
+  display: block;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+</style>

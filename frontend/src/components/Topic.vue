@@ -1,8 +1,9 @@
 <template>
   <div>
     <div>
-      <el-button v-if="isUpvoted" type="primary" icon="el-icon-caret-top" size="mini" @click="downvote" round>{{ upvoted_count }}</el-button>
-      <el-button v-else plain type="primary" icon="el-icon-caret-top" size="mini" @click="upvote" round>{{ upvoted_count }}</el-button>
+      <h1>{{ title }}</h1>
+      <el-button v-if="isUpvoted" type="primary" icon="el-icon-caret-top" size="mini" @click="downvote" round>已点赞 {{ upvoted_count }}</el-button>
+      <el-button v-else plain type="primary" icon="el-icon-caret-top" size="mini" @click="upvote" round>点赞 {{ upvoted_count }}</el-button>
 
       <el-button v-if="isFollowed" type="success" icon="el-icon-minus" size="mini" @click="unfollow" round>已关注</el-button>
       <el-button v-else plain type="success" icon="el-icon-plus" size="mini" @click="follow" :disabled="isFollowed" round>关注</el-button>
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       topic_id: null,
+      title: "",
       content: "",
       upvoted_count: null,
       isUpvoted: false,
@@ -37,6 +39,7 @@ export default {
   methods: {
     getTopicContent() {
       getTopic(this.topic_id).then((response) => {
+        this.title = response.current_version.title;
         this.content = response.current_version.content;
         this.upvoted_count = response.upvoted_count;
         this.isUpvoted = response.upvoted;

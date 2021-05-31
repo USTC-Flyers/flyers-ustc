@@ -22,7 +22,6 @@
         >
       </router-link>
       <div>
-        <!-- <div class="filter-container"> -->
         <div class="filter-container">
           <el-select
             v-model="query.major"
@@ -168,7 +167,6 @@
             </el-button>
           </el-button-group>
         </div>
-        <!-- </div> -->
 
         <el-table
           :data="table_data"
@@ -402,7 +400,7 @@
         </el-table>
       </div>
     </div>
-    <el-pagination :total="pageNum" :current-page="currentPage" @current-change="handlePagination" :page-size="10" layout="total, prev, pager, next, jumper"></el-pagination>
+      <el-pagination :total="pageNum" :current-page="currentPage" @current-change="handlePagination" :page-size="10" layout="total, prev, pager, next, jumper"></el-pagination>    
   </div>
 </template>
 
@@ -739,5 +737,9 @@ export default {
 }
 .el-button-group {
   margin-left: 15px;
+}
+.el-pagination {
+  margin: 30px;
+  text-align: center;
 }
 </style>

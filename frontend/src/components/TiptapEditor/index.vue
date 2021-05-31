@@ -12,7 +12,7 @@
 //import 'element-tiptap';
 import './tiptap.css';
 import defaultExtensions from './default-extensions'
-import {ElementTiptap } from 'element-tiptap'
+import { ElementTiptap } from 'element-tiptap'
 
 export default {
     name: 'TiptapEditor',
@@ -25,7 +25,7 @@ export default {
             default:''
         },
         extensions:{
-            type:Object,
+            type:Array,
             default(){
                 return defaultExtensions.extensions
             }

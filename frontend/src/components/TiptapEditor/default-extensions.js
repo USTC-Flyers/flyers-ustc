@@ -10,7 +10,7 @@ import {
     Strike,
     HorizontalRule,
     Indent,
-    TextAlign,
+    // TextAlign,
     Blockquote,
     //Link,
     Image,
@@ -18,7 +18,7 @@ import {
     BulletList,
     OrderedList,
     //FormatClear,
-    History,
+    // History,
   } from 'element-tiptap'
 
   export default{
@@ -33,7 +33,7 @@ import {
         new Strike(),
         new HorizontalRule(),
         new Indent(),
-        new TextAlign(),
+        // new TextAlign(),
         new Blockquote(),
         new Image(),
         //new Link(),
@@ -41,6 +41,6 @@ import {
         new BulletList(),
         new OrderedList(),
         //new FormatClear(),
-        new History(),
+        // new History(),
     ],
   }
