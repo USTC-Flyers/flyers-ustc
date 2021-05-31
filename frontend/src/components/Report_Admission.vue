@@ -731,7 +731,7 @@ export default {
 .form {
   margin: 0 auto;
   margin-top: 30px;
-  width: 650px;
+  width: 650px;/* 650px */
 
   /* display: inline; */
   /* text-align: center; */
