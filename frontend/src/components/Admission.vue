@@ -351,6 +351,7 @@
         </el-table-column>
       </el-table>
     </div>
+    <el-pagination :total="pageNum" :current-page="currentPage" @current-change="handlePagination" :page-size="10" layout="total, prev, pager, next, jumper"></el-pagination>
   </div>
 </template>
 
@@ -360,6 +361,8 @@ import {
   admissions_query,
   university_query,
   programs_get,
+  admissions_query_page,
+  admissions_get_all_page
 } from "@/api/admission";
 import { background_get_my } from "@/api/background";
 // import { getInfo } from "@/api/user"
@@ -452,6 +455,9 @@ export default {
       current_univ_list: [],
       current_program_list: [],
       is_initial: true,
+      pageNum: 0,
+      currentPage: 1,
+      isNotQuery: true
     };
   },
   created() {
@@ -463,7 +469,8 @@ export default {
       .catch(() => {
         this.is_initial = true;
       });
-    this.getTable(true);
+    this.isNotQuery = true;
+    this.getTable();
   },
   methods: {
     getHeaderClass() {
@@ -482,24 +489,45 @@ export default {
         apply_for: "",
         tags: [],
       };
-      this.getTable(true);
+      this.isNotQuery = true;
+      this.getTable();
     },
     handleSearch() {
       this.removeEmpty(this.query);
       console.log(this.query);
-      this.getTable(false);
+      this.isNotQuery = false;
+      this.getTable();
     },
-    getTable(is_init) {
+    handlePagination(pageNo) {
+      this.currentPage = pageNo;
       this.table_loading = true;
-      if (is_init) {
+      if (this.isNotQuery) {
+        admissions_get_all_page(pageNo).then((response) => {
+          this.getTableData(response.results);
+          this.table_loading = false;
+          this.pageNum = response.count;
+        })
+      } else {
+        admissions_query_page(this.query, pageNo).then((response) => {
+          this.getTableData(response.results);
+          this.table_loading = false;
+          this.pageNum = response.count;
+        })
+      }
+    },
+    getTable() {
+      this.table_loading = true;
+      if (this.isNotQuery) {
         admissions_get_all().then((response) => {
           this.getTableData(response.results);
           this.table_loading = false;
+          this.pageNum = response.count;
         });
       } else {
         admissions_query(this.query).then((response) => {
-          this.getTableData(response.condition_query);
+          this.getTableData(response.results);
           this.table_loading = false;
+          this.pageNum = response.count;
         });
       }
     },

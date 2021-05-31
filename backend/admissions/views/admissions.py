@@ -105,26 +105,19 @@ class AdmissionsViewSet(
         else:
             result = self.queryset
         result = result.filter(query).select_related('related_university', 'related_background').order_by('-created_time')
-        data = serializers.AdmissionNestedSerializers(result, many=True).data
+        page = self.paginate_queryset(result)
+        if page is not None:
+            data = serializers.AdmissionNestedSerializers(page, many=True, context={'request': request}).data
+            return self.get_paginated_response(data)
+        else:
+            data = serializers.AdmissionNestedSerializers(result, many=True, context={'request': request}).data
         return Response(
             status=status.HTTP_200_OK,
             data={
                 'condition_query': data
             }
         )
-        
-    @action(methods=['post'], detail=False, url_path='join', url_name='join')
-    def join_creation(self, request, pk=None, *args, **kwargs):
-        serializer = serializers.AdmissionNestedSerializers(data=request.data, many=True)
-        serializer.is_valid(raise_exception=True)
-        admission = serializer.save()
-        return Response(
-            status=status.HTTP_201_CREATED,
-            data={
-                'admission': admission
-            }
-        )
-    
+
     # !TODO: refractor
     @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})
     @action(methods=['patch'], detail=True, url_path='action', url_name='action')
