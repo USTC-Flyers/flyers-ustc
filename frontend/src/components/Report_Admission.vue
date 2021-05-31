@@ -505,7 +505,6 @@ export default {
       // this.current_program_list.push([]);
     },
     del_admission(index) {
-      console.log(index);
       if (this.admissions[index].id) {
         this.delete_ids.push(this.admissions[index].id);
       }

@@ -148,7 +148,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-WEBPATH_PREFIX = 'http://101.132.163.195:8000'
+WEBPATH_PREFIX = 'http://47.96.42.162:8000'
 
 
 # Static files (CSS, JavaScript, Images)
