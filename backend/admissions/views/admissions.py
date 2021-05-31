@@ -3,8 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.exceptions import NotAcceptable
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotAcceptable
 from django.db.utils import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.postgres.search import TrigramSimilarity
@@ -54,6 +54,8 @@ class AdmissionsViewSet(
     def perform_create(self, serializer):
         try:
             serializer.save(related_user=self.request.user, related_background=self.request.user.background)
+        except models.Background.DoesNotExist:
+            raise NotAcceptable(detail="请先创建申请背景", code=status.HTTP_400_BAD_REQUEST)
         except IntegrityError:
             raise NotAcceptable(detail="不能重复填写录取信息哦", code=status.HTTP_400_BAD_REQUEST)
     
