@@ -124,7 +124,7 @@ class TopicViewSet(
         result = self.request.user.topic_followed_by.all()
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.Topic)
-        result = serializer_class(result, many=many).data
+        result = serializer_class(result, many=many, context={'request': request}).data
         data = {
             'follow': result
         }
@@ -217,7 +217,7 @@ class TopicRevisionViewSet(
         result = self.queryset.filter(related_user__id=pk)
         serializer_class = self.get_serializer_class()
         many = not isinstance(result, models.TopicRevision)
-        result = serializer_class(result, many=many).data
+        result = serializer_class(result, many=many, context={'request': request}).data
         data = {
             'user_detail': result
         }
