@@ -4,7 +4,7 @@
     style="width: 100%"
     :row-class-name="tableRowClassName"
   >
-    <el-table-column prop="created_time" label="时间" width="180">
+    <el-table-column prop="parseDate(created_time)" label="时间" width="180">
     </el-table-column>
     <el-table-column prop="message" label="通知" width="300"> </el-table-column>
     <el-table-column label="" width="100">
@@ -84,6 +84,9 @@ export default {
       if (name === "TopicRevision") return "topic_revision";
       return name;
     },
+    parseDate(val) {
+      return val.slice(0, 19).replace('T', ' ')
+    }
   },
 };
 </script>
