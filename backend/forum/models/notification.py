@@ -46,6 +46,10 @@ class Notification(models.Model):
     
     objects = NotificationQueryset.as_manager()
     
+    def read(self):
+        self.is_read = True
+        self.save() 
+        
     @property
     def get_message(self):
         return "您的" + self.ref_obj_name + self.OPERATIONS_CHOICES[self.operation][1]

@@ -45,7 +45,7 @@ export function logout() {
 
 export function initNotification() {
   return request({
-    url: "/notification/unread/",
+    url: "/notification/unread_set/",
     method: "get",
   });
 }
@@ -62,4 +62,11 @@ export function getNotification() {
     url: "/notification/",
     method: "get",
   });
+}
+
+export function readNotification(id) {
+  return request({
+    url: `/notification/${id}/read/`,
+    method: "post"
+  })
 }

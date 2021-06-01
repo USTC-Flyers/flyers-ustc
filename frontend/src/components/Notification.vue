@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { getNotification } from "@/api/user";
+import { getNotification, readNotification } from "@/api/user";
 export default {
   data() {
     return {
@@ -75,6 +75,7 @@ export default {
     },
     handleClick(row) {
       console.log(row);
+      readNotification(row.id);
       this.$router.push(
         { path: "/" + row.ref_obj_name + "/" + row.ref_obj_id + "/" },
         () => {}
