@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     # 'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
-    'hitcount',
+    # 'hitcount',
     'multiselectfield',
     # Custom apps
     'account',
@@ -84,7 +84,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': '666666',
         'HOST': '0.0.0.0',
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 

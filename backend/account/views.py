@@ -29,6 +29,7 @@ class UserProfileViewSet(
     permission_classes = [permissions.IsOwnerOrReadOnly]
     
     def perform_create(self, serializer):
+        print('*'*20)
         serializer.save(related_user=self.request.user)
     
     @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
@@ -72,7 +73,10 @@ class UserViewSet(
 
 class CASLoginView(TokenObtainPairView):
     def get(self, request):
+        print('*'*20)
         if 'service' in request.query_params:
+            print('*'*20)
+            print('redirect')
             return redirect(f"{settings.WEBPATH_PREFIX}?ticket={request.query_params['ticket']}")
         home_url = settings.WEBPATH_PREFIX
         serializer = self.get_serializer(data=request.data)

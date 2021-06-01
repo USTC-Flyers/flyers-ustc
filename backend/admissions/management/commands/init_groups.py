@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'initialize group set'
     
     def handle(self, *args, **options):
-        for school in models.school_list:
+        for school in models.group_list:
             Group.objects.create(name=school)
         print('initialize group set ok')
                     

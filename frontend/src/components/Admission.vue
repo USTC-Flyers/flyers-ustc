@@ -406,8 +406,8 @@
 
 <script>
 import {
-  admissions_get_all,
-  admissions_query,
+  // admissions_get_all,
+  // admissions_query,
   university_query,
   programs_get,
   admissions_upvote,
@@ -525,7 +525,7 @@ export default {
         this.is_initial = true;
       });
     this.isNotQuery = true;
-    this.getTable();
+    this.handlePagination(1);
   },
   methods: {
     getHeaderClass() {
@@ -545,13 +545,13 @@ export default {
         tags: [],
       };
       this.isNotQuery = true;
-      this.getTable();
+      this.handlePagination(1);
     },
     handleSearch() {
       this.removeEmpty(this.query);
       console.log(this.query);
       this.isNotQuery = false;
-      this.getTable();
+      this.handlePagination(1);
     },
     handlePagination(pageNo) {
       this.currentPage = pageNo;
@@ -570,22 +570,22 @@ export default {
         })
       }
     },
-    getTable() {
-      this.table_loading = true;
-      if (this.isNotQuery) {
-        admissions_get_all().then((response) => {
-          this.getTableData(response.results);
-          this.table_loading = false;
-          this.pageNum = response.count;
-        });
-      } else {
-        admissions_query(this.query).then((response) => {
-          this.getTableData(response.results);
-          this.table_loading = false;
-          this.pageNum = response.count;
-        });
-      }
-    },
+    // getTable() {
+    //   this.table_loading = true;
+    //   if (this.isNotQuery) {
+    //     admissions_get_all().then((response) => {
+    //       this.getTableData(response.results);
+    //       this.table_loading = false;
+    //       this.pageNum = response.count;
+    //     });
+    //   } else {
+    //     admissions_query(this.query).then((response) => {
+    //       this.getTableData(response.results);
+    //       this.table_loading = false;
+    //       this.pageNum = response.count;
+    //     });
+    //   }
+    // },
     getTableData(data) {
       this.table_data = [];
       this.experience_visible = [];
