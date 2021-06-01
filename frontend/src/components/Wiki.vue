@@ -1,9 +1,20 @@
 <template>
-  <el-container>
-    <el-aside>
+  <div class="app">
+    <div class="aside">
+      <router-link
+      :to="`/add_topic/`"
+      >
+      <el-button
+        type="warning"
+        size="small"
+        style="margin: 0px 0px 5px 75px"
+        icon="el-icon-circle-plus"
+        >新建 WIKI</el-button
+      >
+    </router-link>
       <sidebar></sidebar>
-    </el-aside>
-    <el-main>
+    </div>
+    <div class="content">
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive">
           <!-- 这里是会被缓存的视图组件，比如 Home！ -->
@@ -13,8 +24,8 @@
       <router-view v-if="!$route.meta.keepAlive">
         <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
       </router-view>
-    </el-main>
-  </el-container>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -27,4 +38,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.app{
+  width: 100%;
+  height: 100%;
+  float: left;
+  display: flex;
+}
+.aside {
+  width: 250px;
+  height: 100%;
+}
+.content {
+  margin: 0 auto;
+  width: 750px;
+  height: 100%;
+}
+</style>

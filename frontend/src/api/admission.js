@@ -68,6 +68,21 @@ export function admissions_delete(id) {
   });
 }
 
+export function admissions_upvote(id) {
+  return request({
+    url: `/admissions/${id}/action/`,
+    method: "patch",
+    data: { action: "upvote"},
+  });
+}
+
+export function admissions_downvote(id) {
+  return request({
+    url: `/admissions/${id}/action/`,
+    method: "patch",
+    data: { action: "downvote"},
+  });
+}
 export function admissions_query_page(data, page) {
   return request({
     url: `/admissions/condition_query/?page=${page}`,

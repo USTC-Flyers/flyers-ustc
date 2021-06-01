@@ -1,6 +1,6 @@
 <template>
-  <el-container>
-    <el-header>
+  <div>
+    <div class="step">
       <el-steps :active="active" align-center>
         <el-step
           v-for="(step, index) in steps"
@@ -9,10 +9,9 @@
           @click.native="active = index"
         ></el-step>
       </el-steps>
-    </el-header>
-    <el-main>
-      <div>
-        <div v-if="active == 0" class="form">
+    </div>
+    <div class="form">
+        <div v-if="active == 0">
           <el-form
             :model="form_data.background"
             label-position="right"
@@ -132,8 +131,7 @@
             </el-form-item>
           </el-form>
         </div>
-
-        <div v-show="active == 1" class="form">
+        <div v-show="active == 1">
           <report-item
             v-for="(item, index) in admissions"
             :key="index"
@@ -298,7 +296,7 @@
             >新增录取项</el-button
           >
         </div>
-        <div v-if="active == 2" class="form">
+        <div v-if="active == 2">
           <el-form label-position="right" label-width="110px">
             <el-form-item label="申请方向的思考">
               <tiptap-editor
@@ -316,7 +314,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-else-if="active == 3" class="form">
+        <div v-else-if="active == 3">
           <el-form label-position="right" label-width="70px">
             <el-form-item label="联系方式">
               <el-input
@@ -328,20 +326,20 @@
             </el-form-item>
           </el-form>
         </div>
-      </div>
-    </el-main>
-    <el-footer>
-      <div class="button">
-        <el-button v-show="active > 0" type="primary" @click="active--"
-          >上一步</el-button
-        >
-        <el-button ref="next" v-if="active < 3" type="primary" @click="active++"
-          >下一步</el-button
-        >
-        <el-button v-else type="success" @click="handleSubmit">提交</el-button>
-      </div>
-    </el-footer>
-  </el-container>
+        <div class="button">
+          <el-button v-show="active > 0" type="primary" @click="active--"
+            >上一步</el-button
+          >
+          <el-button ref="next" v-if="active < 3" type="primary" @click="active++"
+            >下一步</el-button
+          >
+          <el-button v-else type="success" @click="handleSubmit">提交</el-button>
+        </div>
+    </div>
+    <div>
+      
+    </div>
+  </div>
 </template>
 
 <script>
@@ -467,7 +465,6 @@ export default {
       // this.current_program_list.push([]);
     },
     del_admission(index) {
-      console.log(index);
       if (this.admissions[index].id) {
         this.delete_ids.push(this.admissions[index].id);
       }
@@ -713,12 +710,9 @@ export default {
 </script>
 
 <style>
-.el-steps {
-  width: 100%;
-}
-.el-main {
-  position: relative;
-  /* left: 10%; */
+.step {
+  margin: 0 auto;
+  width: 1100px;
 }
 
 .el-form-item__label {
@@ -731,8 +725,8 @@ export default {
 .form {
   margin: 0 auto;
   margin-top: 30px;
-  width: 650px;/* 650px */
-
+  width: 650px;
+  position: relative;
   /* display: inline; */
   /* text-align: center; */
   /* margin: 0px 0px; */
@@ -753,7 +747,7 @@ export default {
 .button {
   /* margin-top: 12px; */
   position: absolute;
-  right: 15%;
+  right: 0px;
 }
 .university,
 .program li {
