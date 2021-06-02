@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# !FIXME
+DEBUG = True
 
 # TODO
 ALLOWED_HOSTS = ['47.96.42.162', 'backend']

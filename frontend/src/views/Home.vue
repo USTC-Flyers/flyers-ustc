@@ -4,13 +4,14 @@
   <div class="home-container">
     <div class="header">
       <el-menu :default-active="this.$route.path" mode="horizontal" router>
+        <el-menu-item index="/welcome" router>飞跃网站<i span></i></el-menu-item>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">
           <el-dropdown>
             <el-badge :value="notificationCount" class="item">
-              <el-button size="small">通知</el-button>
+              <el-button size="small">消息</el-button>
             </el-badge>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item

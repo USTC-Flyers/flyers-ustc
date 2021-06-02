@@ -45,7 +45,7 @@ export function logout() {
 
 export function initNotification() {
   return request({
-    url: "/notification/unread/",
+    url: "/notification/unread_set/",
     method: "get",
   });
 }
