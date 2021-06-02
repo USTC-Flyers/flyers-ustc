@@ -31,7 +31,6 @@ class User(AbstractUser):
         cas = "{http://www.yale.edu/tp/cas}"
         if tree.tag == cas + "authenticationFailure":
             raise User.DoesNotExist
-        print('authenticationSuccess!')
         gid = tree.find("attributes").find(cas + "gid").text.strip()
         uid = tree.find(cas + "user").text.strip()
         return gid, uid

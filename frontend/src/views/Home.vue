@@ -27,7 +27,11 @@
                       }/`,
                     }"
                   >
-                    <el-button type="text" size="small">
+                    <el-button
+                      type="text"
+                      size="small"
+                      @click="readMessage(notificationList[index].id)"
+                    >
                       {{ message }}
                     </el-button>
                   </router-link>
@@ -43,9 +47,7 @@
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="clickUserMain"
-                >个人主页</el-dropdown-item
-              >
+              <el-dropdown-item @click.native="clickUserMain">个人主页</el-dropdown-item>
               <el-dropdown-item @click.native="clickUserProfile"
                 >个人信息</el-dropdown-item
               >
@@ -94,7 +96,7 @@
 </template>
 
 <script>
-import { initNotification, initNotificationCount } from "@/api/user";
+import { initNotification, initNotificationCount, readNotification } from "@/api/user";
 export default {
   name: "Home",
   data() {
@@ -123,7 +125,7 @@ export default {
     initNotification()
       .then((resp) => {
         console.log("initNotification");
-        let data = resp.unread;
+        let data = resp.unread_set;
         this.messageList = new Array();
         this.notificationList = new Array();
         for (let i = 0; i < data.length; ++i) {
@@ -165,6 +167,9 @@ export default {
     },
     handleMessageMore() {
       this.$router.push({ path: "/notificaiton" }, () => {});
+    },
+    readMessage(id) {
+      readNotification(id);
     },
   },
 };

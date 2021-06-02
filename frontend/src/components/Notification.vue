@@ -97,8 +97,13 @@ export default {
       return name;
     },
     parseDate(val) {
+<<<<<<< HEAD
       return val.slice(0, 19).replace('T', ' ')
     }
+=======
+      return val.slice(0, 19).replace("T", " ");
+    },
+>>>>>>> fcf86ed79f4470a7e32a089648951a12440483c4
   },
 };
 </script>

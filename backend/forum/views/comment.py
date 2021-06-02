@@ -79,7 +79,7 @@ class CommentiewSet(
     def perform_create(self, serializer):
         comment = serializer.save(related_user=self.request.user, action=models.CommentThread.DEFAULT)
         to_user = comment.related_comment_thread.related_user
-        models.Notification.notify(comment=comment, to_user=to_user, operation=models.Notification.REPLIED)
+        models.Notification.notify(comment, to_user=to_user, operation=models.Notification.REPLIED)
         # !TODO: 回复特定comment    
     
     @swagger_auto_schema(manual_parameters=[param], responses={200: 'ok', 304: "action不存在"})

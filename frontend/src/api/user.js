@@ -63,3 +63,10 @@ export function getNotification() {
     method: "get",
   });
 }
+
+export function readNotification(id) {
+  return request({
+    url: `/notification/${id}/read/`,
+    method: "post"
+  })
+}

@@ -1,3 +1,4 @@
+from django.db.models.expressions import OrderBy
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -27,6 +28,7 @@ class NotificationViewSet(
     serializer_class = serializers.NotificationSerializer
     permission_classes = [permissions.IsOwnerOrReadOnly]
     pagination_class = PageNumberPagination
+    ordering = ('-created_time')
     
     def list(self, request, *args, **kwargs):
         models.Notification.objects.read(user=request.user)
@@ -66,7 +68,7 @@ class NotificationViewSet(
         
     @action(methods=['post'], detail=True, url_path='read', url_name='read')
     def read(self, request, pk=None, *args, **kwargs):
-        n = get_object_or_404(self.queryset, pk=pk)
+        n = get_object_or_404(self.get_queryset(), pk=pk)
         n.read()
         return Response(
             status=status.HTTP_200_OK,
