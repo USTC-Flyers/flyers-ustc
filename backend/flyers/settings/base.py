@@ -14,6 +14,8 @@ from pathlib import Path
 import datetime
 from datetime import timedelta
 
+from django.db.models.query import FlatValuesListIterable
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -110,12 +112,6 @@ AUTH_USER_MODEL = 'account.User'
 
 GROUP_MODEL = 'auth.group'
 
-# JWT_AUTH = {
-#     'JWT_ALLOW_REFRESH': True,
-#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=12),
-#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-# }
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=20)
@@ -140,16 +136,17 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
+DATETIME_FORMAT="%Y.%m.%dT%H:%M:%S"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

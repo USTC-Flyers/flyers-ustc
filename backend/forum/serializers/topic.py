@@ -1,9 +1,11 @@
 from rest_framework import serializers
+from django.conf import settings
 from .. import models
 
 class TopicRevisionSerializer(serializers.ModelSerializer):
     # related_user = serializers.Field(required=False)
     related_user = serializers.ReadOnlyField(source='topic.related_user')
+    # created_time = serializers.DateTimeField(format=settings.DATETIME_FORMAT)
     
     class Meta:
         model = models.TopicRevision

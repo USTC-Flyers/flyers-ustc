@@ -8,12 +8,9 @@ class JWTCASAuthentication(JWTAuthentication):
         return super().get_user(validated_token)
 
     def authenticate(self, request, *args, **kwargs):
-        print('*'*20)
-        print('Enter authentication')
         header = self.get_header(request)
         ticket = request.GET.get('ticket', None)
         service = request.GET.get('service', settings.CAS_HOME_URL)
-        print('get ticket and service')
         if header is None and ticket is None:
             return None
         # authenticate with token
@@ -22,13 +19,11 @@ class JWTCASAuthentication(JWTAuthentication):
             if raw_token is None:
                 return None
             validated_token = self.get_validated_token(raw_token)
-            print('get validated token')
             return self.get_user(validated_token), validated_token
         # authenticate with ticket 
         if ticket is not None:
             try:
                 user, created = User.verify(ticket, service)
-                print('get user', created)
             except User.DoesNotExist:
                 # !TODO: comment in production
                 if ticket == 'fake-ticket':
@@ -36,7 +31,6 @@ class JWTCASAuthentication(JWTAuthentication):
                 elif ticket == 'fake-ticket-admin':
                     return User.objects.get(id='admin')
                 return None
-            print('get validated ticket')
             token = TokenObtainPairSerializer.get_token(user)
             token['new_user_created'] = created
             return user

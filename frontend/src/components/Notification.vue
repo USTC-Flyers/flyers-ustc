@@ -4,7 +4,7 @@
     style="width: 100%"
     :row-class-name="tableRowClassName"
   >
-    <el-table-column prop="created_time" label="时间" width="180">
+    <el-table-column prop="parseDate(created_time)" label="时间" width="180">
     </el-table-column>
     <el-table-column prop="message" label="通知" width="300"> </el-table-column>
     <el-table-column label="" width="100">
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { getNotification, readNotification } from "@/api/user";
+import { getNotification } from "@/api/user";
 export default {
   data() {
     return {
@@ -75,7 +75,6 @@ export default {
     },
     handleClick(row) {
       console.log(row);
-      readNotification(row.id);
       this.$router.push(
         { path: "/" + row.ref_obj_name + "/" + row.ref_obj_id + "/" },
         () => {}
@@ -84,6 +83,9 @@ export default {
     pathMap(name) {
       if (name === "TopicRevision") return "topic_revision";
       return name;
+    },
+    parseDate(val) {
+      return val.slice(0, 19).replace("T", " ");
     },
   },
 };
