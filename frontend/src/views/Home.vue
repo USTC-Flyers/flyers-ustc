@@ -152,6 +152,15 @@ export default {
     },
     logout: function () {
       console.log("click logout");
+      this.$store
+        .dispatch("user/logout")
+        .then(() => {
+          console.log("resp 200");
+          this.$router.push({ path: this.redirect || "/" });
+        })
+        .catch(() => {
+          console.log("logout error");
+        });
     },
     clickNotification(index) {
       console.log("click notification");

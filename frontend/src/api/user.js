@@ -8,6 +8,16 @@ export function login(ticket) {
   });
 }
 
+export function logout(token) {
+  return request({
+    url: "/logout/",
+    method: "post",
+    data: {
+      "access_token": token
+    }
+  })
+}
+
 export function getInfo() {
   return request({
     url: "/user_profile/user_detail/",
