@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from "@/api/user";
+import { login, logout, getInfo, refresh } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 // ! TODO
 import { resetRouter } from "@/router";
@@ -9,6 +9,7 @@ const getDefaultState = () => {
     name: null,
     user_id: 1,
     avatar: null,
+    refresh_token: null
   };
 };
 
@@ -27,6 +28,9 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
   },
+  SET_REFRESH: (state, refreshToken) => {
+    state.refresh_token = refreshToken;
+  }
 };
 
 const actions = {
@@ -53,6 +57,7 @@ const actions = {
         .then((response) => {
           // const { data } = response;
           commit("SET_TOKEN", "Bearer " + response.access);
+          commit("SET_REFRESH", response.refresh);
           setToken("Bearer " + response.access);
           resolve();
         })
@@ -110,13 +115,27 @@ const actions = {
   },
 
   // remove token
-  resetToken({ commit }) {
+  resetToken({ commit }, access) {
     return new Promise((resolve) => {
       removeToken(); // must remove  token  first
       commit("RESET_STATE");
+      commit("SET_TOKEN", "Bearer " + access);
+      setToken("Bearer " + access);
       resolve();
     });
   },
+
+  refreshToken({commit, state }) {
+    return new Promise((resolve, reject) => {
+      refresh(state.refresh_token).then((resp) => {
+        commit("SET_TOKEN", "Bearer " + resp.access);
+        setToken("Bearer " + resp.access);
+        resolve();
+      }).catch((error) => {
+        reject(error);
+      })
+    })
+  }
 };
 
 export default {

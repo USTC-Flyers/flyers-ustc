@@ -7,7 +7,7 @@ from django.db import models
 
 # !TODO: add cas login
 class User(AbstractUser):
-    id = models.CharField(max_length=255, primary_key=True)
+    gid = models.CharField(max_length=255)
     
     def is_admin(self):
         try:
@@ -18,8 +18,8 @@ class User(AbstractUser):
             
     @staticmethod
     def verify(ticket, service):
-        id, uid = User.check_ticket(ticket, service)
-        user, created = User.objects.get_or_create(id=id, username=id)
+        gid, uid = User.check_ticket(ticket, service)
+        user, created = User.objects.get_or_create(gid=gid, username=gid)
         return user, created
     
     @staticmethod

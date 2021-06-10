@@ -18,6 +18,16 @@ export function logout(token) {
   })
 }
 
+export function refresh(token) {
+  return request({
+    url: "/refresh/",
+    method: "post",
+    data: {
+      "refresh": token
+    }
+  })
+} 
+
 export function getInfo() {
   return request({
     url: "/user_profile/user_detail/",
@@ -46,12 +56,15 @@ export function update_contact(id, data) {
     data,
   });
 }
+<<<<<<< HEAD
 // export function logout() {
 //   return request({
 //     url: "/logout",
 //     method: "post",
 //   });
 // }
+=======
+>>>>>>> 299e78ce57dcc87093db92bbd6898262a8f783d9
 
 export function initNotification() {
   return request({

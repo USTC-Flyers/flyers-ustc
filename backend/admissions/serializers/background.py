@@ -24,3 +24,18 @@ class BackgroundSerializers(serializers.ModelSerializer):
                 raise serializers.ValidationError({'related_user': '只允许创建本人信息哦'})
             valid = False
         return valid
+    
+class InternBackgroundSerializers(serializers.ModelSerializer):
+    related_user = serializers.ReadOnlyField(source='Iinternbackground.related_user')
+    upvoted = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = models.InternBackground
+        db_table = 't_internbackground'
+        fields = '__all__'
+        lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res

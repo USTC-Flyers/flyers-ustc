@@ -53,5 +53,6 @@ urlpatterns = [
     path('api/', include('forum.urls')),      
     path('api/', include('account.urls')),
     path('api/login/', CASLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer)),
-    path('api/logout/', CASLogoutView.as_view())
+    path('api/logout/', CASLogoutView.as_view()),
+    path('api/refresh/', TokenRefreshView.as_view())
 ]

@@ -76,4 +76,11 @@ const router = new VueRouter({
   routes,
 });
 
+export function resetRouter() {
+  const newRouter = new VueRouter({
+    routes,
+  });
+  router.matcher = newRouter.matcher // reset router
+}
+
 export default router;
