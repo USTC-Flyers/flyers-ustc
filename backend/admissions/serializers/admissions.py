@@ -74,3 +74,39 @@ class AdmissionNestedSerializers(serializers.ModelSerializer):
                 raise serializers.ValidationError({'related_user': '只允许创建本人信息哦'})
             valid = False
         return valid
+    
+    
+
+class InternshipNestedSerializers(serializers.ModelSerializer):
+    related_university = UniversitySerializer()
+    related_background = BackgroundSerializers()
+    related_user = UserInfoSerializer()
+    upvoted = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = models.Internship
+        db_table = 't_internship'
+        fields = '__all__'
+        lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
+        
+class InternshipSerializer(serializers.ModelSerializer):
+    related_user = serializers.ReadOnlyField(source='internship.related_user')
+    upvoted = serializers.SerializerMethodField(read_only=True)
+    related_background = serializers.ReadOnlyField(source='internship.related_background')
+    
+    class Meta:
+        model = models.Internship
+        db_table = 't_internship'
+        fields = '__all__'
+        lookup_field = 'id'
+        
+    def get_upvoted(self, obj):
+        user = self.context['request'].user
+        res = user in obj.upvoted.all()
+        return res
+    

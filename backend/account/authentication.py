@@ -27,9 +27,9 @@ class JWTCASAuthentication(JWTAuthentication):
             except User.DoesNotExist:
                 # !TODO: comment in production
                 if ticket == 'fake-ticket':
-                    return User.objects.get(id='test')
+                    return User.objects.get(gid='test')
                 elif ticket == 'fake-ticket-admin':
-                    return User.objects.get(id='admin')
+                    return User.objects.get(gid='admin')
                 return None
             token = TokenObtainPairSerializer.get_token(user)
             token['new_user_created'] = created

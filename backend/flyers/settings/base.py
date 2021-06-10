@@ -113,7 +113,7 @@ AUTH_USER_MODEL = 'account.User'
 GROUP_MODEL = 'auth.group'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=20)
 }
 
