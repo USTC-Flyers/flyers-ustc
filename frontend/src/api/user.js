@@ -13,10 +13,20 @@ export function logout(token) {
     url: "/logout/",
     method: "post",
     data: {
-      "access_token": token
+      "refresh": token
     }
   })
 }
+
+export function refresh(token) {
+  return request({
+    url: "/refresh/",
+    method: "post",
+    data: {
+      "refresh": token
+    }
+  })
+} 
 
 export function getInfo() {
   return request({
@@ -44,12 +54,6 @@ export function update_contact(id, data) {
     url: `/user_profile/${id}/`,
     method: "patch",
     data,
-  });
-}
-export function logout() {
-  return request({
-    url: "/logout",
-    method: "post",
   });
 }
 
