@@ -90,7 +90,7 @@
       </el-menu> -->
     </div>
     <div class="main">
-      <router-view></router-view>
+      <router-view v-if="isRouterAlive"></router-view>
     </div>
   </div>
 </template>
@@ -99,12 +99,18 @@
 import { initNotification, initNotificationCount, readNotification } from "@/api/user";
 export default {
   name: "Home",
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
   data() {
     return {
       activeIndex: "",
       notificationCount: 0,
       messageList: null,
       notificationList: null,
+      isRouterAlive: true,
     };
   },
   computed: {
@@ -179,6 +185,10 @@ export default {
     },
     readMessage(id) {
       readNotification(id);
+    },
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => (this.isRouterAlive = true));
     },
   },
 };
