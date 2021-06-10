@@ -13,7 +13,7 @@ export function logout(token) {
     url: "/logout/",
     method: "post",
     data: {
-      "access_token": token
+      "refresh_token": token
     }
   })
 }
@@ -46,12 +46,12 @@ export function update_contact(id, data) {
     data,
   });
 }
-export function logout() {
-  return request({
-    url: "/logout",
-    method: "post",
-  });
-}
+// export function logout() {
+//   return request({
+//     url: "/logout",
+//     method: "post",
+//   });
+// }
 
 export function initNotification() {
   return request({

@@ -80,7 +80,7 @@ class CASLoginView(TokenObtainPairView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class CASLogoutView(TokenObtainPairView):
-    permission_classes = (IsAuthenticated, )
+    # permission_classes = (IsAuthenticated, )
 
     def post(self, request, *args, **kwargs):
         try:
