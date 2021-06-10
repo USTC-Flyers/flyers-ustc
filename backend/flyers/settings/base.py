@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     # 'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
@@ -145,8 +146,6 @@ USE_I18N = True
 USE_L10N = False
 
 USE_TZ = True
-
-DATETIME_FORMAT="%Y.%m.%dT%H:%M:%S"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

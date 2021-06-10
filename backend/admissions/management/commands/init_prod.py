@@ -29,6 +29,7 @@ class Command(BaseCommand):
         for group in models.group_list:
             Group.objects.create(name=group)
         
+        Group.objects.create(name='flyers-admin')
         User = apps.get_model('account.user')
         User.objects.create_superuser('flyers', '', 'feiyue2021USTC')
         print('initialize ok')
