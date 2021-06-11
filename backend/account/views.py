@@ -5,14 +5,16 @@ from rest_framework.response import Response
 from rest_framework import permissions as drf_permissions
 from rest_framework_jwt.settings import api_settings
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
 from . import models
+from rest_framework import generics
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from . import serializers
 from . import permissions
+from .authentication import JWTCASAuthentication
 
 class UserProfileViewSet(
     mixins.CreateModelMixin,
@@ -67,6 +69,9 @@ class UserViewSet(
         )
 
 class CASLoginView(TokenObtainPairView):
+    authentication_classes = ()
+    permission_classes = (AllowAny, )
+
     def get(self, request):
         if 'service' in request.query_params:
             return redirect(f"{settings.WEBPATH_PREFIX}?ticket={request.query_params['ticket']}")
@@ -80,6 +85,7 @@ class CASLoginView(TokenObtainPairView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class CASLogoutView(TokenObtainPairView):
+    authentication_classes = [JWTCASAuthentication]
     permission_classes = (IsAuthenticated, )
 
     def post(self, request, *args, **kwargs):

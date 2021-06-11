@@ -99,6 +99,8 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
+      console.log('logout func');
+      console.log(state.refresh_token);
       logout(state.refresh_token)
         .then(() => {
           removeToken(); // must remove  token  first

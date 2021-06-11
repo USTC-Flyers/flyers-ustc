@@ -114,7 +114,7 @@ AUTH_USER_MODEL = 'account.User'
 GROUP_MODEL = 'auth.group'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=20)
 }
 
@@ -153,6 +153,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # for cas
+# !FIXME: 如果不加这个配置login里的allowany就会fail
 AUTHENTICATION_BACKENDS = (
     'account.authentication.JWTCASAuthentication',
     'django.contrib.auth.backends.ModelBackend',

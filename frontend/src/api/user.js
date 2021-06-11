@@ -13,7 +13,7 @@ export function logout(token) {
     url: "/logout/",
     method: "post",
     data: {
-      "refresh": token
+      "refresh_token": token
     }
   })
 }
