@@ -8,6 +8,7 @@ from rest_framework.exceptions import NotAcceptable
 from django.db.utils import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.postgres.search import TrigramSimilarity
+from rest_framework.permissions import IsAuthenticated
 from django.apps import apps
 from django.db.models import Q
 from ..models import rank_tag
@@ -36,7 +37,7 @@ class AdmissionsViewSet(
     viewsets.GenericViewSet
 ):
     queryset = models.Admissions.objects.all()
-    permission_classes = [permissions.IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsOwnerOrReadOnly, IsAuthenticated]
     ordering = ('-created_time')
     pagination_class = PageNumberPagination
 

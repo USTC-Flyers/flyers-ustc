@@ -56,15 +56,6 @@ export function update_contact(id, data) {
     data,
   });
 }
-<<<<<<< HEAD
-// export function logout() {
-//   return request({
-//     url: "/logout",
-//     method: "post",
-//   });
-// }
-=======
->>>>>>> 299e78ce57dcc87093db92bbd6898262a8f783d9
 
 export function initNotification() {
   return request({
