@@ -4,6 +4,7 @@
   <div class="home-container">
     <div class="header">
       <el-menu :default-active="this.$route.path" mode="horizontal" router>
+        <el-menu-item index="/welcome" router>飞跃网站<i span></i></el-menu-item>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
@@ -89,7 +90,7 @@
       </el-menu> -->
     </div>
     <div class="main">
-      <router-view></router-view>
+      <router-view v-if="isRouterAlive"></router-view>
     </div>
   </div>
 </template>
@@ -98,12 +99,18 @@
 import { initNotification, readNotification } from "@/api/user";
 export default {
   name: "Home",
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
   data() {
     return {
       activeIndex: "",
       // notificationCount: 0,
       messageList: [],
       notificationList: [],
+      isRouterAlive: true,
     };
   },
   computed: {
@@ -142,6 +149,15 @@ export default {
     },
     logout: function () {
       console.log("click logout");
+      this.$store
+        .dispatch("user/logout")
+        .then(() => {
+          console.log("resp 200");
+          this.$router.push({ path: this.redirect || "/" });
+        })
+        .catch(() => {
+          console.log("logout error");
+        });
     },
     clickNotification(index) {
       console.log("click notification");
@@ -160,6 +176,10 @@ export default {
     },
     readMessage(id) {
       readNotification(id);
+    },
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => (this.isRouterAlive = true));
     },
   },
 };

@@ -77,4 +77,11 @@ const router = new VueRouter({
   mode: "history"
 });
 
+export function resetRouter() {
+  const newRouter = new VueRouter({
+    routes,
+  });
+  router.matcher = newRouter.matcher // reset router
+}
+
 export default router;

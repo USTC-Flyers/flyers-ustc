@@ -4,9 +4,12 @@
     style="width: 100%"
     :row-class-name="tableRowClassName"
   >
-    <el-table-column prop="parseDate(created_time)" label="时间" width="180">
+    <el-table-column prop="created_time" label="时间" width="180">
+      <template slot-scope="scope">
+        {{scope.row.created_time | dateFilter}} 
+      </template>
     </el-table-column>
-    <el-table-column prop="message" label="通知" width="300"> </el-table-column>
+    <el-table-column prop="message" label="消息" width="300"> </el-table-column>
     <el-table-column label="" width="100">
       <template slot-scope="scope">
         <el-button @click="handleClick(scope.row)" type="text" size="small"
@@ -20,6 +23,11 @@
 <script>
 import { getNotification } from "@/api/user";
 export default {
+  filters: {
+    dateFilter(val) {
+      return val.slice(0, 19).replace('T', ' ')
+    }
+  },
   data() {
     return {
       notificationList: null,
@@ -66,6 +74,10 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+    // !TODO: fixme
+    this.notificationList.forEach(no => {
+      no.created_time = this.parseDate(no.created_time);
+    });
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {
@@ -85,10 +97,17 @@ export default {
       return name;
     },
     parseDate(val) {
-      return val.slice(0, 19).replace("T", " ");
-    },
+      return val.slice(0, 19).replace('T', ' ')
+    }
   },
 };
 </script>
 
-<style></style>
+<style>
+.el-table {
+  margin: 5%;
+}
+.main {
+  margin-top: 0px;
+}
+</style>

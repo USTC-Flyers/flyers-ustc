@@ -86,3 +86,21 @@ class BackgroundViewSet(
                     'errono': 0
                 }
         )
+        
+class InternBackgroundViewSet(BackgroundViewSet):
+    serializer_class = serializers.InternBackgroundSerializers
+    queryset = models.InternBackground.objects.all()
+    permission_classes = [permissions.IsOwnerOrReadOnly]
+    
+    @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
+    def user_detail(self, request, *args, **kwargs):
+        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
+        result = get_object_or_404(self.queryset, related_user__id=pk)
+        result = serializers.InternBackgroundSerializers(result, context={'request': request}).data
+        data = {
+            'user_detail': result
+        }
+        return Response(
+            data=data,
+            status=status.HTTP_200_OK
+        )

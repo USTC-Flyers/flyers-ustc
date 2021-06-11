@@ -20,7 +20,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf import settings
-from account.views import CASLoginView
+from account.views import CASLoginView, CASLogoutView
 from account.serializers import TokenObtainPairWithoutPasswordSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -52,5 +52,7 @@ urlpatterns = [
     path('api/', include('admissions.urls')),  
     path('api/', include('forum.urls')),      
     path('api/', include('account.urls')),
-    path('api/login/', CASLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer))
+    path('api/login/', CASLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer)),
+    path('api/logout/', CASLogoutView.as_view()),
+    path('api/refresh/', TokenRefreshView.as_view())
 ]

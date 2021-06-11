@@ -8,6 +8,26 @@ export function login(ticket) {
   });
 }
 
+export function logout(token) {
+  return request({
+    url: "/logout/",
+    method: "post",
+    data: {
+      "refresh": token
+    }
+  })
+}
+
+export function refresh(token) {
+  return request({
+    url: "/refresh/",
+    method: "post",
+    data: {
+      "refresh": token
+    }
+  })
+} 
+
 export function getInfo() {
   return request({
     url: "/user_profile/user_detail/",

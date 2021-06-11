@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     # 'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
@@ -113,7 +114,7 @@ AUTH_USER_MODEL = 'account.User'
 GROUP_MODEL = 'auth.group'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=20)
 }
 
@@ -145,8 +146,6 @@ USE_I18N = True
 USE_L10N = False
 
 USE_TZ = True
-
-DATETIME_FORMAT="%Y.%m.%dT%H:%M:%S"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
