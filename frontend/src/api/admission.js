@@ -13,7 +13,13 @@ export function admissions_get_my() {
     method: "get",
   });
 }
-
+export function admissions_get_user(user_id) {
+  return request({
+    url: "/admissions/user_detail/",
+    method: "get",
+    params: { pk: user_id },
+  });
+}
 export function admissions_query(data) {
   return request({
     url: "/admissions/condition_query/",
