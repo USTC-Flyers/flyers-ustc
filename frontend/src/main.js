@@ -4,7 +4,7 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/en"; // lang i18n
 // import this package's 
-
+import './assets/icon/iconfont.css'
 
 import { ElementTiptapPlugin } from 'element-tiptap';
 
