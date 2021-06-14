@@ -46,27 +46,8 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data;
 
-    // return res;
+    return res;
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code === 403) {
-      const hasToken = getToken();
-      if (hasToken) {
-        // refresh token
-          store.dispatch('user/refreshToken').then(() => {
-            console.log('refresh done')
-          }).catch((error) => {
-            console.log(error)
-            // !TODO: login
-            // next(`/login?redirect=${to.path}`);
-            // NProgress.done();
-          })
-      } else {
-        // !TODO: login
-        // next(`/login?redirect=${to.path}`);
-        // NProgress.done();
-      }
-      
-    }
     // if (res.code !== 20000) {
     //   Message({
     //     message: res.message || 'Error',
@@ -91,10 +72,31 @@ service.interceptors.response.use(
     // } else {
     //   return res
     // }
-    return res
   },
   (error) => {
     console.log("err" + error); // for debug
+    console.log('*')
+    console.log(error.response.status);
+    if (error.response.status === 401) {
+      const hasToken = getToken();
+      if (hasToken) {
+        // refresh token
+          store.dispatch('user/refreshToken').then(() => {
+            console.log('refresh done')
+          }).catch((error) => {
+            console.log(error)
+            return Promise.resolve(error);
+            // !TODO: login
+            // next(`/login?redirect=${to.path}`);
+            // NProgress.done();
+          })
+      } else {
+        // !TODO: login
+        // next(`/login?redirect=${to.path}`);
+        // NProgress.done();
+      }
+      
+    }
     // Message({
     //   message: error.message,
     //   type: "error",

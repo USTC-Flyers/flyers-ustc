@@ -3,7 +3,7 @@
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   <div class="home-container">
     <div class="header">
-      <el-menu :default-active="this.$route.path" mode="horizontal" router>
+      <el-menu :default-active="this.$route.path" mode="horizontal" router >
         <el-menu-item index="/welcome" router>飞跃网站<i span></i></el-menu-item>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
@@ -147,6 +147,12 @@ export default {
         console.log(err);
       });
   },
+  // mounted() {
+  //   window.addEventListener('scroll', this.handleScroll)
+  // },
+  // destroyed () {
+  //   window.removeEventListener('scroll', this.handleScroll)
+  // },
   methods: {
     clickUserMain: function () {
       console.log("clickUserMain");
@@ -190,11 +196,20 @@ export default {
       this.isRouterAlive = false;
       this.$nextTick(() => (this.isRouterAlive = true));
     },
+    // handleScroll(){
+    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    //   let offsetTop = document.querySelector('#header').offsetTop
+    //   scrollTop > offsetTop ? this.headerFixed = true : this.headerFixed = false
+    // },
+    // handleScroll(){
+    //   var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    //   console.log(scrollTop)
+    // }
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">//不能加scoped，不然进入wiki之后顶部就无法固定了
 .home-container {
   height: 100vh;
 }
@@ -204,11 +219,18 @@ export default {
   justify-content: space-between;
   padding: 0;
   line-height: 60px;
+  position: fixed;
+  z-index: 999;//堆叠等级
+  top:0;
+  width: 100%;
+
 }
 .main {
+  position:relative;
   margin: auto;
-  margin-top: 30px;
+  margin-top: 40px;
   width: 100%;
+  top:90px;
 }
 /* .el-aside {
   background-color: #409eff;

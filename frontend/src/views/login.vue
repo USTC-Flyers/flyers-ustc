@@ -15,7 +15,7 @@ export default {
       //   username: "test",
       //   password: "test",
       // },
-      ticket: "fake-ticket",
+      ticket: 'fake-ticket',
     };
   },
   created() {
@@ -28,7 +28,7 @@ export default {
         console.log("login error");
       });
   },
-  // beforeMount() {
+  beforeMount() {
   //   const currentUrl = window.location.href;
   //   console.log(currentUrl);
   //   const serviceUrl = `http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1`;
@@ -44,19 +44,19 @@ export default {
   //       .catch(() => {
   //         console.log("login error");
   //       });
-  //     //   // login(ticket).then((res) => {
-  //     //   //   console.log('get token');
-  //     //   //   if (res.status === 200) {
-  //     //   //     this.token = res.data.access;
-  //     //   //     this.$store.commit("setToken", res.data.access);
-  //     //   //     this.$router.push("/");
-  //     //   //   }
-  //     //   // });
+  // //     //   // login(ticket).then((res) => {
+  // //     //   //   console.log('get token');
+  // //     //   //   if (res.status === 200) {
+  // //     //   //     this.token = res.data.access;
+  // //     //   //     this.$store.commit("setToken", res.data.access);
+  // //     //   //     this.$router.push("/");
+  // //     //   //   }
+  // //     //   // });
   //   } else if (!this.$store.state.token) {
   //     const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
   //     window.location.href = casUrl;
   //   }
-  // },
+  },
   // beforeMount() {
   //   const currentUrl = window.location.href;
   //   const serviceUrl = `http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1`;
