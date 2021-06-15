@@ -41,7 +41,6 @@ class TopicViewSet(
             group = get_object_or_404(Group.objects.all(), name=group_name)
             topic_serializer = serializers.TopicSerializer(data={
                 'action': models.Topic.DEFAULT,
-                'is_valid': False,
                 'view_count': 0,
                 'related_user': request.user.id,
                 'group': group.id
@@ -63,7 +62,13 @@ class TopicViewSet(
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
         # 管理员自动更新
         if self.request.user.is_admin():
-            topic.set_valid_and_update(topic_revision)
+            if not topic.set_valid_and_update(topic_revision):
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        "detail": "未成功更新"
+                    }
+                )
             models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
         return Response(
@@ -189,23 +194,23 @@ class TopicRevisionViewSet(
     serializer_class = serializers.TopicRevisionSerializer
     queryset = models.TopicRevision.objects.all()
     
-    @swagger_auto_schema(operation_description="如果是审核topic的内容则需要is_valid参数，否则不需要")
+    @swagger_auto_schema(operation_description="如果是审核topic的内容则需要status参数，否则不需要")
     def perform_update(self, serializer):
         topic_revision = serializer.save()
-        if 'is_valid' in serializer.validated_data:
-            is_valid = serializer.validated_data['is_valid']
-            if is_valid:
+        if 'status' in serializer.validated_data:
+            status = serializer.validated_data['status']
+            if status == models.TopicRevision.REVIEWAP and topic_revision.related_topic.set_valid_and_update(topic_revision):
                 # 审核通过
                 # !TODO: 不同版本的merge
-                if topic_revision.related_topic.set_valid_and_update(topic_revision):
-                    models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
-                models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)
-                
-            elif not is_valid:
+                models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
+                models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)   
+            elif not status == models.TopicRevision.REVIEWREJ:
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
-    
-    # !FIXME: not validated
+            else:
+                # !TODO: raise errors
+                pass
+    # !FIXME: TEST
     def get_permissions_class(self):
         if 'is_valid' in self.request.data:
             return [permissions.IsWikiOwnerOrCannotValidate()]
