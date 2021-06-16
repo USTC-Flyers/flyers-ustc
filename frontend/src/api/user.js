@@ -57,12 +57,6 @@ export function update_user_profile(id, data) {
   });
 }
 
-export function logout() {
-  return request({
-    url: "/logout",
-    method: "post",
-  });
-}
 
 export function initNotification() {
   return request({

@@ -175,7 +175,12 @@
           fit
           stripe
         >
-          <el-table-column prop="username" width="100" align="center">
+          <el-table-column width="100" align="center">
+            <template slot-scope="{ row }">
+              <router-link :to="`/usermain/${row.user_id}`">
+                <el-button type="text">{{ row.username }}</el-button>
+              </router-link>
+            </template>
           </el-table-column>
           <el-table-column label="录取学校" width="105" align="center">
             <template slot-scope="{ row }">
@@ -239,21 +244,18 @@
                 <div class="dialog-button">
                   <el-button
                     v-if="row.upvoted"
-                    type="primary"
-                    icon="el-icon-magic-stick"
+                    type="text"
+                    icon="el-icon-alidianzan"
                     size="small"
                     @click="downvote(row)"
-                    round
                     >已点赞 {{ row.upvoted_count }}</el-button
                   >
                   <el-button
                     v-else
-                    plain
-                    type="primary"
-                    icon="el-icon-magic-stick"
+                    type="text"
+                    icon="el-icon-alidianzan1"
                     size="small"
                     @click="upvote(row)"
-                    round
                     >点赞 {{ row.upvoted_count }}</el-button
                   >
                 </div>
@@ -373,32 +375,34 @@
                 <div class="dialog-button">
                   <el-button
                     v-if="row.background.upvoted"
-                    type="primary"
-                    icon="el-icon-magic-stick"
+                    type="text"
+                    icon="el-icon-alidianzan"
                     size="small"
                     @click="downvoteBackground(row.background)"
-                    round
                     >已点赞 {{ row.background.upvoted_count }}</el-button
                   >
                   <el-button
                     v-else
-                    plain
-                    type="primary"
-                    icon="el-icon-magic-stick"
+                    type="text"
+                    icon="el-icon-alidianzan1"
                     size="small"
                     @click="upvoteBackground(row.background)"
-                    round
                     >点赞 {{ row.background.upvoted_count }}</el-button
                   >
                 </div>
-                
               </el-dialog>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
-      <el-pagination :total="pageNum" :current-page="currentPage" @current-change="handlePagination" :page-size="10" layout="total, prev, pager, next, jumper"></el-pagination>    
+    <el-pagination
+      :total="pageNum"
+      :current-page="currentPage"
+      @current-change="handlePagination"
+      :page-size="10"
+      layout="total, prev, pager, next, jumper"
+    ></el-pagination>
   </div>
 </template>
 
@@ -411,7 +415,7 @@ import {
   admissions_upvote,
   admissions_downvote,
   admissions_query_page,
-  admissions_get_all_page
+  admissions_get_all_page,
 } from "@/api/admission";
 import {
   background_get_my,
@@ -510,7 +514,7 @@ export default {
       is_initial: true,
       pageNum: 0,
       currentPage: 1,
-      isNotQuery: true
+      isNotQuery: true,
     };
   },
   created() {
@@ -559,13 +563,13 @@ export default {
           this.getTableData(response.results);
           this.table_loading = false;
           this.pageNum = response.count;
-        })
+        });
       } else {
         admissions_query_page(this.query, pageNo).then((response) => {
           this.getTableData(response.results);
           this.table_loading = false;
           this.pageNum = response.count;
-        })
+        });
       }
     },
     // getTable() {
@@ -593,6 +597,7 @@ export default {
         this.table_data.push({
           id: item.id,
           username: item.related_user.username,
+          user_id: item.related_user.id,
           univ: item.related_university.short_name,
           univ_fullname: item.related_university.school_name,
           program: item.related_program,
@@ -611,36 +616,44 @@ export default {
       });
     },
     upvote(admission) {
-      admissions_upvote(admission.id).then(() => {
-        admission.upvoted = true;
-        admission.upvoted_count += 1;
-      }).catch((err) => {
-        console.log(err);
-      });
+      admissions_upvote(admission.id)
+        .then(() => {
+          admission.upvoted = true;
+          admission.upvoted_count += 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     downvote(admission) {
-      admissions_downvote(admission.id).then(() => {
-        admission.upvoted = false;
-        admission.upvoted_count -= 1;
-      }).catch((err) => {
-        console.log(err);
-      });
+      admissions_downvote(admission.id)
+        .then(() => {
+          admission.upvoted = false;
+          admission.upvoted_count -= 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     upvoteBackground(background) {
-      background_upvote(background.id).then(() => {
-        background.upvoted = true;
-        background.upvoted_count += 1;
-      }).catch((err) => {
-        console.log(err);
-      });
+      background_upvote(background.id)
+        .then(() => {
+          background.upvoted = true;
+          background.upvoted_count += 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     downvoteBackground(background) {
-      background_downvote(background.id).then(() => {
-        background.upvoted = false;
-        background.upvoted_count -= 1;
-      }).catch((err) => {
-        console.log(err);
-      });
+      background_downvote(background.id)
+        .then(() => {
+          background.upvoted = false;
+          background.upvoted_count -= 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     querySearchUniv(query_string) {
       if (query_string != "") {

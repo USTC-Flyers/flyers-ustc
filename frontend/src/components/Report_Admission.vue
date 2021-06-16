@@ -323,18 +323,18 @@
                 clearable>
                 <el-option
                   class="university"
-                  v-for="(univ, index) in final_univ_list"
+                  v-for="(item, index) in final_univ_list"
                   :key="index"
-                  :label="univ.school_name"
-                  :value="univ.id"
-                  @click.native="fillFinalProgram(index)"
+                  :label="item.univ.school_name"
+                  :value="item.univ.id"
+                  @click.native="final_program = item.program"
                 >
                   <div class="name">
-                    {{ univ.short_name }}-{{ univ.school_name_cn }}
+                    {{ item.univ.short_name }}-{{ item.univ.school_name_cn }}
                   </div>
                   <div class="line2">
-                    <span class="fullname">{{ univ.school_name }}</span>
-                    <span class="area">{{ univ.area }}</span>
+                    <span class="fullname">{{ item.univ.school_name }}</span>
+                    <span class="area">{{ item.univ.area }}</span>
                   </div>
                 </el-option>
               </el-select>
@@ -475,9 +475,17 @@ export default {
   computed: {
     final_univ_list() {
       let result = [];
-      this.univ_list.forEach(list => {
-        result.push(list[0]);
-      });
+      for (let i = 0; i < this.univ_list.length; i++) {
+        if(this.univ_list[i][0]){
+          result.push({
+            univ: this.univ_list[i][0],
+            program: this.admissions[i].related_program
+          })   
+        }
+      }
+      // this.univ_list.forEach(list => {
+      //   result.push(list[0]);
+      // });
       console.log(result);
       return result;
     }
@@ -491,7 +499,7 @@ export default {
     add_admission() {
       this.admissions.push({
         result: null,
-        enrolledSemester: null,
+        enrolledSemester: this.admissions[0].enrolledSemester,
         related_university: null,
         related_program: null,
         comments: "",

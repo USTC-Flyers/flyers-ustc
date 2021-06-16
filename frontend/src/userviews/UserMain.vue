@@ -1,33 +1,42 @@
 <template>
   <div class="app-container">
     <div class="aside">
-      <h2 class="highlight">{{ user.nickname }}</h2>
-      <div class="info-item highlight">
-        <i class="el-icon-magic-stick"> 获得 {{ user.all_votes_cnt }} 次点赞</i>
+      <div>
+        <h2 class="highlight">{{ user.nickname }}</h2>
+      </div>
+      <div class="highlight">
+        <i class="el-icon-alidianzan"> 获得 {{ user.all_votes_cnt }} 次点赞</i>
       </div>
       <div class="info-item">
-        <div class="bold">学院：</div>
+        <div class="mini-title">学院</div>
+        <!-- <el-divider content-position="left"></el-divider> -->
+        <!-- <div class="bold">学院：</div> -->
         <div>{{ user.school | schoolFilter }}</div>
       </div>
       <div class="info-item">
-        <span class="bold">在校身份：</span>
+        <div class="mini-title">在校身份</div>
+        <!-- <el-divider content-position="left"><div class="mini-title">在校身份</div></el-divider> -->
+        <!-- <span class="bold">在校身份：</span> -->
         <span>{{ user.isUndergrad | isUndergradFilter }}</span>
       </div>
       <div class="info-item">
-        <div class="bold">联系方式：</div>
-        <div>{{ user.contact }}</div>
+        <div class="mini-title">最终去向</div>
+        <!-- <el-divider content-position="left"><div class="mini-title">最终去向</div></el-divider> -->
+        <!-- <div class="bold">最终去向：</div> -->
+        <div class="bold">{{ user.final_university.school_name }}</div>
+        <div>{{ user.final_program }}</div>
       </div>
       <div class="info-item">
-        <div class="bold">最终去向：</div>
-        <div>{{ user.final_university }}</div>
-        <div>{{ user.final_program }}</div>
+        <div class="mini-title">联系方式</div>
+        <!-- <el-divider content-position="left"><div class="mini-title">联系方式</div></el-divider> -->
+        <!-- <div class="bold">联系方式：</div> -->
+        <div>{{ user.contact }}</div>
       </div>
     </div>
     <div class="content">
       <div class="content-block">
         <el-row>
-          <h2 class="highlight" id="background">申请背景&#32;</h2>
-          <i class="el-icon-magic-stick">&nbsp; {{ user.all_votes_cnt }}</i>
+          <h2 class="highlight" id="background">申请背景</h2>
         </el-row>
         <el-form label-position="right" label-width="auto">
           <el-row>
@@ -181,21 +190,18 @@
                 <div class="dialog-button">
                   <el-button
                     v-if="row.upvoted"
-                    type="primary"
-                    icon="el-icon-magic-stick"
+                    type="text"
+                    icon="el-icon-alidianzan"
                     size="small"
                     @click="downvote(row)"
-                    round
                     >已点赞 {{ row.upvoted_count }}</el-button
                   >
                   <el-button
                     v-else
-                    plain
-                    type="primary"
-                    icon="el-icon-magic-stick"
+                    type="text"
+                    icon="el-icon-alidianzan1"
                     size="small"
                     @click="upvote(row)"
-                    round
                     >点赞 {{ row.upvoted_count }}</el-button
                   >
                 </div>
@@ -206,11 +212,34 @@
       </div>
       <div class="content-block">
         <el-row>
-          <h2 class="highlight" id="summary">申请总结</h2>
+          <el-col :span="6">
+            <h2 class="highlight" id="summary">申请总结</h2>
+          </el-col>
+          <el-col :span="18">
+           <!-- <h2><i class="cil-thumb-up highlight"> {{ user.all_votes_cnt }}</i></h2>  -->
+           
+          </el-col>
         </el-row>
-        <i class="el-icon-arrow-right mini-title"> 申请方向的思考</i>
+        <el-button
+            v-if="background.upvoted"
+            type="text"
+            icon="el-icon-alidianzan"
+            @click="downvoteBackground()"
+            >已点赞 {{ background.upvoted_count }}</el-button
+          >
+          <el-button
+            v-else
+            type="text"
+            icon="el-icon-alidianzan1"
+            @click="upvoteBackground()"
+            >点赞 {{ background.upvoted_count }}</el-button
+          >
+        <!-- <CIcon name="cil-pencil">
+        <CIcon name="cilSettings">
+        <i class="cil-thumb-up"></i> -->
+        <h3><i class="el-icon-arrow-right highlight"> 申请方向的思考</i></h3>
         <div v-html="background.comments" />
-        <i class="el-icon-arrow-right mini-title"> 申请感言</i>
+        <h3><i class="el-icon-arrow-right highlight"> 申请感言</i></h3>
         <div v-html="background.summary" />
       </div>
     </div>
@@ -219,12 +248,14 @@
 
 <script>
 
-// import { get_user_profile } from "@/api/user";
-// import { admissions_get_user } from "@/api/admission";
-// import { background_get_user } from "@/api/background";
-import { getInfo } from "@/api/user";
-import { admissions_get_my } from "@/api/admission";
-import { background_get_my } from "@/api/background";
+import { get_user_profile } from "@/api/user";
+import { admissions_get_user, admissions_upvote,
+  admissions_downvote, } from "@/api/admission";
+import { background_get_user, background_upvote,
+  background_downvote, } from "@/api/background";
+// import { getInfo } from "@/api/user";
+// import { admissions_get_my } from "@/api/admission";
+// import { background_get_my } from "@/api/background";
 import {
   school_list,
   major_list,
@@ -234,9 +265,11 @@ import {
   ref_tags,
   tags_mapper,
 } from "@/assets/data.json";
-
 export default {
   name: "UserMain",
+  // components:{
+  //   'CIcon':ElementTiptap,
+  // },
   filters: {
     schoolFilter(index) {
       let school_name = school_list[index];
@@ -296,6 +329,7 @@ export default {
     return {
       school_list,
       tags_mapper,
+      user_id: null,
       user: {
         nickname: "",
         all_votes_cnt: 0,
@@ -306,6 +340,7 @@ export default {
         final_program: null,
       },
       background: {
+        id: null,
         major: "",
         gpa: 4.3,
         rank: "",
@@ -320,12 +355,15 @@ export default {
         tags: [],
         research_tag_list: [],
         ref_tag_list: [],
+        upvoted: false,
+        upvoted_count: 0,
       },
       tableData: [],
       experienceVisible: [],
     };
   },
   created() {
+    this.user_id = this.$route.params.id;
     this.getUserProfile();
     this.getBackground();
     this.getTable();
@@ -338,12 +376,12 @@ export default {
       return value === row.result;
     },
     getUserProfile: function () {
-      getInfo().then((response) => {
+      get_user_profile(this.user_id).then((response) => {
         this.user = response.user_detail;
       });
     },
     getBackground: function () {
-      background_get_my().then((response) => {
+      background_get_user(this.user_id).then((response) => {
         this.background = response.user_detail;
         this.background.research_tag_list = [];
         this.background.ref_tag_list = [];
@@ -362,7 +400,7 @@ export default {
       });
     },
     getTable: function () {
-      admissions_get_my().then((response) => {
+      admissions_get_user(this.user_id).then((response) => {
         this.getTableData(response.user_detail);
       });
     },
@@ -371,6 +409,7 @@ export default {
       this.experienceVisible = [];
       data.forEach((item) => {
         this.tableData.push({
+          id: item.id,
           univ: item.related_university.short_name,
           univ_fullname: item.related_university.school_name,
           program: item.related_program,
@@ -378,9 +417,55 @@ export default {
           result: item.result,
           program_experience: item.comments,
           program_summary: item.summary,
+          upvoted: item.upvoted,
+          upvoted_count: item.upvoted_count,
         });
         this.experienceVisible.push(false);
       });
+    },
+    upvote(admission) {
+      admissions_upvote(admission.id)
+        .then(() => {
+          admission.upvoted = true;
+          admission.upvoted_count += 1;
+          this.user.all_votes_cnt += 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    downvote(admission) {
+      admissions_downvote(admission.id)
+        .then(() => {
+          admission.upvoted = false;
+          admission.upvoted_count -= 1;
+          this.user.all_votes_cnt -= 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    upvoteBackground() {
+      background_upvote(this.background.id)
+        .then(() => {
+          this.background.upvoted = true;
+          this.background.upvoted_count += 1;
+          this.user.all_votes_cnt += 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    downvoteBackground() {
+      background_downvote(this.background.id)
+        .then(() => {
+          this.background.upvoted = false;
+          this.background.upvoted_count -= 1;
+          this.user.all_votes_cnt -= 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
@@ -395,7 +480,7 @@ export default {
   display: flex;
 }
 .aside {
-  width: 200px;
+  width: 220px;
   height: 100%;
 }
 .content {
@@ -407,7 +492,8 @@ export default {
   padding-bottom: 30px;
 }
 .info-item {
-  margin-top: 15px;
+  padding: 10px 0px;
+  line-height: 30px;
 }
 .highlight {
   color: #409eff;
@@ -449,7 +535,7 @@ export default {
   font-weight: bolder;
 }
 .mini-title {
-  font-size: 1.2em;
+  font-size: 1.1em;
   color: #409eff;
   font-weight: bolder;
 }

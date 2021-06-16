@@ -26,6 +26,7 @@ class User(AbstractUser):
     def check_ticket(ticket, service):
         validate = (settings.CAS_VALIDATE_URL + "?" +
                     urlencode({"service": service, "ticket": ticket}))
+        raise User.DoesNotExist
         with urlopen(validate) as req:
             tree = ElementTree.fromstring(req.read())[0]
         cas = "{http://www.yale.edu/tp/cas}"
