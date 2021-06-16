@@ -10,6 +10,8 @@ import Topic from "@/components/Topic.vue";
 import AddTopic from "@/components/AddTopic.vue";
 import Revision from "@/components/Revision.vue";
 import UserMain from "@/userviews/UserMain.vue";
+import Review from '@/components/Review';
+
 Vue.use(VueRouter);
 const routes = [
   {
@@ -58,6 +60,9 @@ const routes = [
           },
         ],
       },
+      {
+        path: "/review/:id", component: Review
+      }
     ],
   },
 

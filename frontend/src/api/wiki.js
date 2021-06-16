@@ -23,6 +23,13 @@ export function getTopic(id) {
   });
 }
 
+export function getTopicRevision(id) {
+  return request({
+    url: `/topic_revision/${id}/`,
+    method: "get"
+  })
+}
+
 export function updateTopic(id, data) {
   return request({
     url: `/topic_revision/${id}/`,

@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('hit_count', models.PositiveIntegerField(default=0)),
                 ('comment_count', models.PositiveIntegerField(default=0, verbose_name='comment count')),
                 ('upvoted_count', models.PositiveIntegerField(default=0)),
-                ('is_valid', models.BooleanField(default=False)),
+                ('status', models.IntegerField(choices=[(5, 'Unreviewed'), (6, 'Reviewed and Rejected'), (7, 'Reviewed and Approved')], default=5)),
             ],
         ),
         migrations.CreateModel(
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('image', models.ImageField(blank=True, upload_to=forum.models.topic.image_path)),
                 ('file', models.FileField(blank=True, upload_to=forum.models.topic.file_path)),
                 ('created_time', models.DateTimeField(default=django.utils.timezone.now)),
-                ('is_valid', models.BooleanField(default=False)),
+                ('status', models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Reviewed and Rejected'), (2, 'Reviewed and Approved')], default=0)),
                 ('related_topic', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='topic_revision', to='forum.topic')),
                 ('related_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='topic_revision', to=settings.AUTH_USER_MODEL)),
             ],

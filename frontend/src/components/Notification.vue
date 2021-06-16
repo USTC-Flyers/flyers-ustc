@@ -11,10 +11,22 @@
     </el-table-column>
     <el-table-column prop="message" label="消息" width="300"> </el-table-column>
     <el-table-column label="" width="100">
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small"
-          >查看</el-button
+      <template slot-scope="{row}">
+        <router-link
+          :to="{
+            path: `${pathMap(row.ref_obj_name)}/${
+              row.id
+            }/`,
+          }"
         >
+          <el-button
+            type="text"
+            size="small"
+            @click="readMessage(row.id)"
+          >
+            查看
+          </el-button>
+        </router-link>
       </template>
     </el-table-column>
   </el-table>
@@ -93,7 +105,7 @@ export default {
       );
     },
     pathMap(name) {
-      if (name === "TopicRevision") return "topic_revision";
+      if (name === "TopicRevision") return "Review";
       return name;
     },
     parseDate(val) {
