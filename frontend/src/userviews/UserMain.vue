@@ -33,10 +33,10 @@
         <div>{{ user.contact }}</div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" id="background">
       <div class="content-block">
         <el-row>
-          <h2 class="highlight" id="background">申请背景</h2>
+          <h2 class="highlight">申请背景</h2>
         </el-row>
         <el-form label-position="right" label-width="auto">
           <el-row>
@@ -118,9 +118,9 @@
           </el-row>
         </el-form>
       </div>
-      <div class="content-block">
+      <div class="content-block" id="admissions">
         <el-row>
-          <h2 class="highlight" id="admissions">录取信息</h2>
+          <h2 class="highlight">录取信息</h2>
         </el-row>
         <el-table
           :data="tableData"
@@ -210,10 +210,10 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="content-block">
+      <div class="content-block" id="summary">
         <el-row>
           <el-col :span="6">
-            <h2 class="highlight" id="summary">申请总结</h2>
+            <h2 class="highlight">申请总结</h2>
           </el-col>
           <el-col :span="18">
            <!-- <h2><i class="cil-thumb-up highlight"> {{ user.all_votes_cnt }}</i></h2>  -->
@@ -336,7 +336,9 @@ export default {
         school: 0,
         isUndergrad: null,
         contact: "",
-        final_university: null,
+        final_university: {
+          school_name: "",
+        },
         final_program: null,
       },
       background: {
@@ -362,7 +364,7 @@ export default {
       experienceVisible: [],
     };
   },
-  created() {
+  mounted() {
     this.user_id = this.$route.params.id;
     this.getUserProfile();
     this.getBackground();
@@ -402,6 +404,10 @@ export default {
     getTable: function () {
       admissions_get_user(this.user_id).then((response) => {
         this.getTableData(response.user_detail);
+        // hash to anchor after getting all data
+        if(location.hash) {
+          setTimeout("document.querySelector(location.hash).scrollIntoView(true)", 100);
+        }
       });
     },
     getTableData: function (data) {

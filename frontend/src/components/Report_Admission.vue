@@ -476,7 +476,7 @@ export default {
     final_univ_list() {
       let result = [];
       for (let i = 0; i < this.univ_list.length; i++) {
-        if(this.univ_list[i][0]){
+        if(this.univ_list[i][0] && this.admissions[i].result){
           result.push({
             univ: this.univ_list[i][0],
             program: this.admissions[i].related_program
@@ -599,7 +599,7 @@ export default {
       getInfo().then((response) => {
         this.user_id = response.user_detail.id;
         this.contact = response.user_detail.contact;
-        this.final_university = response.user_detail.final_university;
+        this.final_university = response.user_detail.final_university.id;
         this.final_program = response.user_detail.final_program;
       });
     },

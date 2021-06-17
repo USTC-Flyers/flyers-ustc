@@ -59,6 +59,13 @@ export function admissions_create(data) {
   });
 }
 
+export function admissions_get(id) {
+  return request({
+    url: `/admissions/${id}/`,
+    method: "get",
+  });
+}
+
 export function admissions_update(id, data) {
   return request({
     url: `/admissions/${id}/`,
