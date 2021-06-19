@@ -36,9 +36,11 @@ router.beforeEach(async (to, from, next) => {
 
           next();
         } catch (error) {
-          next({ path: "/create_user/initial" });
-          NProgress.done();
-          console.log(error);
+          if(error.response.status === 404 ){
+            next({ path: "/create_user/initial" });
+            NProgress.done();
+          }
+          next();
           // remove token and go to login page to re-login
           // await store.dispatch("user/resetToken");
           // Message.error(error || "Has Error");

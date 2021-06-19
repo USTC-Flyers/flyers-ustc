@@ -316,6 +316,34 @@
         </div>
         <div v-else-if="active == 3">
           <el-form label-position="right" label-width="70px">
+            <el-form-item label="最终去向">
+              <el-select
+                v-model="final_university"
+                placeholder="请选择学校"
+                clearable>
+                <el-option
+                  class="university"
+                  v-for="(item, index) in final_univ_list"
+                  :key="index"
+                  :label="item.univ.school_name"
+                  :value="item.univ.id"
+                  @click.native="final_program = item.program"
+                >
+                  <div class="name">
+                    {{ item.univ.short_name }}-{{ item.univ.school_name_cn }}
+                  </div>
+                  <div class="line2">
+                    <span class="fullname">{{ item.univ.school_name }}</span>
+                    <span class="area">{{ item.univ.area }}</span>
+                  </div>
+                </el-option>
+              </el-select>
+              <el-autocomplete v-model="final_program"
+                placeholder="请输入项目"
+                :trigger-on-focus="false"
+                clearable>
+              </el-autocomplete>
+            </el-form-item>
             <el-form-item label="联系方式">
               <el-input
                 v-model="contact"
@@ -356,7 +384,7 @@ import {
   background_submit,
   background_update,
 } from "@/api/background";
-import { getInfo, update_contact } from "@/api/user";
+import { getInfo, update_user_profile } from "@/api/user";
 import {
   major_list,
   semester_list,
@@ -440,10 +468,28 @@ export default {
       // current_program_list: [[]],
       user_id: null,
       contact: "",
-      
+      final_university: null,
+      final_program: null,
     };
   },
-
+  computed: {
+    final_univ_list() {
+      let result = [];
+      for (let i = 0; i < this.univ_list.length; i++) {
+        if(this.univ_list[i][0] && this.admissions[i].result){
+          result.push({
+            univ: this.univ_list[i][0],
+            program: this.admissions[i].related_program
+          })   
+        }
+      }
+      // this.univ_list.forEach(list => {
+      //   result.push(list[0]);
+      // });
+      console.log(result);
+      return result;
+    }
+  },
   created() {
     this.is_initial =
       this.$route.params.is_initial === "initial" ? true : false;
@@ -453,7 +499,7 @@ export default {
     add_admission() {
       this.admissions.push({
         result: null,
-        enrolledSemester: null,
+        enrolledSemester: this.admissions[0].enrolledSemester,
         related_university: null,
         related_program: null,
         comments: "",
@@ -534,9 +580,7 @@ export default {
           });
         admissions_get_my().then((response) => {
           let data = response.user_detail;
-          console.log(data, data.length);
           for (let i = 0; i < data.length; i++) {
-            console.log(data[i]);
             this.$set(this.admissions, i, {
               result: data[i].result,
               enrolledSemester: data[i].enrolledSemester,
@@ -550,12 +594,13 @@ export default {
             this.$set(this.univ_list, i, [data[i].related_university]);
             // this.$set(this.univ_list, i, [data[i].related_university]);
           }
-          console.log(response, this.admissions, this.univ_list);
         });
       }
       getInfo().then((response) => {
         this.user_id = response.user_detail.id;
         this.contact = response.user_detail.contact;
+        this.final_university = response.user_detail.final_university.id;
+        this.final_program = response.user_detail.final_program;
       });
     },
     map2form() {
@@ -572,6 +617,10 @@ export default {
           }
         }
       }
+    },
+    fillFinalProgram(index) {
+      console.log(index);
+      this.final_program = this.admissions[index].related_program;
     },
     async handleSubmit() {
       this.form_data.background.tags = this.form_data.background.research_tag_list.concat(
@@ -686,7 +735,10 @@ export default {
       });
       edit_funcs.push(
         new Promise((resolve, reject) => {
-          update_contact(this.user_id, { contact: this.contact })
+          update_user_profile(this.user_id, { 
+            contact: this.contact,
+            final_university: this.final_university,
+            final_program: this.final_program })
             .then((response) => {
               console.log(response);
               resolve();

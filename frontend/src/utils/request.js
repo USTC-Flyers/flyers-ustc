@@ -75,8 +75,6 @@ service.interceptors.response.use(
   },
   (error) => {
     console.log("err" + error); // for debug
-    console.log('*')
-    console.log(error.response.status);
     if (error.response.status === 401) {
       const hasToken = getToken();
       if (hasToken) {
@@ -86,16 +84,8 @@ service.interceptors.response.use(
           }).catch((error) => {
             console.log(error)
             return Promise.resolve(error);
-            // !TODO: login
-            // next(`/login?redirect=${to.path}`);
-            // NProgress.done();
           })
-      } else {
-        // !TODO: login
-        // next(`/login?redirect=${to.path}`);
-        // NProgress.done();
       }
-      
     }
     // Message({
     //   message: error.message,

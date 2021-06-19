@@ -6,14 +6,6 @@
     label-position="right"
     label-width="90px"
   >
-    <!-- <el-form-item v-show="index > 0" label=" ">
-      <el-button
-        type="danger"
-        size="mini"
-        @click="$emit('delete-ad', index)"
-        >删除此项</el-button
-      >
-    </el-form-item> -->
     <slot></slot>
     <el-row>
       <el-col :span="12">

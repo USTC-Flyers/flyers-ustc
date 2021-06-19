@@ -75,7 +75,6 @@ export default {
   max-width: 700px;
   margin:0 auto;
   padding-left:10px;
-
 }
 #create-wiki{
   background:rgb(255, 255, 255);

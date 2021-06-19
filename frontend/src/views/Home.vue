@@ -9,9 +9,9 @@
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">
-          <el-dropdown>
-            <el-badge :value="notificationCount" class="item">
-              <el-button size="small">消息</el-button>
+          <el-dropdown placement="bottom" style="margin-right: 25px">
+            <el-badge :hidden="notificationList.length === 0" :value="notificationList.length" class="item">
+              <el-button size="small">通知</el-button>
             </el-badge>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { initNotification, initNotificationCount, readNotification } from "@/api/user";
+import { initNotification, readNotification } from "@/api/user";
 export default {
   name: "Home",
   provide() {
@@ -107,9 +107,9 @@ export default {
   data() {
     return {
       activeIndex: "",
-      notificationCount: 0,
-      messageList: null,
-      notificationList: null,
+      // notificationCount: 0,
+      messageList: [],
+      notificationList: [],
       isRouterAlive: true,
     };
   },
@@ -120,20 +120,11 @@ export default {
   },
   created() {
     // fetch notification
-    initNotificationCount()
-      .then((resp) => {
-        this.notificationCount = resp.unread_count;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
     initNotification()
       .then((resp) => {
         console.log("initNotification");
         let data = resp.unread_set;
-        this.messageList = new Array();
-        this.notificationList = new Array();
         for (let i = 0; i < data.length; ++i) {
           this.messageList.push(data[i].message);
           this.notificationList.push({
@@ -156,7 +147,7 @@ export default {
   methods: {
     clickUserMain: function () {
       console.log("clickUserMain");
-      this.$router.push("/usermain");
+      this.$router.push(`/usermain/${this.$store.getters.user_id}`);
     },
     clickUserProfile: function () {
       console.log("clickUserProfile");
@@ -228,9 +219,9 @@ export default {
 .main {
   position:relative;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 110px;
   width: 100%;
-  top:90px;
+  // top:90px;
 }
 /* .el-aside {
   background-color: #409eff;
@@ -258,6 +249,6 @@ export default {
 .item {
   line-height: 40px;
   display: inline-flex;
-  margin-right: 40px;
+  // margin-right: 40px;
 }
 </style>

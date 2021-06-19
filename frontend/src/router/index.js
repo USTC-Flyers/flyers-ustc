@@ -47,7 +47,7 @@ const routes = [
         ],
       },
       { path: "/report_admission/:is_initial", component: Report_Admission },
-      { path: "/usermain", component: UserMain },
+      { path: "/usermain/:id", component: UserMain },
       {
         path: "/notificaiton",
         component: Notification,
@@ -79,6 +79,7 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+  mode: "history"
 });
 
 export function resetRouter() {

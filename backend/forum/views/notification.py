@@ -30,9 +30,9 @@ class NotificationViewSet(
     pagination_class = PageNumberPagination
     ordering = ('-created_time')
     
-    def list(self, request, *args, **kwargs):
-        models.Notification.objects.read(user=request.user)
-        return super().list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     models.Notification.objects.read(user=request.user)
+    #     return super().list(request, *args, **kwargs)
     
     def get_queryset(self):
         return models.Notification.objects.users(self.request.user)
