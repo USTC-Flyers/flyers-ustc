@@ -198,13 +198,13 @@ class Topic(models.Model):
         
     def upvote(self, user):
         if self not in user.topic_upvoted_by.all():
-            user.topic_upvoted_by.add(self)
+            # user.topic_upvoted_by.add(self)
             self.upvoted_count += 1
             self.save()
         
     def downvote(self, user):
         if self in user.topic_upvoted_by.all():
-            user.topic_upvoted_by.remove(self)
+            # user.topic_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
             

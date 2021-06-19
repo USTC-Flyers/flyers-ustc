@@ -60,6 +60,7 @@ class UserProfile(models.Model):
     )
     final_university = models.ForeignKey(
         "admissions.university",
+        verbose_name="user_profile_final_university",
         null=True,
         blank=True,
         on_delete=models.CASCADE

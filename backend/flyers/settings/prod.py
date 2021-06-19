@@ -23,6 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'  
+EMAIL_PORT = 465
+SERVER_EMAIL = 'flyers_ustc@163.com'  
+EMAIL_HOST_USER = 'flyers_ustc@163.com'  
+# EMAIL_HOST_PASSWORD = '/-HMVcHC5r5Xt8j'  
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'  
+# EMAIL_USE_SSL = True
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # !FIXME
 DEBUG = True
