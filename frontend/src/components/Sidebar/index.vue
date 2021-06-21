@@ -41,12 +41,12 @@ export default {
 
 <style>
 .scrollbar-wrapper {
-  overflow-x: hidden !important;
+  overflow-x: auto ;
 }
-.el-submenu__title{
+/* .el-submenu__title{
   font-size:20px;
   font-weight:400;
-}
+} */
 /* .el-menu-item{
   font-size:17px;
 } */

@@ -211,4 +211,5 @@ export default {
   margin: 0 auto;
   width: 900px;
 }
+
 </style>
