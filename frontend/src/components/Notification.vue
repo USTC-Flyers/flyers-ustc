@@ -1,18 +1,22 @@
 <template>
   <div class="app-container">
+    <h2 v-if="isAll">全部通知</h2>
+    <h2 v-else>未读通知</h2>
     <el-table
       :data="notificationList"
       :row-class-name="tableRowClassName"
-      :header-cell-class-name="getHeaderClass"
     >
-      <el-table-column prop="created_time" label="时间" width="180">
+      <template slot="empty">
+        <div>你没有新的通知</div>
+      </template>
+      <el-table-column prop="created_time" label="时间" align="center" width="200">
         <template slot-scope="scope">
           {{ scope.row.created_time | dateFilter }}
         </template>
       </el-table-column>
-      <el-table-column prop="message" label="消息" width="300">
+      <el-table-column prop="message" label="消息" header-align="center" width="300">
       </el-table-column>
-      <el-table-column label="" width="100">
+      <el-table-column label="查看" width="100">
         <template slot-scope="{ row }">
           <router-link
             :to="{
@@ -27,6 +31,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- <router-link :to="{ path: `/revision/${topic_id}` }"> -->
+      <el-button v-if="isAll === false" icon="el-icon-d-arrow-right" type="text" style="float: right;" @click="getAll">全部通知</el-button>
+    <!-- </router-link> -->
   </div>
 </template>
 
@@ -46,7 +53,7 @@ const [
       OTHER,
     ] = [...Array(12).keys()];
 
-import { getNotification } from "@/api/user";
+import { initNotification, getNotification, readNotification } from "@/api/user";
 import { admissions_get } from "@/api/admission"
 // import AnchorRouterLink from 'vue-anchor-router-link'
 export default {
@@ -60,6 +67,7 @@ export default {
   // },
   data() {
     return {
+      isAll: false,
       notificationList: null,
       operationsMap: null,
     };
@@ -79,12 +87,13 @@ export default {
     this.operationsMap[REJECTED] = "warning-row";
     this.operationsMap[REPORT] = "warning-row";
 
-    getNotification()
+    initNotification()
       .then((resp) => {
         // this.notificationList = resp.results;
         this.notificationList = [];
-        resp.results.forEach(item => {
+        resp.unread_set.forEach(item => {
           this.notificationList.push(this.notiMap(item));
+          readNotification(item.id)
         });
         console.log(this.notificationList);
       })
@@ -97,9 +106,6 @@ export default {
     // });
   },
   methods: {
-    getHeaderClass() {
-      return "table-header";
-    },
     tableRowClassName({ row, rowIndex }) {
       // console.log(row);
       let operation = this.notificationList[rowIndex];
@@ -110,6 +116,21 @@ export default {
       this.$router.push(
         { path: "/" + row.route_name + "/" + row.route_id + "/", hash: row.hash },
       );
+    },
+    getAll() {
+      getNotification()
+      .then((resp) => {
+        // this.notificationList = resp.results;
+        this.notificationList = [];
+        resp.results.forEach(item => {
+          this.notificationList.push(this.notiMap(item));
+        });
+        this.isAll = true;
+        console.log(this.notificationList);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     },
     notiMap(noti_item) {
       var result = {
@@ -141,11 +162,14 @@ export default {
           });
         }
       }
-     
+      else if (noti_item.operation === PR) {
+        result.route_name = "review";
+        result.route_id = noti_item.ref_obj_id;
+        result.message ="新的 WIKI 修改请求";
+      }
+      
       return result;
-      // if (name === "TopicRevision") return "Review";
-      // else if (name === "Admissions") return "usermain"
-      // return name;
+
     },
     parseDate(val) {
       return val.slice(0, 19).replace("T", " ");
@@ -157,8 +181,6 @@ export default {
 <style scoped>
 .app-container {
   margin: 5%;
-}
-.el-table .table-header {
-  text-align: center;
+  width: 600px;
 }
 </style>

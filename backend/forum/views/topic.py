@@ -195,7 +195,6 @@ class TopicViewSet(
 class TopicRevisionViewSet(
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
@@ -206,17 +205,15 @@ class TopicRevisionViewSet(
     @swagger_auto_schema(operation_description="如果是审核topic的内容则需要status参数，否则不需要")
     @action(methods=['patch'], detail=True, url_path='review', url_name='review')
     def review(self, request, pk):
-        tr = get_object_or_404(self.queryset, pk)
-        serializer = serializers.TopicRevisionSerializer(tr)
-        topic_revision = serializer.save()
-        if 'status' in serializer.validated_data:
-            status = serializer.validated_data['status']
-            if status == models.TopicRevision.REVIEWAP and topic_revision.related_topic.set_valid_and_update(topic_revision):
+        topic_revision = get_object_or_404(self.queryset, pk=pk)
+        st = request.data.get("st",None)
+        if st is not None:
+            if st == models.TopicRevision.REVIEWAP and topic_revision.related_topic.set_valid_and_update(topic_revision):
                 # 审核通过
                 # !TODO: 不同版本的merge
                 models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)   
-            elif not status == models.TopicRevision.REVIEWREJ:
+            elif not st == models.TopicRevision.REVIEWREJ:
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
             else:
@@ -224,7 +221,7 @@ class TopicRevisionViewSet(
         return Response(status=status.HTTP_200_OK)
     # !FIXME: TEST
     def get_permissions_class(self):
-        if 'is_valid' in self.request.data:
+        if 'status' in self.request.data or self.basename == "review":
             return [permissions.IsWikiOwnerOrCannotValidate()]
         return [permissions.IsOwnerOrReadOnly()]
     

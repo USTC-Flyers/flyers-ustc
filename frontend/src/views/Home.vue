@@ -7,13 +7,14 @@
         <el-menu-item index="/welcome" router>飞跃网站<i span></i></el-menu-item>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <el-menu-item index="/about" router>关于我们</el-menu-item>
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">
-          <el-dropdown placement="bottom" style="margin-right: 25px">
-            <el-badge :hidden="notificationList.length === 0" :value="notificationList.length" class="item">
-              <el-button size="small">通知</el-button>
+          <!-- <el-dropdown placement="bottom" style="margin-right: 25px"> -->
+            <el-badge :hidden="notificationCount === 0" :value="notificationCount" id="badge">
+              <el-button size="small" @click="handleMessageMore">通知</el-button>
             </el-badge>
-            <el-dropdown-menu slot="dropdown">
+            <!-- <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
                 v-for="(message, index) in messageList"
                 :key="message + index"
@@ -41,7 +42,7 @@
                 更多
               </el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
           <el-dropdown class="user-name">
             <span class="el-dropdown-link">
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -96,7 +97,7 @@
 </template>
 
 <script>
-import { initNotification, readNotification } from "@/api/user";
+import { initNotificationCount } from "@/api/user";
 export default {
   name: "Home",
   provide() {
@@ -107,9 +108,9 @@ export default {
   data() {
     return {
       activeIndex: "",
-      // notificationCount: 0,
-      messageList: [],
-      notificationList: [],
+      notificationCount: 0,
+      // messageList: [],
+      // notificationList: [],
       isRouterAlive: true,
     };
   },
@@ -120,23 +121,25 @@ export default {
   },
   created() {
     // fetch notification
-
-    initNotification()
-      .then((resp) => {
-        console.log("initNotification");
-        let data = resp.unread_set;
-        for (let i = 0; i < data.length; ++i) {
-          this.messageList.push(data[i].message);
-          this.notificationList.push({
-            id: data[i].ref_obj_id,
-            obj_name: data[i].ref_obj_name,
-            operation: data[i].operation,
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    initNotificationCount().then((response) => {
+      this.notificationCount = response.unread_count;
+    })
+    // initNotification()
+    //   .then((resp) => {
+    //     console.log("initNotification");
+    //     let data = resp.unread_set;
+    //     for (let i = 0; i < data.length; ++i) {
+    //       this.messageList.push(data[i].message);
+    //       this.notificationList.push({
+    //         id: data[i].ref_obj_id,
+    //         obj_name: data[i].ref_obj_name,
+    //         operation: data[i].operation,
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   },
   // mounted() {
   //   window.addEventListener('scroll', this.handleScroll)
@@ -165,23 +168,20 @@ export default {
           console.log("logout error");
         });
     },
-    clickNotification(index) {
-      console.log("click notification");
-      const notification = this.notificationList[index];
-      this.$router.push({
-        path: "/" + notification.ref_obj_name,
-        query: { id: notification.id },
-      });
-    },
-    pathMap(name) {
-      if (name === "TopicRevision") return "topic_revision";
-      return name;
-    },
+    // clickNotification(index) {
+    //   console.log("click notification");
+    //   const notification = this.notificationList[index];
+    //   this.$router.push({
+    //     path: "/" + notification.ref_obj_name,
+    //     query: { id: notification.id },
+    //   });
+    // },
+    // pathMap(name) {
+    //   if (name === "TopicRevision") return "topic_revision";
+    //   return name;
+    // },
     handleMessageMore() {
       this.$router.push({ path: "/notificaiton" }, () => {});
-    },
-    readMessage(id) {
-      readNotification(id);
     },
     reload() {
       this.isRouterAlive = false;
@@ -246,9 +246,9 @@ export default {
   height: 100%;
 }
 
-.item {
+#badge {
   line-height: 40px;
   display: inline-flex;
-  // margin-right: 40px;
+  margin-right: 25px;
 }
 </style>

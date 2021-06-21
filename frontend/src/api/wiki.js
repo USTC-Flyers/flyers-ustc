@@ -29,12 +29,28 @@ export function getTopicRevision(id) {
     method: "get"
   })
 }
-
+export function approveTopic(id) {
+  return request({
+    url: `/topic_revision/${id}/review/`,
+    method: "patch",
+    data: { status: 2 },
+  })
+}
+export function rejectTopic(id) {
+  return request({
+    url: `/topic_revision/${id}/review/`,
+    method: "patch",
+    data: { status: 1 },
+  })
+}
 export function updateTopic(id, data) {
   return request({
-    url: `/topic_revision/${id}/`,
-    method: "patch",
-    data,
+    url: `/topic/`,
+    method: "post",
+    data: {
+      related_topic: id,
+      ...data
+    }
   });
 }
 

@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     submitForm() {
-      updateTopic(this.revision_id, { title: this.title, content: this.content }).then(() => {
+      updateTopic(this.topic_id, { title: this.title, content: this.content }).then(() => {
         this.$message.success("更新成功");
         this.$router.go(-1);
       });
