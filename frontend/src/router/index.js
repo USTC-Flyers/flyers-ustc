@@ -11,7 +11,7 @@ import AddTopic from "@/components/AddTopic.vue";
 import Revision from "@/components/Revision.vue";
 import UserMain from "@/userviews/UserMain.vue";
 import Review from '@/components/Review';
-import About from '@/components/About'
+import Rules from '@/components/Rules'
 
 Vue.use(VueRouter);
 const routes = [
@@ -33,7 +33,7 @@ const routes = [
     redirect: "/welcome",
     children: [
       { path: "/welcome", component: Welcome },
-      { path: "/about", component: About },
+      { path: "/rules", component: Rules },
       { path: "/admission", component: Admission },
       {
         path: "/wiki",

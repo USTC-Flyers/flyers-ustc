@@ -11,7 +11,7 @@
           style="margin: 0px 0px 5px 75px"
           icon="el-icon-circle-plus"
           id="create-wiki"
-          >新建 WIKI</el-button
+          >新建 Wiki</el-button
         >
         </router-link>
         <sidebar></sidebar>

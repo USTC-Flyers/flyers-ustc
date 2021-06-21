@@ -18,7 +18,7 @@
           </div>
         <span></span>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <el-menu-item index="/wiki" router>申请 Wiki</el-menu-item>
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">
@@ -140,6 +140,7 @@
 </template>
 
 <script>
+
 import { initNotificationCount } from "@/api/user";
 export default {
   name: "Home",
@@ -305,5 +306,11 @@ export default {
   line-height: 40px;
   display: inline-flex;
   margin-right: 25px;
+}
+a.anchor {
+  display: block;
+  position: relative;
+  top: -75px;
+  visibility: hidden;
 }
 </style>
