@@ -3,6 +3,7 @@
     <div class="aside">
       <div class="aside-inner">
         <router-link
+        v-if="$store.getters.is_admin"
         :to="`/add_topic/`"
         >
         <el-button

@@ -39,6 +39,7 @@ const routes = [
         redirect:"/welcome",
         children: [
           { path: "/welcome", component: Welcome },
+          { path: "/rules", component: Rules },
           { path: "/admission", component: Admission },
           { path: "/report_admission/:is_initial", component: Report_Admission },
           { path: "/usermain/:id", component: UserMain },
@@ -54,6 +55,7 @@ const routes = [
       {
         path: "/wiki",
         component: Wiki,
+        redirect: "/topic/1",
         children: [
           { path: "/add_topic/", component: AddTopic, meta: { keepAlive: false } },
           { path: "/topic/:id", component: Topic, meta: { keepAlive: false } },
