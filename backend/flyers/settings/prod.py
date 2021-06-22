@@ -31,11 +31,66 @@ EMAIL_HOST_USER = 'flyers_ustc@163.com'
 # EMAIL_HOST_PASSWORD = '/-HMVcHC5r5Xt8j'  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'  
-# EMAIL_USE_SSL = True
+EMAIL_USE_SSL = True
+ADMINS = [('Jasmine', 'jasysj@gmail.com')]
+
+# Logging
+# https://www.agiliq.com/blog/2017/12/configure-django-log-exceptions-production/
+LOGGING = {
+	'version': 1,
+	'disable_existing_loggers': False,
+	'filters': {
+		'require_debug_false': {
+			'()': 'django.utils.log.RequireDebugFalse',
+		},
+		'require_debug_true': {
+			'()': 'django.utils.log.RequireDebugTrue',
+		},
+	},
+	'formatters': {
+		'django.server': {
+			'()': 'django.utils.log.ServerFormatter',
+			'format': '[%(server_time)s] %(message)s',
+		}
+	},
+	'handlers': {
+		'console': {
+			'level': 'INFO',
+			'filters': ['require_debug_true'],
+			'class': 'logging.StreamHandler',
+		},
+		'console_debug_false': {
+			'level': 'ERROR',
+			'filters': ['require_debug_false'],
+			'class': 'logging.StreamHandler',
+		},
+		'django.server': {
+			'level': 'INFO',
+			'class': 'logging.StreamHandler',
+			'formatter': 'django.server',
+		},
+		'mail_admins': {
+			'level': 'ERROR',
+			'filters': ['require_debug_false'],
+			'class': 'django.utils.log.AdminEmailHandler'
+		}
+	},
+	'loggers': {
+		'django': {
+			'handlers': ['console', 'console_debug_false', 'mail_admins'],
+			'level': 'INFO',
+		},
+		'django.server': {
+			'handlers': ['django.server'],
+			'level': 'INFO',
+			'propagate': False,
+		}
+	}
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # !FIXME
-DEBUG = True
+DEBUG = False
 
 # TODO
 ALLOWED_HOSTS = ['47.96.42.162', 'backend']

@@ -10,6 +10,16 @@ ALLOWED_HOSTS = ['*']
 
 WEBPATH_PREFIX = 'http://47.96.42.162:8080'
 
+# Test 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.163.com'  
+# EMAIL_PORT = 465
+# SERVER_EMAIL = 'flyers_ustc@163.com'  
+# EMAIL_HOST_USER = 'flyers_ustc@163.com'  
+# # EMAIL_HOST_PASSWORD = '/-HMVcHC5r5Xt8j'  
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'  
+# EMAIL_USE_SSL = True
 
 DATABASES = {
     'default': {
