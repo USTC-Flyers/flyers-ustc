@@ -1,11 +1,19 @@
 from rest_framework import serializers
-from . import models
 from django.apps import apps
 from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import update_last_login
 from rest_framework_simplejwt.tokens import RefreshToken
 import random
+from . import models
+
+class IUniversitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = apps.get_model('admissions.university')
+        db_table = 't_iuniversity'
+        fields = '__all__'
+        read_only_fields = ['area', 'school_name', 'school_name_cn', 'short_name']
+        lookup_field = 'id'
 
 class UserProfileSerializer(serializers.ModelSerializer):
     related_user = serializers.ReadOnlyField(source='userprofile.related_user')
@@ -16,12 +24,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         lookup_field = 'id'
         
 class UserProfileNestedSerializer(serializers.ModelSerializer):
-    related_user = serializers.SlugRelatedField(
-        slug_field="username",
-        queryset=apps.get_model(settings.AUTH_USER_MODEL).objects.all(),
-        many=False
-    )
     all_votes_cnt = serializers.IntegerField(source='get_all_votes_cnt', read_only=True)
+    final_university = IUniversitySerializer()
     class Meta:
         model = models.UserProfile
         db_table = 't_user_profile'

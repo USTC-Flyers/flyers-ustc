@@ -60,6 +60,7 @@ class UserProfile(models.Model):
     )
     final_university = models.ForeignKey(
         "admissions.university",
+        verbose_name="user_profile_final_university",
         null=True,
         blank=True,
         on_delete=models.CASCADE
@@ -76,8 +77,8 @@ class UserProfile(models.Model):
     
     def get_all_votes_cnt(self):
         user = self.related_user
-        count_objects = ['admissions', 'background', 'comment_thread', 'comment', 'topic_revision']
-        model_name = ['admissions.admissions', 'admissions.background', 'forum.commentthread', 'forum.comment', 'forum.topicrevision']
+        count_objects = ['admissions', 'background', 'comment_thread', 'comment']
+        model_name = ['admissions.admissions', 'admissions.background', 'forum.commentthread', 'forum.comment']
         cnt = 0
         for i, obj_name in enumerate(count_objects):
             obj_model = apps.get_model(model_name[i])
@@ -87,7 +88,7 @@ class UserProfile(models.Model):
                 continue
             # check is queryset or instance
             if isinstance(objs, obj_model):
-                cnt += self.get_related_upvoted_count(obj)
+                cnt += self.get_related_upvoted_count(objs)
             else:
                 for obj in objs.all():
                     cnt += self.get_related_upvoted_count(obj)

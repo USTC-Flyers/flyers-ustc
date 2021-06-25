@@ -42,6 +42,13 @@ export function create_user_profile(data) {
     data,
   });
 }
+export function get_user_profile(user_id) {
+  return request({
+    url: "/user_profile/user_detail/",
+    method: "get",
+    params: { pk: user_id },
+  });
+}
 export function update_user_profile(id, data) {
   return request({
     url: `/user_profile/${id}/`,
@@ -49,13 +56,7 @@ export function update_user_profile(id, data) {
     data,
   });
 }
-export function update_contact(id, data) {
-  return request({
-    url: `/user_profile/${id}/`,
-    method: "patch",
-    data,
-  });
-}
+
 
 export function initNotification() {
   return request({

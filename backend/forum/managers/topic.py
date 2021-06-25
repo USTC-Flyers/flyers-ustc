@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q, Prefetch
 from django.core.exceptions import ObjectDoesNotExist
+from django.apps import apps
 
 fake_title = [
             {
@@ -154,4 +155,5 @@ class TopicRevisionQuerySet(models.QuerySet):
         return self.all().filter(related_topic_id=pk) 
     
     def public(self):
-        return self.filter(is_valid=True)
+        TopicRevision = apps.get_model('forum.topicrevision')
+        return self.filter(status=TopicRevision.REVIEWAP)

@@ -1,5 +1,5 @@
 from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
@@ -19,7 +19,6 @@ param_category_new = openapi.Parameter('new_category', openapi.IN_QUERY, descrip
 class TopicViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
@@ -33,7 +32,7 @@ class TopicViewSet(
     @swagger_auto_schema(operation_description="新增topic_revision并创建topic, 审核通过后才会展示, 需要topic的内容参数")
     def create(self, request, *args, **kwargs):
         # 新建topic -> 新建topic, topic_revision
-        pk = request.data['related_topic'] if 'related_topic' in request.data else None
+        pk = request.data.get('related_topic', None)
         if pk is None:
             # new topic
             revision_number = 0
@@ -41,7 +40,6 @@ class TopicViewSet(
             group = get_object_or_404(Group.objects.all(), name=group_name)
             topic_serializer = serializers.TopicSerializer(data={
                 'action': models.Topic.DEFAULT,
-                'is_valid': False,
                 'view_count': 0,
                 'related_user': request.user.id,
                 'group': group.id
@@ -59,11 +57,17 @@ class TopicViewSet(
             **request.data,
         })
         topic_revision_serializer.is_valid(raise_exception=True)
-        # ! TODO: clean content
+        # ! TODO: clean contents
         topic_revision = topic_revision_serializer.save(related_user=self.request.user)
         # 管理员自动更新
         if self.request.user.is_admin():
-            topic.set_valid_and_update(topic_revision)
+            if not topic.set_valid_and_update(topic_revision):
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        "detail": "未成功更新"
+                    }
+                )
             models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
         models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
         return Response(
@@ -179,35 +183,45 @@ class TopicViewSet(
             return serializers.TopicNestedSerializer
         return serializers.TopicSerializer
 
+    def get_permissions(self):
+        if self.basename == "change_category" or self.basename == "review" or self.action == "destory": 
+            permission_classes = [permissions.IsWikiOwnerOrCannotValidate]
+        elif self.basename == "action":
+            permission_classes = [drf_permissions.IsAuthenticated]
+        else:
+            permission_classes = [permissions.IsOwnerOrReadOnly]
+        return [permission() for permission in permission_classes]
+
 class TopicRevisionViewSet(
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.TopicRevisionSerializer
     queryset = models.TopicRevision.objects.all()
+    permission_classes = [permissions.IsOwnerOrReadOnly]
     
-    @swagger_auto_schema(operation_description="如果是审核topic的内容则需要is_valid参数，否则不需要")
-    def perform_update(self, serializer):
-        topic_revision = serializer.save()
-        if 'is_valid' in serializer.validated_data:
-            is_valid = serializer.validated_data['is_valid']
-            if is_valid:
+    @swagger_auto_schema(operation_description="如果是审核topic的内容则需要status参数，否则不需要")
+    @action(methods=['patch'], detail=True, url_path='review', url_name='review')
+    def review(self, request, pk):
+        topic_revision = get_object_or_404(self.queryset, pk=pk)
+        st = request.data.get("status",None)
+        if st is not None:
+            if st == models.TopicRevision.REVIEWAP and topic_revision.related_topic.set_valid_and_update(topic_revision):
                 # 审核通过
                 # !TODO: 不同版本的merge
-                if topic_revision.related_topic.set_valid_and_update(topic_revision):
-                    models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
-                models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)
-                
-            elif not is_valid:
+                models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
+                models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)   
+            elif not st == models.TopicRevision.REVIEWREJ:
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
-    
-    # !FIXME: not validated
+            else:
+                return Response(status=status.HTTP_404_NO_CONTENT, data={"detail": "未更新成功"})
+        return Response(status=status.HTTP_200_OK)
+    # !FIXME: TEST
     def get_permissions_class(self):
-        if 'is_valid' in self.request.data:
+        if 'status' in self.request.data or self.basename == "review":
             return [permissions.IsWikiOwnerOrCannotValidate()]
         return [permissions.IsOwnerOrReadOnly()]
     

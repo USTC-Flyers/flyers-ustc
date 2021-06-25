@@ -16,7 +16,12 @@ def file_path(instance, filename):
         'topic', 'file', str(instance.revision_number), 'file' + ext)
 
 class TopicRevision(models.Model):
-    
+    UNREVIEWED, REVIEWREJ, REVIEWAP = range(3)
+    STATUS_CHOICES = (
+        (UNREVIEWED, "Unreviewed"),
+        (REVIEWREJ, "Reviewed and Rejected"),
+        (REVIEWAP, "Reviewed and Approved"),
+    )
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
     related_user = models.ForeignKey(
@@ -52,8 +57,9 @@ class TopicRevision(models.Model):
     created_time = models.DateTimeField(
         default=timezone.now
     )
-    is_valid = models.BooleanField(
-        default=False
+    status = models.IntegerField(
+        choices=STATUS_CHOICES,
+        default=UNREVIEWED
     )
     
     objects = TopicRevisionQuerySet.as_manager()
@@ -148,7 +154,7 @@ class Topic(models.Model):
         if self.current_version is None or self.current_version.revision_number < new_revision.revision_number:
             self.current_version = new_revision
             self.is_valid = True
-            new_revision.is_valid = True
+            new_revision.status = new_revision.REVIEWAP
             self.save()
             new_revision.save()
             return True
@@ -192,13 +198,13 @@ class Topic(models.Model):
         
     def upvote(self, user):
         if self not in user.topic_upvoted_by.all():
-            user.topic_upvoted_by.add(self)
+            # user.topic_upvoted_by.add(self)
             self.upvoted_count += 1
             self.save()
         
     def downvote(self, user):
         if self in user.topic_upvoted_by.all():
-            user.topic_upvoted_by.remove(self)
+            # user.topic_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
             

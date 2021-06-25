@@ -1,15 +1,15 @@
 import { login, logout, getInfo, refresh } from "@/api/user";
-import { getToken, setToken, removeToken } from "@/utils/auth";
+import { getToken, getRefresh, setToken, setRefresh, removeToken, removeRefresh } from "@/utils/auth";
 // ! TODO
 import { resetRouter } from "@/router";
+import router from "@/router"
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: null,
-    user_id: 1,
-    avatar: null,
-    refresh_token: null
+    user_id: null,
+    refresh_token: getRefresh(),
   };
 };
 
@@ -25,8 +25,8 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name;
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
+  SET_ID: (state, id) => {
+    state.user_id = id;
   },
   SET_REFRESH: (state, refreshToken) => {
     state.refresh_token = refreshToken;
@@ -59,6 +59,7 @@ const actions = {
           commit("SET_TOKEN", "Bearer " + response.access);
           commit("SET_REFRESH", response.refresh);
           setToken("Bearer " + response.access);
+          setRefresh(response.refresh);
           resolve();
         })
         .catch((error) => {
@@ -73,19 +74,17 @@ const actions = {
       getInfo()
         .then((response) => {
           // const { data } = response
-
           // if (!data) {
           //   return reject('Verification failed, please Login again.')
           // }
-
           // const { name, avatar } = data
-
           // commit('SET_NAME', name)
           // commit('SET_AVATAR', avatar)
           // resolve(data)
           const name = response.user_detail.nickname;
-          console.log(name);
+          const user_id = response.user_detail.related_user;
           commit("SET_NAME", name);
+          commit("SET_ID", user_id);
           resolve();
         })
         .catch((error) => {
@@ -99,8 +98,6 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      console.log('logout func');
-      console.log(state.refresh_token);
       logout(state.refresh_token)
         .then(() => {
           removeToken(); // must remove  token  first
@@ -114,29 +111,24 @@ const actions = {
     });
   },
 
-  // remove token
-  resetToken({ commit }, access) {
-    return new Promise((resolve) => {
-      removeToken(); // must remove  token  first
-      commit("RESET_STATE");
-      commit("SET_TOKEN", "Bearer " + access);
-      setToken("Bearer " + access);
-      resolve();
-    });
-  },
-
-  refreshToken({commit, state }) {
+  refreshToken({ commit, state }) {
     return new Promise((resolve, reject) => {
       refresh(state.refresh_token).then((resp) => {
         commit("SET_TOKEN", "Bearer " + resp.access);
         setToken("Bearer " + resp.access);
+        router.go();
         resolve();
       }).catch((error) => {
+        removeToken();
+        removeRefresh();
+        commit("RESET_STATE");
+        router.go();
         reject(error);
       })
     })
   }
 };
+
 
 export default {
   namespaced: true,

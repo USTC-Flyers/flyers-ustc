@@ -3,17 +3,34 @@
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   <div class="home-container">
     <div class="header">
-      <el-menu :default-active="this.$route.path" mode="horizontal" router >
-        <el-menu-item index="/welcome" router>飞跃网站<i span></i></el-menu-item>
+      
+      <el-menu :default-active="this.$route.path" mode="horizontal" router>
+        <!-- <el-menu-item index="/welcome" router
+          ></el-menu-item> -->
+          <div id="logo">
+            <router-link to="/welcome">
+              <el-button type="text">
+              USTC 飞跃网站
+            </el-button>
+            </router-link>
+            
+            
+          </div>
+        <span></span>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">
-          <el-dropdown>
-            <el-badge :value="notificationCount" class="item">
-              <el-button size="small">消息</el-button>
-            </el-badge>
-            <el-dropdown-menu slot="dropdown">
+          <!-- <el-dropdown placement="bottom" style="margin-right: 25px"> -->
+          <el-badge
+            :hidden="notificationCount === 0"
+            :value="notificationCount"
+            id="badge"
+          >
+            <el-button size="small" @click="handleMessageMore">通知</el-button>
+          </el-badge>
+          <!-- <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
                 v-for="(message, index) in messageList"
                 :key="message + index"
@@ -41,13 +58,15 @@
                 更多
               </el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
           <el-dropdown class="user-name">
             <span class="el-dropdown-link">
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="clickUserMain">个人主页</el-dropdown-item>
+              <el-dropdown-item @click.native="clickUserMain"
+                >个人主页</el-dropdown-item
+              >
               <el-dropdown-item @click.native="clickUserProfile"
                 >个人信息</el-dropdown-item
               >
@@ -92,11 +111,36 @@
     <div class="main">
       <router-view v-if="isRouterAlive"></router-view>
     </div>
+    <div class="footer">
+        <el-divider></el-divider>
+        <router-link
+            :to="{
+              path: '/welcome',
+              hash: 'contact',
+            }"
+          >
+            <el-button type="text">
+              联系我们
+            </el-button>
+        </router-link>
+        <el-divider direction="vertical"></el-divider>
+        <router-link
+            :to="{
+              path: '/rules',
+            }"
+          >
+            <el-button type="text">
+              社区规则
+            </el-button>
+        </router-link>
+        <div>Copyright &copy; 2021 USTC飞跃网站</div>
+      </div>
+      
   </div>
 </template>
 
 <script>
-import { initNotification, initNotificationCount, readNotification } from "@/api/user";
+import { initNotificationCount } from "@/api/user";
 export default {
   name: "Home",
   provide() {
@@ -108,8 +152,8 @@ export default {
     return {
       activeIndex: "",
       notificationCount: 0,
-      messageList: null,
-      notificationList: null,
+      // messageList: [],
+      // notificationList: [],
       isRouterAlive: true,
     };
   },
@@ -120,32 +164,25 @@ export default {
   },
   created() {
     // fetch notification
-    initNotificationCount()
-      .then((resp) => {
-        this.notificationCount = resp.unread_count;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    initNotification()
-      .then((resp) => {
-        console.log("initNotification");
-        let data = resp.unread_set;
-        this.messageList = new Array();
-        this.notificationList = new Array();
-        for (let i = 0; i < data.length; ++i) {
-          this.messageList.push(data[i].message);
-          this.notificationList.push({
-            id: data[i].ref_obj_id,
-            obj_name: data[i].ref_obj_name,
-            operation: data[i].operation,
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    initNotificationCount().then((response) => {
+      this.notificationCount = response.unread_count;
+    });
+    // initNotification()
+    //   .then((resp) => {
+    //     console.log("initNotification");
+    //     let data = resp.unread_set;
+    //     for (let i = 0; i < data.length; ++i) {
+    //       this.messageList.push(data[i].message);
+    //       this.notificationList.push({
+    //         id: data[i].ref_obj_id,
+    //         obj_name: data[i].ref_obj_name,
+    //         operation: data[i].operation,
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   },
   // mounted() {
   //   window.addEventListener('scroll', this.handleScroll)
@@ -156,7 +193,7 @@ export default {
   methods: {
     clickUserMain: function () {
       console.log("clickUserMain");
-      this.$router.push("/usermain");
+      this.$router.push(`/usermain/${this.$store.getters.user_id}`);
     },
     clickUserProfile: function () {
       console.log("clickUserProfile");
@@ -174,23 +211,20 @@ export default {
           console.log("logout error");
         });
     },
-    clickNotification(index) {
-      console.log("click notification");
-      const notification = this.notificationList[index];
-      this.$router.push({
-        path: "/" + notification.ref_obj_name,
-        query: { id: notification.id },
-      });
-    },
-    pathMap(name) {
-      if (name === "TopicRevision") return "topic_revision";
-      return name;
-    },
+    // clickNotification(index) {
+    //   console.log("click notification");
+    //   const notification = this.notificationList[index];
+    //   this.$router.push({
+    //     path: "/" + notification.ref_obj_name,
+    //     query: { id: notification.id },
+    //   });
+    // },
+    // pathMap(name) {
+    //   if (name === "TopicRevision") return "topic_revision";
+    //   return name;
+    // },
     handleMessageMore() {
       this.$router.push({ path: "/notificaiton" }, () => {});
-    },
-    readMessage(id) {
-      readNotification(id);
     },
     reload() {
       this.isRouterAlive = false;
@@ -209,7 +243,8 @@ export default {
 };
 </script>
 
-<style lang="scss">//不能加scoped，不然进入wiki之后顶部就无法固定了
+<style lang="scss">
+//不能加scoped，不然进入wiki之后顶部就无法固定了
 .home-container {
   height: 100vh;
 }
@@ -220,22 +255,33 @@ export default {
   padding: 0;
   line-height: 60px;
   position: fixed;
-  z-index: 999;//堆叠等级
-  top:0;
+  z-index: 999; //堆叠等级
+  top: 0;
   width: 100%;
-
 }
 .main {
-  position:relative;
+  position: relative;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 110px;
   width: 100%;
-  top:90px;
+  // top:90px;
+}
+.footer {
+  text-align: center;
+  padding: 25px;
+  // width: 900px;
+  // margin: auto;
+  // margin: 100px 0px;
 }
 /* .el-aside {
   background-color: #409eff;
 } */
-
+#logo {
+  float: left;
+  margin: 0 10px 0 20px;
+  font-weight: bolder;
+  color: #409eff;
+}
 .el-dropdown-link {
   cursor: pointer;
   color: #409eff;
@@ -255,10 +301,10 @@ export default {
   height: 100%;
 }
 
-.item {
+#badge {
   line-height: 40px;
   display: inline-flex;
-  margin-right: 40px;
+  margin-right: 25px;
 }
 
 /**修改全局的滚动条*/
