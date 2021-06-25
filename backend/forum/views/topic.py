@@ -1,3 +1,4 @@
+from django.db.utils import IntegrityError
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -6,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions as drf_permissions
 from django.contrib.contenttypes.fields import GenericRelation
+from django.db.utils import IntegrityError
 from drf_yasg import openapi
 from django.conf import settings
 from .. import models
@@ -149,26 +151,35 @@ class TopicViewSet(
                     'msg': 'action不存在',
                 }
             )
-        if action == 'upvote':
-            topic.upvote(user=request.user)
-        elif action == 'downvote':
-            topic.downvote(user=request.user)
-        elif action == 'pin':
-            topic.pin()
-        elif action == 'unpin':
-            topic.unpin()
-        elif action == 'follow':
-            topic.follow(user=request.user)
-        elif action == 'unfollow':
-            topic.unfollow(user=request.user)
-        else:
+        try:
+            if action == 'upvote':
+                topic.upvote(user=request.user)
+            elif action == 'downvote':
+                topic.downvote(user=request.user)
+            elif action == 'pin':
+                topic.pin()
+            elif action == 'unpin':
+                topic.unpin()
+            elif action == 'follow':
+                topic.follow(user=request.user)
+            elif action == 'unfollow':
+                topic.unfollow(user=request.user)
+            else:
+                return Response(
+                    status=status.HTTP_304_NOT_MODIFIED,
+                    data={
+                        'msg': 'action不存在',
+                        'errono': -1
+                    }
+                )
+        except IntegrityError:
             return Response(
-                status=status.HTTP_304_NOT_MODIFIED,
-                data={
-                    'msg': 'action不存在',
-                    'errono': -1
-                }
-            )
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        'msg': 'action不存在',
+                        'errono': -1
+                    }
+                )
         return Response(
             status=status.HTTP_200_OK,
             data={

@@ -9,7 +9,7 @@
           ></el-menu-item> -->
           <div id="logo">
             <router-link to="/welcome">
-              <el-button type="text">
+              <el-button type="text" icon="el-icon-alifeiji">
               USTC 飞跃网站
             </el-button>
             </router-link>

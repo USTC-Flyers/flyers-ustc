@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.db.utils import IntegrityError
 from django.utils.translation import gettext_lazy as _
 from .university import University
 from .background import Background
+from django.db.utils import IntegrityError
 
 class Admissions(models.Model):
     related_user = models.ForeignKey(
@@ -70,9 +72,13 @@ class Admissions(models.Model):
             user.admissions_upvoted_by.add(self)
             self.upvoted_count += 1
             self.save()
+        else:
+            raise IntegrityError
         
     def downvote(self, user):
         if self in user.admissions_upvoted_by.all():
             user.admissions_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
+        else:
+            raise IntegrityError

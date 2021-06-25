@@ -1,8 +1,10 @@
+from django.db.utils import IntegrityError
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
+from django.db.utils import IntegrityError
 from drf_yasg import openapi
 from .. import models
 from .. import serializers
@@ -38,24 +40,33 @@ class CommentThreadViewSet(
     def action(self, request, pk=None):
         comment = get_object_or_404(self.queryset, pk=pk)
         action = request.data['action']
-        if action == 'upvote':
-            comment.upvote(user=request.user)
-            models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.UPVOTED)
-        elif action == 'downvote':
-            comment.downvote(user=request.user)
-        elif action == 'pin':
-            comment.pin()
-            models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.PINNED)
-        elif action == 'unpin':
-            comment.unpin()
-        else:
+        try:
+            if action == 'upvote':
+                comment.upvote(user=request.user)
+                models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.UPVOTED)
+            elif action == 'downvote':
+                comment.downvote(user=request.user)
+            elif action == 'pin':
+                comment.pin()
+                models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.PINNED)
+            elif action == 'unpin':
+                comment.unpin()
+            else:
+                return Response(
+                    status=status.HTTP_304_NOT_MODIFIED,
+                    data={
+                        'msg': 'action不存在',
+                        'errono': -1
+                    }
+                )
+        except IntegrityError:
             return Response(
-                status=status.HTTP_304_NOT_MODIFIED,
-                data={
-                    'msg': 'action不存在',
-                    'errono': -1
-                }
-            )
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        'msg': 'action不正确',
+                        'errono': -1
+                    }
+                )
         return Response(
             status=status.HTTP_200_OK,
             data={
@@ -87,24 +98,33 @@ class CommentiewSet(
     def action(self, request, pk=None, *args, **kwargs):
         comment = get_object_or_404(self.queryset, pk=pk)
         action = request.data['action']
-        if action == 'upvote':
-            comment.upvote(user=request.user)
-            models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.UPVOTED)
-        elif action == 'downvote':
-            comment.downvote(user=request.user)
-        elif action == 'pin':
-            comment.pin()
-            models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.PINNED)
-        elif action == 'unpin':
-            comment.unpin()
-        else:
+        try:
+            if action == 'upvote':
+                comment.upvote(user=request.user)
+                models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.UPVOTED)
+            elif action == 'downvote':
+                comment.downvote(user=request.user)
+            elif action == 'pin':
+                comment.pin()
+                models.Notification.notify(comment, to_user=comment.related_user, operation=models.Notification.PINNED)
+            elif action == 'unpin':
+                comment.unpin()
+            else:
+                return Response(
+                    status=status.HTTP_304_NOT_MODIFIED,
+                    data={
+                        'msg': 'action不存在',
+                        'errono': -1
+                    }
+                )
+        except IntegrityError:
             return Response(
-                status=status.HTTP_304_NOT_MODIFIED,
-                data={
-                    'msg': 'action不存在',
-                    'errono': -1
-                }
-            )
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        'msg': 'action不存在',
+                        'errono': -1
+                    }
+                )
         return Response(
             status=status.HTTP_200_OK,
             data={

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from .topic import Topic
 from ..managers import CommentQuerySet, CommentThreadQuerySet
+from django.db.utils import IntegrityError
 
 class CommentThread(models.Model):
     DEFAULT, PINNED, UNPINNED, CLOSED, UNCLOSED = range(5)
@@ -53,12 +54,16 @@ class CommentThread(models.Model):
             user.comment_thread_upvoted_by.add(self)
             self.upvoted_count += 1
             self.save()
+        else:
+            raise IntegrityError
         
     def downvote(self, user):
         if self in user.comment_thread_upvoted_by.all():
             user.comment_thread_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
+        else:
+            raise IntegrityError
         
     def pin(self):
         self.action = self.PINNED

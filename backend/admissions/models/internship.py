@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .university import University
 from .intern_background import InternBackground
+from django.db.utils import IntegrityError
 
 class Internship(models.Model):
     INTERNCHOICES = [
@@ -97,10 +98,13 @@ class Internship(models.Model):
         if self not in user.internship_upvoted_by.all():
             user.internship_upvoted_by.add(self)
             self.upvoted_count += 1
-            self.save()
-        
+            self.save()        
+        else:
+            raise IntegrityError
     def downvote(self, user):
         if self in user.internship_upvoted_by.all():
             user.internship_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
+        else:
+            raise IntegrityError

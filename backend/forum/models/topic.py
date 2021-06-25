@@ -201,12 +201,16 @@ class Topic(models.Model):
             # user.topic_upvoted_by.add(self)
             self.upvoted_count += 1
             self.save()
+        else:
+            raise IntegrityError
         
     def downvote(self, user):
         if self in user.topic_upvoted_by.all():
             # user.topic_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
+        else:
+            raise IntegrityError
             
     def visit(self):
         self.hit_count += 1

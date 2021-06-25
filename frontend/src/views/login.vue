@@ -45,14 +45,6 @@ export default {
         .catch(() => {
           console.log("login error");
         });
-  //     //   // login(ticket).then((res) => {
-  //     //   //   console.log('get token');
-  //     //   //   if (res.status === 200) {
-  //     //   //     this.token = res.data.access;
-  //     //   //     this.$store.commit("setToken", res.data.access);
-  //     //   //     this.$router.push("/");
-  //     //   //   }
-  //     //   // });
     } else if (!this.$store.state.token) {
       console.log("!this.$store.state.token");
       const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;

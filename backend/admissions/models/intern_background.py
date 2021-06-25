@@ -5,6 +5,7 @@ from multiselectfield import MultiSelectField
 from picklefield.fields import PickledObjectField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
+from django.db.utils import IntegrityError
 
 class InternBackground(models.Model):
     related_user = models.OneToOneField(
@@ -67,9 +68,13 @@ class InternBackground(models.Model):
             user.internbackground_upvoted_by.add(self)
             self.upvoted_count += 1
             self.save()
+        else:
+            raise IntegrityError
         
     def downvote(self, user):
         if self in user.internbackground_upvoted_by.all():
             user.internbackground_upvoted_by.remove(self)
             self.upvoted_count -= 1
             self.save()
+        else:
+            raise IntegrityError

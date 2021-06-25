@@ -66,19 +66,28 @@ class BackgroundViewSet(
         model_notification = apps.get_model('forum.notification')
         bg = get_object_or_404(self.queryset, pk=pk)
         action = request.data['action']
-        if action == 'upvote':
-            bg.upvote(user=request.user)
-            model_notification.notify(bg, to_user=bg.related_user, operation=model_notification.UPVOTED)
-        elif action == 'downvote':
-            bg.downvote(user=request.user)
-        else:
+        try:
+            if action == 'upvote':
+                bg.upvote(user=request.user)
+                model_notification.notify(bg, to_user=bg.related_user, operation=model_notification.UPVOTED)
+            elif action == 'downvote':
+                bg.downvote(user=request.user)
+            else:
+                return Response(
+                    status=status.HTTP_304_NOT_MODIFIED,
+                    data={
+                        'msg': 'action不存在',
+                        'errono': -1
+                    }
+                )
+        except IntegrityError:
             return Response(
-                status=status.HTTP_304_NOT_MODIFIED,
-                data={
-                    'msg': 'action不存在',
-                    'errono': -1
-                }
-            )
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        'msg': 'action不正确',
+                        'errono': -1
+                    }
+                )
         return Response(
             status=status.HTTP_200_OK,
             data={
