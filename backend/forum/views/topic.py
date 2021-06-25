@@ -206,7 +206,7 @@ class TopicRevisionViewSet(
     @action(methods=['patch'], detail=True, url_path='review', url_name='review')
     def review(self, request, pk):
         topic_revision = get_object_or_404(self.queryset, pk=pk)
-        st = request.data.get("st",None)
+        st = request.data.get("status",None)
         if st is not None:
             if st == models.TopicRevision.REVIEWAP and topic_revision.related_topic.set_valid_and_update(topic_revision):
                 # 审核通过

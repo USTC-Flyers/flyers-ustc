@@ -55,6 +55,8 @@ const [
 
 import { initNotification, getNotification, readNotification } from "@/api/user";
 import { admissions_get } from "@/api/admission"
+import { getTopicRevision } from "@/api/wiki"
+
 // import AnchorRouterLink from 'vue-anchor-router-link'
 export default {
   filters: {
@@ -153,7 +155,7 @@ export default {
         else if(noti_item.ref_obj_name === "Admissions") {
           admissions_get(noti_item.ref_obj_id).then((response) => {
             var schoolname =  response.related_university.short_name;
-            result.message = "你的 " + schoolname +" 申请经验被点赞";
+            result.message = "你的「" + schoolname +"」申请经验被点赞";
             result.hash = "#admissions"
           }).catch((error) => {
             if (error.response.status === 404) {
@@ -167,7 +169,31 @@ export default {
         result.route_id = noti_item.ref_obj_id;
         result.message ="新的 WIKI 修改请求";
       }
-      
+
+      else if (noti_item.operation === UPDATED) {
+        result.route_name = "topic";
+        getTopicRevision(noti_item.ref_obj_id).then((response) => {
+          var title = response.title;
+          result.message ="你关注的 WIKI -「"+ title + "」有更新";
+          result.route_id = response.related_topic;
+        })
+      }
+      else if (noti_item.operation === APPROVED) {
+        result.route_name = "topic";
+        getTopicRevision(noti_item.ref_obj_id).then((response) => {
+          var title = response.title;
+          result.message ="你对 WIKI -「"+ title + "」的修改已被审核通过";
+          result.route_id = response.related_topic;
+        })
+      }
+      else if (noti_item.operation === REJECTED) {
+        result.route_name = "topic";
+        getTopicRevision(noti_item.ref_obj_id).then((response) => {
+          var title = response.title;
+          result.message ="你对 WIKI -「"+ title + "」的修改审核未通过";
+          result.route_id = response.related_topic;
+        })
+      }
       return result;
 
     },
