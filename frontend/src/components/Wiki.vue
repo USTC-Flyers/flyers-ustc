@@ -56,7 +56,7 @@ export default {
   bottom:0;
   position:fixed;
   overflow-y:auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   z-index: 10;
   /* -webkit-overflow-scrolling: touch; */
   /* -ms-overflow-style: none; */
@@ -64,7 +64,8 @@ export default {
 }
 .aside-inner{
   display:block;
-  width:260px;
+  min-width:260px;
+  max-width:260px;
   padding:35px 0px 10px 10px;
   /* padding 上右下左 */
 }
@@ -73,8 +74,8 @@ export default {
   position:relative;
   padding:5px 0;
   max-width: 700px;
-  margin:0 auto;
-  padding-left:10px;
+  margin:0 20px 20px 20px;
+  padding-left:260px;
 
 }
 #create-wiki{

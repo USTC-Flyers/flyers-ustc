@@ -41,7 +41,7 @@ export default {
 
 <style>
 .scrollbar-wrapper {
-  overflow-x: hidden !important;
+  overflow-x: auto ;
 }
 .el-submenu__title{
   font-size:20px;

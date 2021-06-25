@@ -260,4 +260,21 @@ export default {
   display: inline-flex;
   margin-right: 40px;
 }
+
+/**修改全局的滚动条*/
+/**滚动条的宽度*/
+::-webkit-scrollbar {
+  width: 8px; 
+ 
+}
+//滚动条的滑块
+::-webkit-scrollbar-thumb {
+  background-color: #eeeeee;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #d3d3d3;
+  border-radius: 3px;
+}
+
 </style>

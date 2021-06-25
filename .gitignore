@@ -120,3 +120,4 @@ frontend/output*
 *.csv
 *.pgsql
 **.json
+frontend/.env.development

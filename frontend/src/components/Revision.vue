@@ -4,7 +4,7 @@
     <tiptap-editor
       v-model="content"
       placeholder="请勿使用一级标题(Heading 1)，从Heading 2开始使用"
-      height="580"
+      height="550"
       id="tiptap-editor"
     />
     <el-button type="primary" @click="submitForm" style="margin-top:30px">提交</el-button>
@@ -58,6 +58,7 @@ export default {
   margin-inline-end: 0px;
   font-weight: bold;
   width:1020px;
+  
 }
 #tiptap-editor{
   width:1020px;
