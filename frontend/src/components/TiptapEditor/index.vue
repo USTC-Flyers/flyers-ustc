@@ -9,7 +9,7 @@
 </template>
 
 <script>
-//import 'element-tiptap';
+import 'element-tiptap';
 import './tiptap.css';
 import defaultExtensions from './default-extensions'
 import { ElementTiptap } from 'element-tiptap'

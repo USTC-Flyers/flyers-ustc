@@ -11,7 +11,8 @@ import AddTopic from "@/components/AddTopic.vue";
 import Revision from "@/components/Revision.vue";
 import UserMain from "@/userviews/UserMain.vue";
 import Review from '@/components/Review';
-import About from '@/components/About'
+import Rules from '@/components/Rules'
+import Subhome from '../views/Subhome';
 
 Vue.use(VueRouter);
 const routes = [
@@ -30,11 +31,26 @@ const routes = [
   {
     path: "/home",
     component: Home,
-    redirect: "/welcome",
+    redirect: "/subhome",
     children: [
-      { path: "/welcome", component: Welcome },
-      { path: "/about", component: About },
-      { path: "/admission", component: Admission },
+      {
+        path: "/subhome",
+        component: Subhome,
+        redirect:"/welcome",
+        children: [
+          { path: "/welcome", component: Welcome },
+          { path: "/admission", component: Admission },
+          { path: "/report_admission/:is_initial", component: Report_Admission },
+          { path: "/usermain/:id", component: UserMain },
+          {
+            path: "/notificaiton",
+            component: Notification,
+          },
+          {
+            path: "/review/:id", component: Review
+          },
+        ],
+      },      
       {
         path: "/wiki",
         component: Wiki,
@@ -48,15 +64,7 @@ const routes = [
           },
         ],
       },
-      { path: "/report_admission/:is_initial", component: Report_Admission },
-      { path: "/usermain/:id", component: UserMain },
-      {
-        path: "/notificaiton",
-        component: Notification,
-      },
-      {
-        path: "/review/:id", component: Review
-      }
+
     ],
   },
 
