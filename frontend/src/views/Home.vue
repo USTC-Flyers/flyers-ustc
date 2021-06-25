@@ -14,7 +14,6 @@
             </el-button>
             </router-link>
             
-            
           </div>
         <span></span>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
@@ -111,36 +110,13 @@
     <div class="main">
       <router-view v-if="isRouterAlive"></router-view>
     </div>
-    <div class="footer">
-        <el-divider></el-divider>
-        <router-link
-            :to="{
-              path: '/welcome',
-              hash: 'contact',
-            }"
-          >
-            <el-button type="text">
-              联系我们
-            </el-button>
-        </router-link>
-        <el-divider direction="vertical"></el-divider>
-        <router-link
-            :to="{
-              path: '/rules',
-            }"
-          >
-            <el-button type="text">
-              社区规则
-            </el-button>
-        </router-link>
-        <div>Copyright &copy; 2021 USTC飞跃网站</div>
-      </div>
-      
+
   </div>
 </template>
 
 <script>
 import { initNotificationCount } from "@/api/user";
+//import './home.css'
 export default {
   name: "Home",
   provide() {
@@ -261,10 +237,12 @@ export default {
 }
 .main {
   position: relative;
-  margin: auto;
-  margin-top: 110px;
+  margin: 0;
+  margin-top: 0px;
+  padding-top: 30px;
   width: 100%;
-  // top:90px;
+  top:60px //指的是margin更以上的距离，即div模块外围距离
+  // padding-top:100px;
 }
 .footer {
   text-align: center;

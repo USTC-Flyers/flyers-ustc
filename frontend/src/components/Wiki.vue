@@ -18,15 +18,41 @@
       </div>
     </div>
     <div class="content">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive">
-          <!-- 这里是会被缓存的视图组件，比如 Home！ -->
-        </router-view>
-      </keep-alive>
+      <div class="main-content">
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive">
+            <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+          </router-view>
+        </keep-alive>
 
-      <router-view v-if="!$route.meta.keepAlive">
-        <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
-      </router-view>
+        <router-view v-if="!$route.meta.keepAlive">
+          <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
+        </router-view>
+      </div>
+      <div class="footer">
+        <el-divider></el-divider>
+        <router-link
+            :to="{
+              path: '/welcome',
+              hash: 'contact',
+            }"
+          >
+            <el-button type="text">
+              联系我们
+            </el-button>
+        </router-link>
+        <el-divider direction="vertical"></el-divider>
+        <router-link
+            :to="{
+              path: '/rules',
+            }"
+          >
+            <el-button type="text">
+              社区规则
+            </el-button>
+        </router-link>
+        <div>Copyright &copy; 2021 USTC飞跃网站</div>
+      </div>
     </div>
   </div>
 </template>
@@ -73,14 +99,17 @@ export default {
   display: block;
   position:relative;
   padding:5px 0;
-  max-width: 700px;
-  margin:0 20px 20px 20px;
-  padding-left:260px;
+  max-width: 800px;
+  margin:0px 20px 20px 20px;
+  padding-left:320px;
 
 }
 #create-wiki{
   background:rgb(255, 255, 255);
   color:rgb(105, 105, 105);
   border-color: rgb(151, 151, 151);
+}
+.footer{
+  padding:0;
 }
 </style>
