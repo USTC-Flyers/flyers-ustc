@@ -32,7 +32,7 @@ EMAIL_HOST_USER = 'flyers_ustc@163.com'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'  
 EMAIL_USE_SSL = True
-ADMINS = [('Jasmine', 'jasysj@gmail.com')]
+ADMINS = [('Feiyue', 'flyers_ustc@163.com')]
 
 # Logging
 # https://www.agiliq.com/blog/2017/12/configure-django-log-exceptions-production/

@@ -32,30 +32,29 @@ services:
     volumes:
       - postgres-data-volume:/var/lib/postgres
 
-    pgbackups:
-      image: prodrigestivill/postgres-backup-local
-      restart: always
-      user: postgres:postgres
-      volumes:
-          - /var/opt/pgbackups:/backups
-      links:
-          - postgres
-      depends_on:
-          - postgres
-      environment:
-          - POSTGRES_HOST: postgres
-          - POSTGRES_DB: flyers
-          - POSTGRES_USER: postgres
-          - POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        #  - POSTGRES_PASSWORD_FILE: /run/secrets/db_password <-- alternative for POSTGRES_PASSWORD (to use with docker secrets)
-          - POSTGRES_EXTRA_OPTS: -Z6 --schema=public --blobs
-          - SCHEDULE: @daily
-          - BACKUP_KEEP_DAYS: 7
-          - BACKUP_KEEP_WEEKS: 4
-          - BACKUP_KEEP_MONTHS: 6
-          - HEALTHCHECK_PORT: 8008
-      ports:
-        - 8008:8008
+  pgbackups:
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    user: postgres:postgres
+    volumes:
+        - /var/opt/pgbackups:/backups
+    links:
+        - postgres
+    depends_on:
+        - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: flyers
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # POSTGRES_PASSWORD_FILE: /run/secrets/db_password <-alternative for POSTGRES_PASSWORD (to use with docker secrets)
+      POSTGRES_EXTRA_OPTS: -Z6 --schema=public --blobs
+      BACKUP_KEEP_DAYS: 7
+      BACKUP_KEEP_WEEKS: 4
+      BACKUP_KEEP_MONTHS: 6
+      HEALTHCHECK_PORT: 8008
+    ports:
+      - 8008:8008
 
   nginx:
     build: ./

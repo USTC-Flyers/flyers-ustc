@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.3 (Debian 13.3-1.pgdg100+1)
--- Dumped by pg_dump version 13.3 (Debian 13.3-1.pgdg100+1)
+-- Dumped from database version 13.2 (Ubuntu 13.2-1.pgdg18.04+1)
+-- Dumped by pg_dump version 13.2 (Ubuntu 13.2-1.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -25,7 +25,6 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.account_user (
-    id integer NOT NULL,
     password character varying(128) NOT NULL,
     last_login timestamp with time zone,
     is_superuser boolean NOT NULL,
@@ -36,7 +35,7 @@ CREATE TABLE public.account_user (
     is_staff boolean NOT NULL,
     is_active boolean NOT NULL,
     date_joined timestamp with time zone NOT NULL,
-    gid character varying(255) NOT NULL
+    id character varying(255) NOT NULL
 );
 
 
@@ -48,7 +47,7 @@ ALTER TABLE public.account_user OWNER TO postgres;
 
 CREATE TABLE public.account_user_groups (
     id integer NOT NULL,
-    user_id integer NOT NULL,
+    user_id character varying(255) NOT NULL,
     group_id integer NOT NULL
 );
 
@@ -78,34 +77,12 @@ ALTER SEQUENCE public.account_user_groups_id_seq OWNED BY public.account_user_gr
 
 
 --
--- Name: account_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.account_user_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.account_user_id_seq OWNER TO postgres;
-
---
--- Name: account_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.account_user_id_seq OWNED BY public.account_user.id;
-
-
---
 -- Name: account_user_user_permissions; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.account_user_user_permissions (
     id integer NOT NULL,
-    user_id integer NOT NULL,
+    user_id character varying(255) NOT NULL,
     permission_id integer NOT NULL
 );
 
@@ -150,7 +127,7 @@ CREATE TABLE public.account_userprofile (
     final_program character varying(255),
     university character varying(255) NOT NULL,
     final_university_id integer,
-    related_user_id integer NOT NULL
+    related_user_id character varying(255) NOT NULL
 );
 
 
@@ -228,7 +205,7 @@ CREATE TABLE public.admissions_admissions (
     upvoted_count integer NOT NULL,
     related_background_id integer NOT NULL,
     related_university_id integer NOT NULL,
-    related_user_id integer NOT NULL,
+    related_user_id character varying(255) NOT NULL,
     CONSTRAINT admissions_admissions_upvoted_count_check CHECK ((upvoted_count >= 0))
 );
 
@@ -264,7 +241,7 @@ ALTER SEQUENCE public.admissions_admissions_id_seq OWNED BY public.admissions_ad
 CREATE TABLE public.admissions_admissions_upvoted (
     id integer NOT NULL,
     admissions_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(255) NOT NULL
 );
 
 
@@ -311,7 +288,7 @@ CREATE TABLE public.admissions_background (
     comments text,
     summary text,
     upvoted_count integer NOT NULL,
-    related_user_id integer NOT NULL,
+    related_user_id character varying(255) NOT NULL,
     CONSTRAINT admissions_background_upvoted_count_check CHECK ((upvoted_count >= 0))
 );
 
@@ -347,7 +324,7 @@ ALTER SEQUENCE public.admissions_background_id_seq OWNED BY public.admissions_ba
 CREATE TABLE public.admissions_background_upvoted (
     id integer NOT NULL,
     background_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(255) NOT NULL
 );
 
 
@@ -373,164 +350,6 @@ ALTER TABLE public.admissions_background_upvoted_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.admissions_background_upvoted_id_seq OWNED BY public.admissions_background_upvoted.id;
-
-
---
--- Name: admissions_internbackground; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.admissions_internbackground (
-    id integer NOT NULL,
-    major character varying(255),
-    gpa double precision,
-    rank character varying(255),
-    "TOEFL" character varying(255),
-    "researchSpec" text,
-    tags character varying(255)[],
-    upvoted_count integer NOT NULL,
-    related_user_id integer NOT NULL,
-    CONSTRAINT admissions_internbackground_upvoted_count_check CHECK ((upvoted_count >= 0))
-);
-
-
-ALTER TABLE public.admissions_internbackground OWNER TO postgres;
-
---
--- Name: admissions_internbackground_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.admissions_internbackground_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.admissions_internbackground_id_seq OWNER TO postgres;
-
---
--- Name: admissions_internbackground_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.admissions_internbackground_id_seq OWNED BY public.admissions_internbackground.id;
-
-
---
--- Name: admissions_internbackground_upvoted; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.admissions_internbackground_upvoted (
-    id integer NOT NULL,
-    internbackground_id integer NOT NULL,
-    user_id integer NOT NULL
-);
-
-
-ALTER TABLE public.admissions_internbackground_upvoted OWNER TO postgres;
-
---
--- Name: admissions_internbackground_upvoted_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.admissions_internbackground_upvoted_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.admissions_internbackground_upvoted_id_seq OWNER TO postgres;
-
---
--- Name: admissions_internbackground_upvoted_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.admissions_internbackground_upvoted_id_seq OWNED BY public.admissions_internbackground_upvoted.id;
-
-
---
--- Name: admissions_internship; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.admissions_internship (
-    id integer NOT NULL,
-    professor character varying(255) NOT NULL,
-    specialty character varying(255) NOT NULL,
-    is_done boolean,
-    apply_exp character varying(255),
-    apply_spec text,
-    result character varying(255),
-    summary text,
-    created_time timestamp with time zone NOT NULL,
-    upvoted_count integer NOT NULL,
-    related_background_id integer NOT NULL,
-    related_university_id integer NOT NULL,
-    related_user_id integer NOT NULL,
-    CONSTRAINT admissions_internship_upvoted_count_check CHECK ((upvoted_count >= 0))
-);
-
-
-ALTER TABLE public.admissions_internship OWNER TO postgres;
-
---
--- Name: admissions_internship_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.admissions_internship_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.admissions_internship_id_seq OWNER TO postgres;
-
---
--- Name: admissions_internship_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.admissions_internship_id_seq OWNED BY public.admissions_internship.id;
-
-
---
--- Name: admissions_internship_upvoted; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.admissions_internship_upvoted (
-    id integer NOT NULL,
-    internship_id integer NOT NULL,
-    user_id integer NOT NULL
-);
-
-
-ALTER TABLE public.admissions_internship_upvoted OWNER TO postgres;
-
---
--- Name: admissions_internship_upvoted_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.admissions_internship_upvoted_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.admissions_internship_upvoted_id_seq OWNER TO postgres;
-
---
--- Name: admissions_internship_upvoted_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.admissions_internship_upvoted_id_seq OWNED BY public.admissions_internship_upvoted.id;
 
 
 --
@@ -723,7 +542,7 @@ CREATE TABLE public.django_admin_log (
     action_flag smallint NOT NULL,
     change_message text NOT NULL,
     content_type_id integer,
-    user_id integer NOT NULL,
+    user_id character varying(255) NOT NULL,
     CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
 );
 
@@ -847,7 +666,7 @@ CREATE TABLE public.forum_comment (
     created_time timestamp with time zone NOT NULL,
     upvoted_count integer NOT NULL,
     related_comment_thread_id integer NOT NULL,
-    related_user_id integer NOT NULL,
+    related_user_id character varying(255) NOT NULL,
     CONSTRAINT forum_comment_upvoted_count_check CHECK ((upvoted_count >= 0))
 );
 
@@ -883,7 +702,7 @@ ALTER SEQUENCE public.forum_comment_id_seq OWNED BY public.forum_comment.id;
 CREATE TABLE public.forum_comment_upvoted (
     id integer NOT NULL,
     comment_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(255) NOT NULL
 );
 
 
@@ -923,7 +742,7 @@ CREATE TABLE public.forum_commentthread (
     is_anonymous boolean NOT NULL,
     upvoted_count integer NOT NULL,
     related_topic_id integer NOT NULL,
-    related_user_id integer NOT NULL,
+    related_user_id character varying(255) NOT NULL,
     CONSTRAINT forum_commentthread_upvoted_count_check CHECK ((upvoted_count >= 0))
 );
 
@@ -959,7 +778,7 @@ ALTER SEQUENCE public.forum_commentthread_id_seq OWNED BY public.forum_commentth
 CREATE TABLE public.forum_commentthread_upvoted (
     id integer NOT NULL,
     commentthread_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(255) NOT NULL
 );
 
 
@@ -999,7 +818,7 @@ CREATE TABLE public.forum_notification (
     message text,
     is_read boolean NOT NULL,
     operation integer NOT NULL,
-    related_user_id integer NOT NULL
+    related_user_id character varying(255) NOT NULL
 );
 
 
@@ -1057,7 +876,7 @@ ALTER TABLE public.forum_topic OWNER TO postgres;
 CREATE TABLE public.forum_topic_followed (
     id integer NOT NULL,
     topic_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(255) NOT NULL
 );
 
 
@@ -1114,7 +933,7 @@ ALTER SEQUENCE public.forum_topic_id_seq OWNED BY public.forum_topic.id;
 CREATE TABLE public.forum_topic_upvoted (
     id integer NOT NULL,
     topic_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(255) NOT NULL
 );
 
 
@@ -1154,9 +973,9 @@ CREATE TABLE public.forum_topicrevision (
     image character varying(100) NOT NULL,
     file character varying(100) NOT NULL,
     created_time timestamp with time zone NOT NULL,
-    status integer NOT NULL,
+    is_valid boolean NOT NULL,
     related_topic_id integer,
-    related_user_id integer NOT NULL
+    related_user_id character varying(255) NOT NULL
 );
 
 
@@ -1182,13 +1001,6 @@ ALTER TABLE public.forum_topicrevision_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.forum_topicrevision_id_seq OWNED BY public.forum_topicrevision.id;
-
-
---
--- Name: account_user id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.account_user ALTER COLUMN id SET DEFAULT nextval('public.account_user_id_seq'::regclass);
 
 
 --
@@ -1245,34 +1057,6 @@ ALTER TABLE ONLY public.admissions_background ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.admissions_background_upvoted ALTER COLUMN id SET DEFAULT nextval('public.admissions_background_upvoted_id_seq'::regclass);
-
-
---
--- Name: admissions_internbackground id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground ALTER COLUMN id SET DEFAULT nextval('public.admissions_internbackground_id_seq'::regclass);
-
-
---
--- Name: admissions_internbackground_upvoted id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground_upvoted ALTER COLUMN id SET DEFAULT nextval('public.admissions_internbackground_upvoted_id_seq'::regclass);
-
-
---
--- Name: admissions_internship id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship ALTER COLUMN id SET DEFAULT nextval('public.admissions_internship_id_seq'::regclass);
-
-
---
--- Name: admissions_internship_upvoted id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship_upvoted ALTER COLUMN id SET DEFAULT nextval('public.admissions_internship_upvoted_id_seq'::regclass);
 
 
 --
@@ -1398,8 +1182,8 @@ ALTER TABLE ONLY public.forum_topicrevision ALTER COLUMN id SET DEFAULT nextval(
 -- Data for Name: account_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.account_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, gid) FROM stdin;
-1	pbkdf2_sha256$216000$bgs4c1ykoWiq$ZyagoQIIpaMgbdCoekGSaNjuThsAIfDXryPUd09zyb4=	\N	t	flyers				t	t	2021-06-25 08:51:13.065418+00	
+COPY public.account_user (password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, id) FROM stdin;
+pbkdf2_sha256$216000$QPYJJBTuAKGq$CYw7SPB5Zf7QaB1OsvZAp07BKMIn/h4RdTDz2YonqsQ=	\N	t	flyers				t	t	2021-06-02 10:49:23.714378+08	
 \.
 
 
@@ -1464,38 +1248,6 @@ COPY public.admissions_background (id, major, gpa, rank, apply_for, "TOEFL", "GR
 --
 
 COPY public.admissions_background_upvoted (id, background_id, user_id) FROM stdin;
-\.
-
-
---
--- Data for Name: admissions_internbackground; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.admissions_internbackground (id, major, gpa, rank, "TOEFL", "researchSpec", tags, upvoted_count, related_user_id) FROM stdin;
-\.
-
-
---
--- Data for Name: admissions_internbackground_upvoted; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.admissions_internbackground_upvoted (id, internbackground_id, user_id) FROM stdin;
-\.
-
-
---
--- Data for Name: admissions_internship; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.admissions_internship (id, professor, specialty, is_done, apply_exp, apply_spec, result, summary, created_time, upvoted_count, related_background_id, related_university_id, related_user_id) FROM stdin;
-\.
-
-
---
--- Data for Name: admissions_internship_upvoted; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.admissions_internship_upvoted (id, internship_id, user_id) FROM stdin;
 \.
 
 
@@ -6783,50 +6535,42 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 26	Can change user profile	7	change_userprofile
 27	Can delete user profile	7	delete_userprofile
 28	Can view user profile	7	view_userprofile
-29	Can add intern background	8	add_internbackground
-30	Can change intern background	8	change_internbackground
-31	Can delete intern background	8	delete_internbackground
-32	Can view intern background	8	view_internbackground
-33	Can add university	9	add_university
-34	Can change university	9	change_university
-35	Can delete university	9	delete_university
-36	Can view university	9	view_university
-37	Can add program	10	add_program
-38	Can change program	10	change_program
-39	Can delete program	10	delete_program
-40	Can view program	10	view_program
-41	Can add internship	11	add_internship
-42	Can change internship	11	change_internship
-43	Can delete internship	11	delete_internship
-44	Can view internship	11	view_internship
-45	Can add background	12	add_background
-46	Can change background	12	change_background
-47	Can delete background	12	delete_background
-48	Can view background	12	view_background
-49	Can add admissions	13	add_admissions
-50	Can change admissions	13	change_admissions
-51	Can delete admissions	13	delete_admissions
-52	Can view admissions	13	view_admissions
-53	Can add topic	14	add_topic
-54	Can change topic	14	change_topic
-55	Can delete topic	14	delete_topic
-56	Can view topic	14	view_topic
-57	Can add topic revision	15	add_topicrevision
-58	Can change topic revision	15	change_topicrevision
-59	Can delete topic revision	15	delete_topicrevision
-60	Can view topic revision	15	view_topicrevision
-61	Can add notification	16	add_notification
-62	Can change notification	16	change_notification
-63	Can delete notification	16	delete_notification
-64	Can view notification	16	view_notification
-65	Can add comment thread	17	add_commentthread
-66	Can change comment thread	17	change_commentthread
-67	Can delete comment thread	17	delete_commentthread
-68	Can view comment thread	17	view_commentthread
-69	Can add comment	18	add_comment
-70	Can change comment	18	change_comment
-71	Can delete comment	18	delete_comment
-72	Can view comment	18	view_comment
+29	Can add university	8	add_university
+30	Can change university	8	change_university
+31	Can delete university	8	delete_university
+32	Can view university	8	view_university
+33	Can add program	9	add_program
+34	Can change program	9	change_program
+35	Can delete program	9	delete_program
+36	Can view program	9	view_program
+37	Can add background	10	add_background
+38	Can change background	10	change_background
+39	Can delete background	10	delete_background
+40	Can view background	10	view_background
+41	Can add admissions	11	add_admissions
+42	Can change admissions	11	change_admissions
+43	Can delete admissions	11	delete_admissions
+44	Can view admissions	11	view_admissions
+45	Can add topic	12	add_topic
+46	Can change topic	12	change_topic
+47	Can delete topic	12	delete_topic
+48	Can view topic	12	view_topic
+49	Can add topic revision	13	add_topicrevision
+50	Can change topic revision	13	change_topicrevision
+51	Can delete topic revision	13	delete_topicrevision
+52	Can view topic revision	13	view_topicrevision
+53	Can add notification	14	add_notification
+54	Can change notification	14	change_notification
+55	Can delete notification	14	delete_notification
+56	Can view notification	14	view_notification
+57	Can add comment thread	15	add_commentthread
+58	Can change comment thread	15	change_commentthread
+59	Can delete comment thread	15	delete_commentthread
+60	Can view comment thread	15	view_commentthread
+61	Can add comment	16	add_comment
+62	Can change comment	16	change_comment
+63	Can delete comment	16	delete_comment
+64	Can view comment	16	view_comment
 \.
 
 
@@ -6850,17 +6594,15 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 5	sessions	session
 6	account	user
 7	account	userprofile
-8	admissions	internbackground
-9	admissions	university
-10	admissions	program
-11	admissions	internship
-12	admissions	background
-13	admissions	admissions
-14	forum	topic
-15	forum	topicrevision
-16	forum	notification
-17	forum	commentthread
-18	forum	comment
+8	admissions	university
+9	admissions	program
+10	admissions	background
+11	admissions	admissions
+12	forum	topic
+13	forum	topicrevision
+14	forum	notification
+15	forum	commentthread
+16	forum	comment
 \.
 
 
@@ -6869,28 +6611,28 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 --
 
 COPY public.django_migrations (id, app, name, applied) FROM stdin;
-1	contenttypes	0001_initial	2021-06-25 08:50:55.35759+00
-2	contenttypes	0002_remove_content_type_name	2021-06-25 08:50:55.365445+00
-3	auth	0001_initial	2021-06-25 08:50:55.38436+00
-4	auth	0002_alter_permission_name_max_length	2021-06-25 08:50:55.402687+00
-5	auth	0003_alter_user_email_max_length	2021-06-25 08:50:55.40816+00
-6	auth	0004_alter_user_username_opts	2021-06-25 08:50:55.41315+00
-7	auth	0005_alter_user_last_login_null	2021-06-25 08:50:55.418147+00
-8	auth	0006_require_contenttypes_0002	2021-06-25 08:50:55.419889+00
-9	auth	0007_alter_validators_add_error_messages	2021-06-25 08:50:55.424947+00
-10	auth	0008_alter_user_username_max_length	2021-06-25 08:50:55.4308+00
-11	auth	0009_alter_user_last_name_max_length	2021-06-25 08:50:55.435528+00
-12	auth	0010_alter_group_name_max_length	2021-06-25 08:50:55.440418+00
-13	auth	0011_update_proxy_permissions	2021-06-25 08:50:55.445282+00
-14	auth	0012_alter_user_first_name_max_length	2021-06-25 08:50:55.449999+00
-15	account	0001_initial	2021-06-25 08:50:55.464186+00
-16	admissions	0001_initial	2021-06-25 08:50:55.535913+00
-17	account	0002_auto_20210625_1647	2021-06-25 08:50:55.646903+00
-18	admin	0001_initial	2021-06-25 08:50:55.688838+00
-19	admin	0002_logentry_remove_auto_add	2021-06-25 08:50:55.736743+00
-20	admin	0003_logentry_add_action_flag_choices	2021-06-25 08:50:55.751849+00
-21	forum	0001_initial	2021-06-25 08:50:55.922109+00
-22	sessions	0001_initial	2021-06-25 08:50:55.980445+00
+1	contenttypes	0001_initial	2021-06-02 10:49:16.574061+08
+2	contenttypes	0002_remove_content_type_name	2021-06-02 10:49:16.5807+08
+3	auth	0001_initial	2021-06-02 10:49:16.598702+08
+4	auth	0002_alter_permission_name_max_length	2021-06-02 10:49:16.6172+08
+5	auth	0003_alter_user_email_max_length	2021-06-02 10:49:16.621875+08
+6	auth	0004_alter_user_username_opts	2021-06-02 10:49:16.626505+08
+7	auth	0005_alter_user_last_login_null	2021-06-02 10:49:16.631249+08
+8	auth	0006_require_contenttypes_0002	2021-06-02 10:49:16.633233+08
+9	auth	0007_alter_validators_add_error_messages	2021-06-02 10:49:16.637888+08
+10	auth	0008_alter_user_username_max_length	2021-06-02 10:49:16.642554+08
+11	auth	0009_alter_user_last_name_max_length	2021-06-02 10:49:16.64725+08
+12	auth	0010_alter_group_name_max_length	2021-06-02 10:49:16.652202+08
+13	auth	0011_update_proxy_permissions	2021-06-02 10:49:16.659276+08
+14	auth	0012_alter_user_first_name_max_length	2021-06-02 10:49:16.663815+08
+15	account	0001_initial	2021-06-02 10:49:16.677434+08
+16	admissions	0001_initial	2021-06-02 10:49:16.717781+08
+17	account	0002_auto_20210601_0414	2021-06-02 10:49:16.799149+08
+18	admin	0001_initial	2021-06-02 10:49:16.851534+08
+19	admin	0002_logentry_remove_auto_add	2021-06-02 10:49:16.870085+08
+20	admin	0003_logentry_add_action_flag_choices	2021-06-02 10:49:16.880421+08
+21	forum	0001_initial	2021-06-02 10:49:17.047787+08
+22	sessions	0001_initial	2021-06-02 10:49:17.120249+08
 \.
 
 
@@ -6970,7 +6712,7 @@ COPY public.forum_topic_upvoted (id, topic_id, user_id) FROM stdin;
 -- Data for Name: forum_topicrevision; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.forum_topicrevision (id, revision_number, title, content, image, file, created_time, status, related_topic_id, related_user_id) FROM stdin;
+COPY public.forum_topicrevision (id, revision_number, title, content, image, file, created_time, is_valid, related_topic_id, related_user_id) FROM stdin;
 \.
 
 
@@ -6979,13 +6721,6 @@ COPY public.forum_topicrevision (id, revision_number, title, content, image, fil
 --
 
 SELECT pg_catalog.setval('public.account_user_groups_id_seq', 1, false);
-
-
---
--- Name: account_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.account_user_id_seq', 1, true);
 
 
 --
@@ -7038,34 +6773,6 @@ SELECT pg_catalog.setval('public.admissions_background_upvoted_id_seq', 1, false
 
 
 --
--- Name: admissions_internbackground_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.admissions_internbackground_id_seq', 1, false);
-
-
---
--- Name: admissions_internbackground_upvoted_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.admissions_internbackground_upvoted_id_seq', 1, false);
-
-
---
--- Name: admissions_internship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.admissions_internship_id_seq', 1, false);
-
-
---
--- Name: admissions_internship_upvoted_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.admissions_internship_upvoted_id_seq', 1, false);
-
-
---
 -- Name: admissions_program_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -7097,7 +6804,7 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 72, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 64, true);
 
 
 --
@@ -7111,7 +6818,7 @@ SELECT pg_catalog.setval('public.django_admin_log_id_seq', 1, false);
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 18, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 16, true);
 
 
 --
@@ -7318,62 +7025,6 @@ ALTER TABLE ONLY public.admissions_background_upvoted
 
 ALTER TABLE ONLY public.admissions_background_upvoted
     ADD CONSTRAINT admissions_background_upvoted_pkey PRIMARY KEY (id);
-
-
---
--- Name: admissions_internbackground_upvoted admissions_internbackgro_internbackground_id_user_dcde2271_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground_upvoted
-    ADD CONSTRAINT admissions_internbackgro_internbackground_id_user_dcde2271_uniq UNIQUE (internbackground_id, user_id);
-
-
---
--- Name: admissions_internbackground admissions_internbackground_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground
-    ADD CONSTRAINT admissions_internbackground_pkey PRIMARY KEY (id);
-
-
---
--- Name: admissions_internbackground admissions_internbackground_related_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground
-    ADD CONSTRAINT admissions_internbackground_related_user_id_key UNIQUE (related_user_id);
-
-
---
--- Name: admissions_internbackground_upvoted admissions_internbackground_upvoted_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground_upvoted
-    ADD CONSTRAINT admissions_internbackground_upvoted_pkey PRIMARY KEY (id);
-
-
---
--- Name: admissions_internship admissions_internship_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship
-    ADD CONSTRAINT admissions_internship_pkey PRIMARY KEY (id);
-
-
---
--- Name: admissions_internship_upvoted admissions_internship_up_internship_id_user_id_746edef2_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship_upvoted
-    ADD CONSTRAINT admissions_internship_up_internship_id_user_id_746edef2_uniq UNIQUE (internship_id, user_id);
-
-
---
--- Name: admissions_internship_upvoted admissions_internship_upvoted_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship_upvoted
-    ADD CONSTRAINT admissions_internship_upvoted_pkey PRIMARY KEY (id);
 
 
 --
@@ -7615,6 +7266,20 @@ CREATE INDEX account_user_groups_user_id_14345e7b ON public.account_user_groups 
 
 
 --
+-- Name: account_user_groups_user_id_14345e7b_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX account_user_groups_user_id_14345e7b_like ON public.account_user_groups USING btree (user_id varchar_pattern_ops);
+
+
+--
+-- Name: account_user_id_c5b04240_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX account_user_id_c5b04240_like ON public.account_user USING btree (id varchar_pattern_ops);
+
+
+--
 -- Name: account_user_user_permissions_permission_id_66c44191; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7626,6 +7291,13 @@ CREATE INDEX account_user_user_permissions_permission_id_66c44191 ON public.acco
 --
 
 CREATE INDEX account_user_user_permissions_user_id_cc42d270 ON public.account_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: account_user_user_permissions_user_id_cc42d270_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX account_user_user_permissions_user_id_cc42d270_like ON public.account_user_user_permissions USING btree (user_id varchar_pattern_ops);
 
 
 --
@@ -7657,6 +7329,13 @@ CREATE INDEX account_userprofile_followed_to_userprofile_id_0a37e8a4 ON public.a
 
 
 --
+-- Name: account_userprofile_related_user_id_26580f76_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX account_userprofile_related_user_id_26580f76_like ON public.account_userprofile USING btree (related_user_id varchar_pattern_ops);
+
+
+--
 -- Name: admissions_admissions_related_background_id_afc1bb18; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7678,6 +7357,13 @@ CREATE INDEX admissions_admissions_related_user_id_af971e32 ON public.admissions
 
 
 --
+-- Name: admissions_admissions_related_user_id_af971e32_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX admissions_admissions_related_user_id_af971e32_like ON public.admissions_admissions USING btree (related_user_id varchar_pattern_ops);
+
+
+--
 -- Name: admissions_admissions_upvoted_admissions_id_f283ddfe; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7689,6 +7375,20 @@ CREATE INDEX admissions_admissions_upvoted_admissions_id_f283ddfe ON public.admi
 --
 
 CREATE INDEX admissions_admissions_upvoted_user_id_90ea1235 ON public.admissions_admissions_upvoted USING btree (user_id);
+
+
+--
+-- Name: admissions_admissions_upvoted_user_id_90ea1235_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX admissions_admissions_upvoted_user_id_90ea1235_like ON public.admissions_admissions_upvoted USING btree (user_id varchar_pattern_ops);
+
+
+--
+-- Name: admissions_background_related_user_id_47fa25c4_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX admissions_background_related_user_id_47fa25c4_like ON public.admissions_background USING btree (related_user_id varchar_pattern_ops);
 
 
 --
@@ -7706,52 +7406,10 @@ CREATE INDEX admissions_background_upvoted_user_id_14ba5953 ON public.admissions
 
 
 --
--- Name: admissions_internbackgroun_internbackground_id_2d744573; Type: INDEX; Schema: public; Owner: postgres
+-- Name: admissions_background_upvoted_user_id_14ba5953_like; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX admissions_internbackgroun_internbackground_id_2d744573 ON public.admissions_internbackground_upvoted USING btree (internbackground_id);
-
-
---
--- Name: admissions_internbackground_upvoted_user_id_9c1cdf74; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX admissions_internbackground_upvoted_user_id_9c1cdf74 ON public.admissions_internbackground_upvoted USING btree (user_id);
-
-
---
--- Name: admissions_internship_related_background_id_6e4b2103; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX admissions_internship_related_background_id_6e4b2103 ON public.admissions_internship USING btree (related_background_id);
-
-
---
--- Name: admissions_internship_related_university_id_a5ee9d3c; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX admissions_internship_related_university_id_a5ee9d3c ON public.admissions_internship USING btree (related_university_id);
-
-
---
--- Name: admissions_internship_related_user_id_218b7119; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX admissions_internship_related_user_id_218b7119 ON public.admissions_internship USING btree (related_user_id);
-
-
---
--- Name: admissions_internship_upvoted_internship_id_9c5bd268; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX admissions_internship_upvoted_internship_id_9c5bd268 ON public.admissions_internship_upvoted USING btree (internship_id);
-
-
---
--- Name: admissions_internship_upvoted_user_id_d65151ed; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX admissions_internship_upvoted_user_id_d65151ed ON public.admissions_internship_upvoted USING btree (user_id);
+CREATE INDEX admissions_background_upvoted_user_id_14ba5953_like ON public.admissions_background_upvoted USING btree (user_id varchar_pattern_ops);
 
 
 --
@@ -7804,6 +7462,13 @@ CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING 
 
 
 --
+-- Name: django_admin_log_user_id_c564eba6_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6_like ON public.django_admin_log USING btree (user_id varchar_pattern_ops);
+
+
+--
 -- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7832,6 +7497,13 @@ CREATE INDEX forum_comment_related_user_id_d5133249 ON public.forum_comment USIN
 
 
 --
+-- Name: forum_comment_related_user_id_d5133249_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_comment_related_user_id_d5133249_like ON public.forum_comment USING btree (related_user_id varchar_pattern_ops);
+
+
+--
 -- Name: forum_comment_upvoted_comment_id_d6cd14fa; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7843,6 +7515,13 @@ CREATE INDEX forum_comment_upvoted_comment_id_d6cd14fa ON public.forum_comment_u
 --
 
 CREATE INDEX forum_comment_upvoted_user_id_8f986020 ON public.forum_comment_upvoted USING btree (user_id);
+
+
+--
+-- Name: forum_comment_upvoted_user_id_8f986020_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_comment_upvoted_user_id_8f986020_like ON public.forum_comment_upvoted USING btree (user_id varchar_pattern_ops);
 
 
 --
@@ -7860,6 +7539,13 @@ CREATE INDEX forum_commentthread_related_user_id_bdc6bb16 ON public.forum_commen
 
 
 --
+-- Name: forum_commentthread_related_user_id_bdc6bb16_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_commentthread_related_user_id_bdc6bb16_like ON public.forum_commentthread USING btree (related_user_id varchar_pattern_ops);
+
+
+--
 -- Name: forum_commentthread_upvoted_commentthread_id_23c88a4f; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7874,10 +7560,24 @@ CREATE INDEX forum_commentthread_upvoted_user_id_6c67752f ON public.forum_commen
 
 
 --
+-- Name: forum_commentthread_upvoted_user_id_6c67752f_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_commentthread_upvoted_user_id_6c67752f_like ON public.forum_commentthread_upvoted USING btree (user_id varchar_pattern_ops);
+
+
+--
 -- Name: forum_notification_related_user_id_9ca3827e; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX forum_notification_related_user_id_9ca3827e ON public.forum_notification USING btree (related_user_id);
+
+
+--
+-- Name: forum_notification_related_user_id_9ca3827e_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_notification_related_user_id_9ca3827e_like ON public.forum_notification USING btree (related_user_id varchar_pattern_ops);
 
 
 --
@@ -7892,6 +7592,13 @@ CREATE INDEX forum_topic_followed_topic_id_c4eb3fe4 ON public.forum_topic_follow
 --
 
 CREATE INDEX forum_topic_followed_user_id_3cf89024 ON public.forum_topic_followed USING btree (user_id);
+
+
+--
+-- Name: forum_topic_followed_user_id_3cf89024_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_topic_followed_user_id_3cf89024_like ON public.forum_topic_followed USING btree (user_id varchar_pattern_ops);
 
 
 --
@@ -7916,6 +7623,13 @@ CREATE INDEX forum_topic_upvoted_user_id_5fdfc441 ON public.forum_topic_upvoted 
 
 
 --
+-- Name: forum_topic_upvoted_user_id_5fdfc441_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_topic_upvoted_user_id_5fdfc441_like ON public.forum_topic_upvoted USING btree (user_id varchar_pattern_ops);
+
+
+--
 -- Name: forum_topicrevision_related_topic_id_35003e0f; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -7927,6 +7641,13 @@ CREATE INDEX forum_topicrevision_related_topic_id_35003e0f ON public.forum_topic
 --
 
 CREATE INDEX forum_topicrevision_related_user_id_cb3216fe ON public.forum_topicrevision USING btree (related_user_id);
+
+
+--
+-- Name: forum_topicrevision_related_user_id_cb3216fe_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX forum_topicrevision_related_user_id_cb3216fe_like ON public.forum_topicrevision USING btree (related_user_id varchar_pattern_ops);
 
 
 --
@@ -8055,70 +7776,6 @@ ALTER TABLE ONLY public.admissions_background
 
 ALTER TABLE ONLY public.admissions_background_upvoted
     ADD CONSTRAINT admissions_backgroun_user_id_14ba5953_fk_account_u FOREIGN KEY (user_id) REFERENCES public.account_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internbackground_upvoted admissions_internbac_internbackground_id_2d744573_fk_admission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground_upvoted
-    ADD CONSTRAINT admissions_internbac_internbackground_id_2d744573_fk_admission FOREIGN KEY (internbackground_id) REFERENCES public.admissions_internbackground(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internbackground admissions_internbac_related_user_id_c2e79226_fk_account_u; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground
-    ADD CONSTRAINT admissions_internbac_related_user_id_c2e79226_fk_account_u FOREIGN KEY (related_user_id) REFERENCES public.account_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internbackground_upvoted admissions_internbac_user_id_9c1cdf74_fk_account_u; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internbackground_upvoted
-    ADD CONSTRAINT admissions_internbac_user_id_9c1cdf74_fk_account_u FOREIGN KEY (user_id) REFERENCES public.account_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internship_upvoted admissions_internshi_internship_id_9c5bd268_fk_admission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship_upvoted
-    ADD CONSTRAINT admissions_internshi_internship_id_9c5bd268_fk_admission FOREIGN KEY (internship_id) REFERENCES public.admissions_internship(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internship admissions_internshi_related_background_i_6e4b2103_fk_admission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship
-    ADD CONSTRAINT admissions_internshi_related_background_i_6e4b2103_fk_admission FOREIGN KEY (related_background_id) REFERENCES public.admissions_internbackground(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internship admissions_internshi_related_university_i_a5ee9d3c_fk_admission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship
-    ADD CONSTRAINT admissions_internshi_related_university_i_a5ee9d3c_fk_admission FOREIGN KEY (related_university_id) REFERENCES public.admissions_university(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internship admissions_internshi_related_user_id_218b7119_fk_account_u; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship
-    ADD CONSTRAINT admissions_internshi_related_user_id_218b7119_fk_account_u FOREIGN KEY (related_user_id) REFERENCES public.account_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: admissions_internship_upvoted admissions_internshi_user_id_d65151ed_fk_account_u; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.admissions_internship_upvoted
-    ADD CONSTRAINT admissions_internshi_user_id_d65151ed_fk_account_u FOREIGN KEY (user_id) REFERENCES public.account_user(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
