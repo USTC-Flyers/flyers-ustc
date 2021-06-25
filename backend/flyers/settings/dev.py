@@ -8,7 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-WEBPATH_PREFIX = 'http://47.96.42.162:8080'
+WEBPATH_PREFIX = 'http://47.96.42.162:8080/login'
 
 # Test 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

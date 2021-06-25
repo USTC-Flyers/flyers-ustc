@@ -8,8 +8,10 @@ import { getToken } from "@/utils/auth"; // get token from cookie
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const whiteList = ["/login", "/welcome"]; // no redirect whitelist
+// const whiteList = ["/login"]; // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
+  console.log(to, from);
   // start progress bar
   NProgress.start();
 
@@ -57,7 +59,13 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`);
+      // next(`/login?redirect=${to.path}`);
+      if(to.query.ticket){
+        next(`/login?redirect=${to.path}&ticket=${to.query.ticket}`);
+      }
+      else {
+        next(`/login?redirect=${to.path}`);
+      }
       NProgress.done();
     }
   }

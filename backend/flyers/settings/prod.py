@@ -60,7 +60,7 @@ LOGGING = {
 			'class': 'logging.StreamHandler',
 		},
 		'console_debug_false': {
-			'level': 'ERROR',
+			'level': 'INFO',
 			'filters': ['require_debug_false'],
 			'class': 'logging.StreamHandler',
 		},
@@ -201,7 +201,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-WEBPATH_PREFIX = 'http://47.96.42.162:8080'
+WEBPATH_PREFIX = 'http://47.96.42.162:8080/login'
 
 
 # Static files (CSS, JavaScript, Images)

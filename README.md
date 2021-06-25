@@ -42,3 +42,5 @@ echo "from account.models import User; User.objects.create_superuser('flyers', '
 ```
 docker-compose build && docker-compose up
 ```
+
+Postgresql database backup: [package](https://hub.docker.com/r/prodrigestivill/postgres-backup-local)
