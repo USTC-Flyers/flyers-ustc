@@ -65,12 +65,12 @@ export function initNotification() {
   });
 }
 
-// export function initNotificationCount() {
-//   return request({
-//     url: "/notification/unread_count/",
-//     method: "get",
-//   });
-// }
+export function initNotificationCount() {
+  return request({
+    url: "/notification/unread_count/",
+    method: "get",
+  });
+}
 
 export function getNotification() {
   return request({
