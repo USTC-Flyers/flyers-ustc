@@ -3,18 +3,34 @@
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   <div class="home-container">
     <div class="header">
-      <el-menu :default-active="this.$route.path" mode="horizontal" router >
-        <el-menu-item index="/welcome" router>飞跃网站<i span></i></el-menu-item>
+      
+      <el-menu :default-active="this.$route.path" mode="horizontal" router>
+        <!-- <el-menu-item index="/welcome" router
+          ></el-menu-item> -->
+          <div id="logo">
+            <router-link to="/welcome">
+              <el-button type="text">
+              USTC 飞跃网站
+            </el-button>
+            </router-link>
+            
+            
+          </div>
+        <span></span>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
         <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
-        <el-menu-item index="/about" router>关于我们</el-menu-item>
+        <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">
           <!-- <el-dropdown placement="bottom" style="margin-right: 25px"> -->
-            <el-badge :hidden="notificationCount === 0" :value="notificationCount" id="badge">
-              <el-button size="small" @click="handleMessageMore">通知</el-button>
-            </el-badge>
-            <!-- <el-dropdown-menu slot="dropdown">
+          <el-badge
+            :hidden="notificationCount === 0"
+            :value="notificationCount"
+            id="badge"
+          >
+            <el-button size="small" @click="handleMessageMore">通知</el-button>
+          </el-badge>
+          <!-- <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
                 v-for="(message, index) in messageList"
                 :key="message + index"
@@ -48,7 +64,9 @@
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="clickUserMain">个人主页</el-dropdown-item>
+              <el-dropdown-item @click.native="clickUserMain"
+                >个人主页</el-dropdown-item
+              >
               <el-dropdown-item @click.native="clickUserProfile"
                 >个人信息</el-dropdown-item
               >
@@ -93,6 +111,31 @@
     <div class="main">
       <router-view v-if="isRouterAlive"></router-view>
     </div>
+    <div class="footer">
+        <el-divider></el-divider>
+        <router-link
+            :to="{
+              path: '/welcome',
+              hash: 'contact',
+            }"
+          >
+            <el-button type="text">
+              联系我们
+            </el-button>
+        </router-link>
+        <el-divider direction="vertical"></el-divider>
+        <router-link
+            :to="{
+              path: '/rules',
+            }"
+          >
+            <el-button type="text">
+              社区规则
+            </el-button>
+        </router-link>
+        <div>Copyright &copy; 2021 USTC飞跃网站</div>
+      </div>
+      
   </div>
 </template>
 
@@ -123,7 +166,7 @@ export default {
     // fetch notification
     initNotificationCount().then((response) => {
       this.notificationCount = response.unread_count;
-    })
+    });
     // initNotification()
     //   .then((resp) => {
     //     console.log("initNotification");
@@ -200,7 +243,8 @@ export default {
 };
 </script>
 
-<style lang="scss">//不能加scoped，不然进入wiki之后顶部就无法固定了
+<style lang="scss">
+//不能加scoped，不然进入wiki之后顶部就无法固定了
 .home-container {
   height: 100vh;
 }
@@ -211,22 +255,33 @@ export default {
   padding: 0;
   line-height: 60px;
   position: fixed;
-  z-index: 999;//堆叠等级
-  top:0;
+  z-index: 999; //堆叠等级
+  top: 0;
   width: 100%;
-
 }
 .main {
-  position:relative;
+  position: relative;
   margin: auto;
   margin-top: 110px;
   width: 100%;
   // top:90px;
 }
+.footer {
+  text-align: center;
+  padding: 25px;
+  // width: 900px;
+  // margin: auto;
+  // margin: 100px 0px;
+}
 /* .el-aside {
   background-color: #409eff;
 } */
-
+#logo {
+  float: left;
+  margin: 0 10px 0 20px;
+  font-weight: bolder;
+  color: #409eff;
+}
 .el-dropdown-link {
   cursor: pointer;
   color: #409eff;

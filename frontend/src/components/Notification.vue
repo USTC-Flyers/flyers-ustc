@@ -14,7 +14,7 @@
           {{ scope.row.created_time | dateFilter }}
         </template>
       </el-table-column>
-      <el-table-column prop="message" label="消息" header-align="center" width="300">
+      <el-table-column prop="message" label="消息" header-align="center" width="350">
       </el-table-column>
       <el-table-column label="查看" width="100">
         <template slot-scope="{ row }">
@@ -207,6 +207,6 @@ export default {
 <style scoped>
 .app-container {
   margin: 5%;
-  width: 600px;
+  width: 650px;
 }
 </style>
