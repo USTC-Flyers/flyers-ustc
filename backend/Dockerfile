@@ -18,7 +18,7 @@ RUN mkdir /app
 COPY requirements.txt /app
 WORKDIR /app
 # RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

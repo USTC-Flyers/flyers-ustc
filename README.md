@@ -42,5 +42,6 @@ echo "from account.models import User; User.objects.create_superuser('flyers', '
 ```
 docker-compose build && docker-compose up
 ```
+gunzip < flyers-backup_date.sql.gz | docker exec -i flyers-ustc_postgres_1 psql -U postgres -d flyers
 
 Postgresql database backup: [package](https://hub.docker.com/r/prodrigestivill/postgres-backup-local)

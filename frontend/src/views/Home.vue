@@ -17,7 +17,7 @@
           </div>
         <span></span>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>申请 Wiki</el-menu-item>
+        <el-menu-item index="/wiki" router>飞跃 Wiki</el-menu-item>
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <el-menu-item index="/notification" router hidden>申请</el-menu-item>
         <div style="float: right">

@@ -20,6 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+# SECURITY WARNING: don't run with debug turned on in production!
+# !FIXME
+DEBUG = False
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 
@@ -60,7 +64,7 @@ LOGGING = {
 			'class': 'logging.StreamHandler',
 		},
 		'console_debug_false': {
-			'level': 'INFO',
+			'level': 'ERROR',
 			'filters': ['require_debug_false'],
 			'class': 'logging.StreamHandler',
 		},
@@ -88,10 +92,6 @@ LOGGING = {
 	}
 }
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# !FIXME
-DEBUG = False
-
 # TODO
 ALLOWED_HOSTS = ['47.96.42.162', 'backend']
 
@@ -107,6 +107,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'rest_framework',
     'corsheaders',
+    'debug_toolbar',
     'drf_yasg',
     'multiselectfield',
     # Custom apps
