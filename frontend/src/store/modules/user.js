@@ -1,4 +1,4 @@
-import { login, logout, getInfo, refresh } from "@/api/user";
+import { login, logout, getInfo, refresh, isAdmin } from "@/api/user";
 import { getToken, getRefresh, setToken, setRefresh, removeToken, removeRefresh } from "@/utils/auth";
 // ! TODO
 import { resetRouter } from "@/router";
@@ -9,6 +9,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: null,
     user_id: null,
+    is_admin: false,
     refresh_token: getRefresh(),
   };
 };
@@ -27,6 +28,9 @@ const mutations = {
   },
   SET_ID: (state, id) => {
     state.user_id = id;
+  },
+  SET_ADMIN: (state, is_admin) => {
+    state.is_admin = is_admin;
   },
   SET_REFRESH: (state, refreshToken) => {
     state.refresh_token = refreshToken;
@@ -85,7 +89,13 @@ const actions = {
           const user_id = response.user_detail.related_user;
           commit("SET_NAME", name);
           commit("SET_ID", user_id);
-          resolve();
+          isAdmin().then((response) => {
+            const is_admin = response.role;
+            commit("SET_ADMIN", is_admin);
+            resolve();
+          }).catch((error) => {
+            reject(error);
+          })
         })
         .catch((error) => {
           reject(error);
@@ -101,6 +111,7 @@ const actions = {
       logout(state.refresh_token)
         .then(() => {
           removeToken(); // must remove  token  first
+          removeRefresh();
           resetRouter();
           commit("RESET_STATE");
           resolve();

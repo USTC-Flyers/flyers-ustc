@@ -1,8 +1,8 @@
 <template>
     <div class="subhome-container">
-        <router-view v-if="isRouterAlive"></router-view>
+        <router-view class="subhome-content" v-if="isRouterAlive" :style="{minHeight:minHeight + 'px'}"></router-view>
         <div class="footer">
-            <el-divider></el-divider>
+            <el-divider ></el-divider>
             <router-link
                 :to="{
                 path: '/welcome',
@@ -34,8 +34,25 @@ export default {
     data() {
         return {
             isRouterAlive: true,
+            minHeight: 0,
         };
     },
-}
 
+    mounted(){
+        this.minHeight = document.documentElement.clientHeight - 270
+        var that = this
+        window.onresize = function(){
+        this.minHeight = document.documentElement.clientHeight - 270
+        }
+    }
+}
 </script>
+<style scoped>
+.footer{
+    bottom:20px;
+    top:120px;
+    /* height: 10px; */
+    /* padding: 1px; */
+    margin: 20px 1px 1px 1px;
+}
+</style>

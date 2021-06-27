@@ -342,12 +342,12 @@
                   </el-row>
                   <el-form-item label="其他标化:" size="mini"> </el-form-item>
                   <el-form-item label="科研/实习背景:">
-                    <span>
+                    <span class="pre-formatted">
                       {{ row.background.researchSpec }}
                     </span>
                   </el-form-item>
                   <el-form-item label="推荐信:">
-                    <span>
+                    <span class="pre-formatted">
                       {{ row.background.referSpec }}
                     </span>
                   </el-form-item>

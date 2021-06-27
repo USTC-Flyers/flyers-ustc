@@ -35,6 +35,12 @@ export function getInfo() {
     // params: { token }
   });
 }
+export function isAdmin() {
+  return request({
+    url: "/user/is_admin/",
+    method: "get",
+  });
+}
 export function create_user_profile(data) {
   return request({
     url: "/user_profile/",
