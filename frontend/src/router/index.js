@@ -53,6 +53,7 @@ const routes = [
       {
         path: "/wiki",
         component: Wiki,
+        redirect: "/topic/3",
         children: [
           { path: "/add_topic/", component: AddTopic, meta: { keepAlive: false } },
           { path: "/topic/:id", component: Topic, meta: { keepAlive: false } },

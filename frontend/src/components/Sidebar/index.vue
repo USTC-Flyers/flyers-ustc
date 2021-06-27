@@ -1,12 +1,14 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <el-menu
-      :default-active="'0-1'"
+      :default-active="$route.path"
+      :default-openeds="openeds"
       :unique-opened="true"
       :collapse-transition="true"
       mode="vertical"
       router
     >
+    <!-- default-active可避免刷新页面之后所选项目不再高亮，default-opends控制默认展开的子菜单 -->
       <sidebar-item
         v-for="(title, index) in title_list"
         :key="index"
@@ -27,6 +29,7 @@ export default {
   data() {
     return {
       title_list: null,
+      openeds: ['0'],
     };
   },
   created() {

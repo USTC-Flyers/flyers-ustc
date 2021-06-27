@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="main-content">
+      <div class="main-content" :style="{minHeight:minHeight + 'px'}">
         <keep-alive>
           <router-view v-if="$route.meta.keepAlive">
             <!-- 这里是会被缓存的视图组件，比如 Home！ -->
@@ -64,12 +64,23 @@ export default {
   components: {
     Sidebar,
   },
+  data(){
+    return{
+      minHeight: 0,
+    }
+  },
+  mounted(){
+    this.minHeight = document.documentElement.clientHeight - 285
+    var that = this
+    window.onresize = function(){
+      this.minHeight = document.documentElement.clientHeight - 285
+    }
+  }
 };
 </script>
 
 <style scoped>
 .app{
- 
   position:static;
   overflow-x:hidden;
   padding:0 60px 30px;
@@ -99,10 +110,10 @@ export default {
   display: block;
   position:relative;
   padding:5px 0;
-  max-width: 800px;
+  max-width: 1100px;
   margin:0px 20px 20px 20px;
   padding-left:320px;
-
+  
 }
 #create-wiki{
   background:rgb(255, 255, 255);
@@ -110,6 +121,11 @@ export default {
   border-color: rgb(151, 151, 151);
 }
 .footer{
-  padding:0;
-}
+  height: 60px;
+  /* margin-top: -88px;  */
+  /* position: fixed;
+  bottom: 0;
+  left: 260px;
+  width:900px */
+ } 
 </style>

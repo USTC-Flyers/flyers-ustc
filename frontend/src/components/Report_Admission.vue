@@ -763,8 +763,10 @@ export default {
 
 <style>
 .step {
+  position:relative;
   margin: 0 auto;
   width: 1100px;
+  height:120px;
 }
 
 .el-form-item__label {
@@ -779,6 +781,8 @@ export default {
   margin-top: 30px;
   width: 650px;
   position: relative;
+  /* top:10px; */
+  bottom:60px;
   /* display: inline; */
   /* text-align: center; */
   /* margin: 0px 0px; */
