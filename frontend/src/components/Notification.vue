@@ -167,14 +167,14 @@ export default {
       else if (noti_item.operation === PR) {
         result.route_name = "review";
         result.route_id = noti_item.ref_obj_id;
-        result.message ="新的 WIKI 修改请求";
+        result.message ="新的 Wiki 修改请求";
       }
 
       else if (noti_item.operation === UPDATED) {
         result.route_name = "topic";
         getTopicRevision(noti_item.ref_obj_id).then((response) => {
           var title = response.title;
-          result.message ="你关注的 WIKI -「"+ title + "」有更新";
+          result.message ="你关注的 Wiki -「"+ title + "」有更新";
           result.route_id = response.related_topic;
         })
       }
@@ -182,7 +182,7 @@ export default {
         result.route_name = "topic";
         getTopicRevision(noti_item.ref_obj_id).then((response) => {
           var title = response.title;
-          result.message ="你对 WIKI -「"+ title + "」的修改已被审核通过";
+          result.message ="你对 Wiki -「"+ title + "」的修改已被审核通过";
           result.route_id = response.related_topic;
         })
       }
@@ -190,7 +190,7 @@ export default {
         result.route_name = "topic";
         getTopicRevision(noti_item.ref_obj_id).then((response) => {
           var title = response.title;
-          result.message ="你对 WIKI -「"+ title + "」的修改审核未通过";
+          result.message ="你对 Wiki -「"+ title + "」的修改审核未通过";
           result.route_id = response.related_topic;
         })
       }

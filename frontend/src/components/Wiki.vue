@@ -3,6 +3,7 @@
     <div class="aside">
       <div class="aside-inner">
         <router-link
+        v-if="$store.getters.is_admin"
         :to="`/add_topic/`"
         >
         <el-button
@@ -11,7 +12,7 @@
           style="margin: 0px 0px 5px 75px"
           icon="el-icon-circle-plus"
           id="create-wiki"
-          >新建 WIKI</el-button
+          >新建 Wiki</el-button
         >
         </router-link>
         <sidebar></sidebar>

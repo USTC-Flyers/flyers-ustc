@@ -23,22 +23,23 @@
         <div class="mini-title">最终去向</div>
         <!-- <el-divider content-position="left"><div class="mini-title">最终去向</div></el-divider> -->
         <!-- <div class="bold">最终去向：</div> -->
-        <div class="bold">{{ user.final_university.school_name }}</div>
+        <div class="bold">{{ user.final_university }}</div>
         <div>{{ user.final_program }}</div>
       </div>
       <div class="info-item">
-        <div class="mini-title">联系方式</div>
+        <div class="mini-title pre-formatted">联系方式</div>
         <!-- <el-divider content-position="left"><div class="mini-title">联系方式</div></el-divider> -->
         <!-- <div class="bold">联系方式：</div> -->
         <div>{{ user.contact }}</div>
       </div>
     </div>
-    <div class="content" id="background">
+    <a class="anchor" id="background"></a>
+    <div class="content">
       <div class="content-block">
         <el-row>
           <h2 class="highlight">申请背景</h2>
         </el-row>
-        <el-form label-position="right" label-width="auto">
+        <el-form v-if="hasBackground" label-position="right" label-width="auto">
           <el-row>
             <el-col :span="12">
               <el-form-item label="专业:" size="mini">
@@ -91,8 +92,8 @@
                     {{ tag | tagFilter }}
                   </el-tag>
                 </div>
-                <div>
-                  {{ background.researchSpec }}
+                <div class="pre-formatted">
+                    {{ background.researchSpec }}
                 </div>
               </span>
             </el-form-item>
@@ -110,15 +111,17 @@
                     {{ tag | tagFilter }}
                   </el-tag>
                 </div>
-                <div>
+                <div class="pre-formatted">
                   {{ background.referSpec }}
                 </div>
               </span>
             </el-form-item>
           </el-row>
         </el-form>
+        <div v-else style="text-align: center;">暂未提交申请背景</div>
       </div>
-      <div class="content-block" id="admissions">
+      <a class="anchor" id="admissions"></a>
+      <div class="content-block">
         <el-row>
           <h2 class="highlight">录取信息</h2>
         </el-row>
@@ -210,7 +213,8 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="content-block" id="summary">
+      <a class="anchor" id="summary"></a>
+      <div class="content-block">
         <el-row>
           <el-col :span="6">
             <h2 class="highlight">申请总结</h2>
@@ -272,8 +276,12 @@ export default {
   // },
   filters: {
     schoolFilter(index) {
-      let school_name = school_list[index];
-      return school_name.slice(4, school_name.length);
+      console.log(index);
+      if(index && index >= 0 && index < school_list.length){
+        let school_name = school_list[index];
+        return school_name.slice(4, school_name.length);
+      }
+      else return null;
     },
     isUndergradFilter(value) {
       const map = {
@@ -333,14 +341,13 @@ export default {
       user: {
         nickname: "",
         all_votes_cnt: 0,
-        school: 0,
+        school: null,
         isUndergrad: null,
         contact: "",
-        final_university: {
-          school_name: "",
-        },
+        final_university: "",
         final_program: null,
       },
+      hasBackground: false,
       background: {
         id: null,
         major: "",
@@ -379,11 +386,21 @@ export default {
     },
     getUserProfile: function () {
       get_user_profile(this.user_id).then((response) => {
-        this.user = response.user_detail;
+        // this.user = response.user_detail;
+        this.user.nickname = response.user_detail.nickname;
+        this.user.all_votes_cnt = response.user_detail.all_votes_cnt;
+        this.user.school = response.user_detail.school;
+        this.user.isUndergrad = response.user_detail.isUndergrad;
+        this.user.contact = response.user_detail.contact;
+        if(response.user_detail.final_university){
+          this.user.final_university = response.user_detail.final_university.school_name;
+        }
+        this.user.final_program = response.user_detail.final_program;
       });
     },
     getBackground: function () {
       background_get_user(this.user_id).then((response) => {
+        this.hasBackground = true;
         this.background = response.user_detail;
         this.background.research_tag_list = [];
         this.background.ref_tag_list = [];

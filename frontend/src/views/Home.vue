@@ -17,9 +17,9 @@
           </div>
         <span></span>
         <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>申请 WIKI</el-menu-item>
+        <el-menu-item index="/wiki" router>申请 Wiki</el-menu-item>
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
-        <el-menu-item index="/notification" router hidden>申请</el-menu-item>
+        <!-- <el-menu-item index="/notification" router hidden>申请</el-menu-item> -->
         <div style="float: right">
           <!-- <el-dropdown placement="bottom" style="margin-right: 25px"> -->
           <el-badge
@@ -115,6 +115,7 @@
 </template>
 
 <script>
+
 import { initNotificationCount } from "@/api/user";
 //import './home.css'
 export default {
@@ -140,25 +141,7 @@ export default {
   },
   created() {
     // fetch notification
-    initNotificationCount().then((response) => {
-      this.notificationCount = response.unread_count;
-    });
-    // initNotification()
-    //   .then((resp) => {
-    //     console.log("initNotification");
-    //     let data = resp.unread_set;
-    //     for (let i = 0; i < data.length; ++i) {
-    //       this.messageList.push(data[i].message);
-    //       this.notificationList.push({
-    //         id: data[i].ref_obj_id,
-    //         obj_name: data[i].ref_obj_name,
-    //         operation: data[i].operation,
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    this.getNotificationCount();
   },
   // mounted() {
   //   window.addEventListener('scroll', this.handleScroll)
@@ -201,6 +184,13 @@ export default {
     // },
     handleMessageMore() {
       this.$router.push({ path: "/notificaiton" }, () => {});
+    },
+    getNotificationCount() {
+      if(this.$store.getters.token){
+        initNotificationCount().then((response) => {
+          this.notificationCount = response.unread_count;
+        });
+      }
     },
     reload() {
       this.isRouterAlive = false;
@@ -284,7 +274,15 @@ export default {
   display: inline-flex;
   margin-right: 25px;
 }
-
+a.anchor {
+  display: block;
+  position: relative;
+  top: -75px;
+  visibility: hidden;
+}
+.pre-formatted {
+  white-space: pre;
+}
 /**修改全局的滚动条*/
 /**滚动条的宽度*/
 ::-webkit-scrollbar {

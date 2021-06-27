@@ -1,9 +1,9 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <el-menu
-      :default-active="$route.path"
+      default-active="/topic/1"
       :default-openeds="openeds"
-      :unique-opened="true"
+      :unique-opened="false"
       :collapse-transition="true"
       mode="vertical"
       router
@@ -36,7 +36,6 @@ export default {
     getTopicMeta().then((resp) => {
       console.log(resp);
       this.title_list = resp.title;
-      
     });
   },
 };

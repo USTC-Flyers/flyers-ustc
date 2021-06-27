@@ -11,6 +11,7 @@ import AddTopic from "@/components/AddTopic.vue";
 import Revision from "@/components/Revision.vue";
 import UserMain from "@/userviews/UserMain.vue";
 import Review from '@/components/Review';
+import Rules from '@/components/Rules'
 import Subhome from '../views/Subhome';
 
 Vue.use(VueRouter);
@@ -38,6 +39,7 @@ const routes = [
         redirect:"/welcome",
         children: [
           { path: "/welcome", component: Welcome },
+          { path: "/rules", component: Rules },
           { path: "/admission", component: Admission },
           { path: "/report_admission/:is_initial", component: Report_Admission },
           { path: "/usermain/:id", component: UserMain },
@@ -53,7 +55,7 @@ const routes = [
       {
         path: "/wiki",
         component: Wiki,
-        redirect: "/topic/3",
+        redirect: "/topic/1",
         children: [
           { path: "/add_topic/", component: AddTopic, meta: { keepAlive: false } },
           { path: "/topic/:id", component: Topic, meta: { keepAlive: false } },

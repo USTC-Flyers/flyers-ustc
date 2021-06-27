@@ -1,13 +1,13 @@
 <template>
   <div class="codediff">
-    <div>WIKI 标题</div>
+    <div>Wiki 标题</div>
     <code-diff
       :old-string="old_title"
       :new-string="new_title"
       :context="10"
       outputFormat="side-by-side"
     />
-    <div>WIKI 内容</div>
+    <div>Wiki 内容</div>
     <code-diff
       :old-string="old_content"
       :new-string="new_content"
