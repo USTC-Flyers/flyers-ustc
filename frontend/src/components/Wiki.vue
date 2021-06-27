@@ -123,6 +123,8 @@ export default {
 }
 .footer{
   height: 60px;
+  padding-left: 0px;
+  width:850px;
   /* margin-top: -88px;  */
   /* position: fixed;
   bottom: 0;

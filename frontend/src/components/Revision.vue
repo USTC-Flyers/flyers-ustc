@@ -57,10 +57,10 @@ export default {
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
-  width:1020px;
+  width:850px;
   
 }
 #tiptap-editor{
-  width:1020px;
+  width:850px;
 }
 </style>

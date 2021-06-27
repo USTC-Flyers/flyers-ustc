@@ -8,7 +8,7 @@
       mode="vertical"
       router
     >
-    <!-- default-active可避免刷新页面之后所选项目不再高亮，default-opends控制默认展开的子菜单 -->
+    <!-- default-active指定刷新后菜单中的默认激活项目，点击项目后激活状态会正常改变；default-opends控制默认展开的子菜单 -->
       <sidebar-item
         v-for="(title, index) in title_list"
         :key="index"

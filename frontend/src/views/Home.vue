@@ -4,7 +4,7 @@
   <div class="home-container">
     <div class="header">
       
-      <el-menu :default-active="this.$route.path" mode="horizontal" router>
+      <el-menu :default-active="$route.name" mode="horizontal" router>
         <!-- <el-menu-item index="/welcome" router
           ></el-menu-item> -->
           <div id="logo">
@@ -16,8 +16,8 @@
             
           </div>
         <span></span>
-        <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>申请 Wiki</el-menu-item>
+        <el-menu-item index="admission" :route="{path:'/admission'}" router>录取汇报</el-menu-item>
+        <el-menu-item index="wiki" :route="{path:'/wiki'}" router>申请 Wiki</el-menu-item>
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <!-- <el-menu-item index="/notification" router hidden>申请</el-menu-item> -->
         <div style="float: right">
