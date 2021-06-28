@@ -39,10 +39,10 @@ export default {
     },
 
     mounted(){
-        this.minHeight = document.documentElement.clientHeight - 270
+        this.minHeight = document.documentElement.clientHeight - 285
         var that = this
         window.onresize = function(){
-        this.minHeight = document.documentElement.clientHeight - 270
+        this.minHeight = document.documentElement.clientHeight - 285
         }
     }
 }
