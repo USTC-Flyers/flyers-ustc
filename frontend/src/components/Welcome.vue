@@ -119,7 +119,7 @@
     <p></p>
     <p style="text-align: right">USTC飞跃编辑部</p>
     <p style="text-align: right">2021.6</p>
-    <p style="text-align: right">于悠静的科大校园</p>
+    <p style="text-align: right">于美丽的科大校园</p>
     <p></p>
   </div>
 </template>
