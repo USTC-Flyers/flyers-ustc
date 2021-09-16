@@ -1,47 +1,12 @@
 # Flyers-ustc
+前端采用了vue框架，后端采用了Django restful framework，数据库采用了Postgres。
 
-## Backend Usage
+### 部署
+1. 安装[docker-compose](https://docs.docker.com/compose/install/) and [docker](https://docs.docker.com/engine/install/) 
+2. sh deploy.sh
 
-Database settings for development
-```text
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'flyers',   
-        'USER': 'postgres',
-        'PASSWORD': '666666',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-```
-
-```bash
-cd backend
-pip install -r requirements.txt 
-python manage.py migrate
-python manage.py init_db
-python manage.py runserver
-```
-
-Make migrations
-```bash
-find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-find . -path "*/migrations/*.pyc"  -delete
-python manage.py makemigrations
-```
-Register super user 
-```shell
-echo "from account.models import User; User.objects.create_superuser('flyers', '', 'flyers')" | python manage.py shell
-```
-`admin` site should be accessed with `/api/admin`. 
-
-
-### Production
-[docker-compose](https://docs.docker.com/compose/install/) and [docker](https://docs.docker.com/engine/install/) should be installed.
-```
-docker-compose build && docker-compose up
+数据库恢复：备份文件存储在`/var/opt/pgbackups`
 ```
 gunzip < flyers-backup_date.sql.gz | docker exec -i flyers-ustc_postgres_1 psql -U postgres -d flyers
-
+```
 Postgresql database backup: [package](https://hub.docker.com/r/prodrigestivill/postgres-backup-local)

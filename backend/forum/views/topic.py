@@ -71,7 +71,9 @@ class TopicViewSet(
                     }
                 )
             models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
-        models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
+        else:
+            # 通知审核
+            models.Notification.notify_group(topic_revision, topic.group.user_set.all(), models.Notification.PR)
         return Response(
             status=status.HTTP_201_CREATED,
             data=topic_revision_serializer.data
@@ -195,7 +197,7 @@ class TopicViewSet(
         return serializers.TopicSerializer
 
     def get_permissions(self):
-        if self.basename == "change_category" or self.basename == "review" or self.action == "destory": 
+        if self.basename == "change_category" or self.basename == "review" or self.action == "destroy": 
             permission_classes = [permissions.IsWikiOwnerOrCannotValidate]
         elif self.basename == "action":
             permission_classes = [drf_permissions.IsAuthenticated]
@@ -224,7 +226,7 @@ class TopicRevisionViewSet(
                 # !TODO: 不同版本的merge
                 models.Notification.notify_group(topic_revision.related_topic, topic_revision.related_topic.followed.all(), models.Notification.UPDATED)
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.APPROVED)   
-            elif not st == models.TopicRevision.REVIEWREJ:
+            elif st == models.TopicRevision.REVIEWREJ:
                 # 审核未通过
                 models.Notification.notify(topic_revision, topic_revision.related_user, models.Notification.REJECTED)
             else:

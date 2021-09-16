@@ -16,13 +16,8 @@
             
           </div>
         <span></span>
-<<<<<<< HEAD
-        <el-menu-item index="/admission" router>录取汇报</el-menu-item>
-        <el-menu-item index="/wiki" router>飞跃 Wiki</el-menu-item>
-=======
         <el-menu-item index="admission" :route="{path:'/admission'}" router>录取汇报</el-menu-item>
         <el-menu-item index="wiki" :route="{path:'/wiki'}" router>申请 Wiki</el-menu-item>
->>>>>>> e16d129d9c77f54ab62f8000030f92e50e354b11
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <!-- <el-menu-item index="/notification" router hidden>申请</el-menu-item> -->
         <div style="float: right">
@@ -74,7 +69,7 @@
               <el-dropdown-item @click.native="clickUserProfile"
                 >个人信息</el-dropdown-item
               >
-              <el-dropdown-item divided @click.native="logout">
+              <el-dropdown-item v-if="username != null" divided @click.native="logout">
                 退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -128,6 +123,7 @@ export default {
   provide() {
     return {
       reload: this.reload,
+      getNotificationCount: this.getNotificationCount
     };
   },
   data() {
@@ -168,7 +164,7 @@ export default {
       this.$store
         .dispatch("user/logout")
         .then(() => {
-          console.log("resp 200");
+          // console.log("resp 200");
           this.$router.push({ path: this.redirect || "/" });
         })
         .catch(() => {
@@ -196,6 +192,7 @@ export default {
           this.notificationCount = response.unread_count;
         });
       }
+      this.$forceUpdate();
     },
     reload() {
       this.isRouterAlive = false;

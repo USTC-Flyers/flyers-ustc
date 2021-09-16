@@ -93,7 +93,11 @@ export default {
       this.$route.params.is_initial === "initial" ? true : false;
     if (!this.is_initial) {
       getInfo().then((response) => {
-        this.form = response.user_detail;
+        this.form.nickname = response.user_detail.nickname;
+        this.form.school = response.user_detail.school;
+        this.form.enrolledYear = response.user_detail.enrolledYear;
+        this.form.isUndergrad = response.user_detail.isUndergrad;
+        this.form.contact = response.user_detail.contact;
         this.user_id = response.user_detail.id;
       });
     }

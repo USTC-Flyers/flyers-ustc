@@ -24,7 +24,7 @@
               hash: row.hash,
             }"
           >
-            <el-button type="text" size="small">
+            <el-button type="text" size="small" @click="getNotificationCount">
               查看
             </el-button>
           </router-link>
@@ -74,6 +74,7 @@ export default {
       operationsMap: null,
     };
   },
+  inject: ["getNotificationCount"],
   created() {
     this.operationsMap = {};
     this.operationsMap[UPDATED] = "";

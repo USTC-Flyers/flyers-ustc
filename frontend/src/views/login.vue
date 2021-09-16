@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>login page</h1>
+    <h2>跳转至登录页面中 请等待...</h2>
     <!-- <router-view></router-view> -->
   </div>
 </template>
@@ -16,8 +16,20 @@ export default {
       //   password: "test",
       // },
       // ticket: 'fake-ticket',
+      redirect: undefined,
     };
   },
+  // watch: {
+  //   $route: {
+  //     handler: function(route) {
+  //       const query = route.query
+  //       if (query.redirect) {
+  //         this.redirect = query.redirect
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
   created() {
     // this.$store
     //   .dispatch("user/login", this.ticket)
@@ -29,9 +41,9 @@ export default {
     //   });
   },
   beforeMount() {
-    const currentUrl = window.location.href;
-    console.log(currentUrl);
-    const serviceUrl = `http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1`;
+    console.log(this.$route.query);
+    this.redirect = this.$route.query.redirect;
+    const currentUrl = window.location.href;    
     if (currentUrl.includes("ticket")) {
       // const ticket = currentUrl.match(/\?ticket=([\s\S]+?)#/)[1];
       const ticket = currentUrl.match(/ticket=([\s\S]+)/)[1];
@@ -46,7 +58,8 @@ export default {
           console.log("login error");
         });
     } else if (!this.$store.state.token) {
-      console.log("!this.$store.state.token");
+      console.log("!this.$store.state.token", this.redirect);
+      const serviceUrl = `http://home.ustc.edu.cn/~kelleykuang/cas/index.html?redirect=${this.redirect}`;
       const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
       window.location.href = casUrl;
     }

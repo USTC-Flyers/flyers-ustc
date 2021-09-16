@@ -27,10 +27,10 @@
         <div>{{ user.final_program }}</div>
       </div>
       <div class="info-item">
-        <div class="mini-title pre-formatted">联系方式</div>
+        <div class="mini-title">联系方式</div>
         <!-- <el-divider content-position="left"><div class="mini-title">联系方式</div></el-divider> -->
         <!-- <div class="bold">联系方式：</div> -->
-        <div>{{ user.contact }}</div>
+        <div class="pre-formatted">{{ user.contact }}</div>
       </div>
     </div>
     <a class="anchor" id="background"></a>
@@ -224,7 +224,8 @@
            
           </el-col>
         </el-row>
-        <el-button
+        <div v-if="hasBackground">
+          <el-button
             v-if="background.upvoted"
             type="text"
             icon="el-icon-alidianzan"
@@ -238,6 +239,7 @@
             @click="upvoteBackground()"
             >点赞 {{ background.upvoted_count }}</el-button
           >
+        </div>
         <!-- <CIcon name="cil-pencil">
         <CIcon name="cilSettings">
         <i class="cil-thumb-up"></i> -->

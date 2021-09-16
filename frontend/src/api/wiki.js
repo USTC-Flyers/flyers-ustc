@@ -23,6 +23,13 @@ export function getTopic(id) {
   });
 }
 
+export function deleteTopic(id) {
+  return request({
+    url: `/topic/${id}/`,
+    method: "delete",
+  });
+}
+
 export function getTopicRevision(id) {
   return request({
     url: `/topic_revision/${id}/`,

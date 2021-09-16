@@ -121,3 +121,5 @@ frontend/output*
 *.pgsql
 **.json
 frontend/.env.development
+*.sql
+*.sql.gz

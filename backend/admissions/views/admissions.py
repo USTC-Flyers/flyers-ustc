@@ -83,7 +83,7 @@ class AdmissionsViewSet(
         query = Q()
         if 'tags' in kwargs:
             tags = kwargs['tags']
-            if len(tags) > 1:
+            if len(tags) >= 1:
                 query &= Q(related_background__tags__contains=tags)
         if 'rank' in kwargs:
             rank_dict = dict(zip(rank_tag, range(len(rank_tag))))

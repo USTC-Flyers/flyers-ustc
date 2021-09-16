@@ -128,8 +128,17 @@
 export default {
   name: "Welcome",
   created() {
-    if(location.hash) {
-      setTimeout("document.querySelector(location.hash).scrollIntoView(true)", 100);
+    this.hashTo();
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.hashTo();
+    next();
+  },
+  methods: {
+    hashTo() {
+      if(location.hash) {
+        setTimeout("document.querySelector(location.hash).scrollIntoView(true)", 100);
+      }
     }
   }
 };

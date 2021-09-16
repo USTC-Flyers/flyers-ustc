@@ -15,6 +15,7 @@ services:
       - backend-static-volume:/app/backend/static
     ports:
       - 8000:8000
+      - 5678:5678
     depends_on:
       - postgres
 
@@ -65,6 +66,6 @@ services:
       - ./docker/nginx:/etc/nginx/conf.d
       - backend-static-volume:/app/backend/static
     ports:
-      - 8080:80
+      - 80:80
     environment:
       NODE_ENV: production
