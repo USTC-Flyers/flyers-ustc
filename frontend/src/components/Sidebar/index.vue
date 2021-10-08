@@ -34,7 +34,6 @@ export default {
   },
   created() {
     getTopicMeta().then((resp) => {
-      console.log(resp);
       this.title_list = resp.title;
     });
   },

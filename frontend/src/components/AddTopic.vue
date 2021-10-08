@@ -59,7 +59,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          console.log(this.form);
+          // console.log(this.form);
           createTopic(this.form)
             .then(() => {
               this.$message.success("创建成功");

@@ -74,13 +74,13 @@ service.interceptors.response.use(
     // }
   },
   (error) => {
-    console.log("err" + error); // for debug
+    //console.log("err" + error); // for debug
     if (error.response.status === 401) {
       const hasToken = getToken();
       if (hasToken) {
         // refresh token
           store.dispatch('user/refreshToken').then(() => {
-            console.log('refresh done')
+            // console.log('refresh done')
           }).catch((error) => {
             console.log(error)
             return Promise.resolve(error);

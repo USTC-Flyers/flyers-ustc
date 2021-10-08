@@ -53,10 +53,11 @@
           >
             <el-option
               class="university"
-              v-for="univ in univ_list"
+              v-for="(univ, index) in univ_list"
               :key="univ.id"
               :label="univ.school_name"
               :value="univ.id"
+              @click.native ="handleSelect(index)"
             >
               <div class="name">
                 {{ univ.short_name }}-{{ univ.school_name_cn }}
@@ -237,7 +238,10 @@ export default {
       }
       //   console.log(this.univ_list);
     },
-
+    handleSelect(index) {
+      this.$set(this.univ_list, 0, this.univ_list[index]);
+      this.univ_list.length = 1;
+    },
     getPrograms() {
       var uid = this.data.related_university;
       programs_get(uid)
@@ -266,7 +270,6 @@ export default {
       } else {
         results = programs;
       }
-      console.log(query, results);
       cb(results);
     },
     clearFocus() {

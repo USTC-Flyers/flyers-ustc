@@ -486,7 +486,6 @@ export default {
       // this.univ_list.forEach(list => {
       //   result.push(list[0]);
       // });
-      console.log(result);
       return result;
     }
   },

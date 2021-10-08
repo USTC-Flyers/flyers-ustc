@@ -177,7 +177,7 @@
         >
           <el-table-column width="100" align="center">
             <template slot-scope="{ row }">
-              <router-link :to="`/usermain/${row.user_id}`">
+              <router-link target="_blank" :to="`/usermain/${row.user_id}`">
                 <el-button type="text">{{ row.username }}</el-button>
               </router-link>
             </template>
@@ -341,14 +341,18 @@
                     </el-col>
                   </el-row>
                   <el-form-item label="其他标化:" size="mini"> </el-form-item>
-                  <el-form-item label="科研/实习背景:">
-                    <span class="pre-formatted">
-                      {{ row.background.researchSpec }}
+                  <el-form-item label="科研/实习背景:" style="text-align:left;">
+                    <span>
+                      <div class="pre-formatted">
+                        {{ row.background.researchSpec }}
+                      </div>
                     </span>
                   </el-form-item>
-                  <el-form-item label="推荐信:">
-                    <span class="pre-formatted">
-                      {{ row.background.referSpec }}
+                  <el-form-item label="推荐信:" style="text-align:left;">
+                    <span>
+                      <div class="pre-formatted">
+                        {{ row.background.referSpec }}
+                      </div>
                     </span>
                   </el-form-item>
                 </el-form> </el-dialog
@@ -551,7 +555,7 @@ export default {
     },
     handleSearch() {
       this.removeEmpty(this.query);
-      console.log(this.query);
+      // console.log(this.query);
       this.isNotQuery = false;
       this.handlePagination(1);
     },
@@ -733,6 +737,7 @@ export default {
 .dialog {
   text-align: left;
   position: relative;
+  white-space: pre-wrap;
 }
 .dialog .dialog-block {
   margin: 0px 10px 40px 10px;

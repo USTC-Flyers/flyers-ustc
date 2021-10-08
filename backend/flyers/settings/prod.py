@@ -93,7 +93,7 @@ LOGGING = {
 DEBUG = False
 
 # TODO
-ALLOWED_HOSTS = ['47.96.42.162', '0.0.0.0', 'backend']
+ALLOWED_HOSTS = ['47.96.42.162', '0.0.0.0', 'backend', 'ustcflyer.com', "www.ustcflyer.com"]
 
 # Application definition
 
@@ -171,7 +171,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-WEBPATH_PREFIX = 'http://47.96.42.162:8080/login'
+WEBPATH_PREFIX = 'http://www.ustcflyer.com/login'
 
 
 # Static files (CSS, JavaScript, Images)

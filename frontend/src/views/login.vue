@@ -41,24 +41,20 @@ export default {
     //   });
   },
   beforeMount() {
-    console.log(this.$route.query);
-    this.redirect = this.$route.query.redirect;
+    this.redirect = this.$route.query.redirect || "/";
     const currentUrl = window.location.href;    
     if (currentUrl.includes("ticket")) {
       // const ticket = currentUrl.match(/\?ticket=([\s\S]+?)#/)[1];
       const ticket = currentUrl.match(/ticket=([\s\S]+)/)[1];
-      console.log("get ticket");
       this.$store
         .dispatch("user/login", ticket)
         .then(() => {
-          console.log("resp 200");
-          this.$router.push({ path: this.redirect || "/" });
+          this.$router.push({ path: this.redirect });
         })
         .catch(() => {
           console.log("login error");
         });
     } else if (!this.$store.state.token) {
-      console.log("!this.$store.state.token", this.redirect);
       const serviceUrl = `http://home.ustc.edu.cn/~kelleykuang/cas/index.html?redirect=${this.redirect}`;
       const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
       window.location.href = casUrl;

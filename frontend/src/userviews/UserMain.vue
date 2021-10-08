@@ -278,7 +278,6 @@ export default {
   // },
   filters: {
     schoolFilter(index) {
-      console.log(index);
       if(index && index >= 0 && index < school_list.length){
         let school_name = school_list[index];
         return school_name.slice(4, school_name.length);
@@ -545,6 +544,7 @@ export default {
 }
 .dialog {
   text-align: left;
+  white-space: pre-wrap;
 }
 .dialog .dialog-block {
   margin: 0px 10px 40px 10px;

@@ -29,7 +29,6 @@ export default {
     };
   },
   created() {
-    console.log("yes", this.$route.params.id);
     this.topic_id = this.$route.params.id;
     getTopic(this.topic_id).then((response) => {
       this.title = response.current_version.title;

@@ -98,7 +98,7 @@ export default {
           this.notificationList.push(this.notiMap(item));
           readNotification(item.id)
         });
-        console.log(this.notificationList);
+        // console.log(this.notificationList);
       })
       .catch((err) => {
         console.log(err);
@@ -115,7 +115,7 @@ export default {
       return this.operationsMap[operation];
     },
     handleClick(row) {
-      console.log(row);
+      // console.log(row);
       this.$router.push(
         { path: "/" + row.route_name + "/" + row.route_id + "/", hash: row.hash },
       );
@@ -129,7 +129,6 @@ export default {
           this.notificationList.push(this.notiMap(item));
         });
         this.isAll = true;
-        console.log(this.notificationList);
       })
       .catch((err) => {
         console.log(err);

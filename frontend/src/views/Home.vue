@@ -5,23 +5,20 @@
     <div class="header">
       
       <el-menu :default-active="$route.name" mode="horizontal" router>
-        <!-- <el-menu-item index="/welcome" router
-          ></el-menu-item> -->
-          <div id="logo">
-            <router-link to="/welcome">
-              <el-button type="text" icon="el-icon-alifeiji">
+        <div id="logo">
+          <router-link to="/welcome">
+            <el-button type="text" icon="el-icon-alifeiji">
               USTC 飞跃网站
             </el-button>
-            </router-link>
-            
-          </div>
+          </router-link>
+          
+        </div>
         <span></span>
         <el-menu-item index="admission" :route="{path:'/admission'}" router>录取汇报</el-menu-item>
         <el-menu-item index="wiki" :route="{path:'/wiki'}" router>申请 Wiki</el-menu-item>
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <!-- <el-menu-item index="/notification" router hidden>申请</el-menu-item> -->
         <div style="float: right">
-          <!-- <el-dropdown placement="bottom" style="margin-right: 25px"> -->
           <el-badge
             :hidden="notificationCount === 0"
             :value="notificationCount"
@@ -58,7 +55,7 @@
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown> -->
-          <el-dropdown class="user-name">
+          <el-dropdown v-if="username != null" class="right-float">
             <span class="el-dropdown-link">
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -69,32 +66,17 @@
               <el-dropdown-item @click.native="clickUserProfile"
                 >个人信息</el-dropdown-item
               >
-              <el-dropdown-item v-if="username != null" divided @click.native="logout">
+              <el-dropdown-item  divided @click.native="logout">
                 退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          <router-link v-else to="/login" class="right-float">
+            <el-button type="text">
+              登录
+            </el-button>
+          </router-link>
         </div>
-
-        <!-- <div class="right-menu" v-if="notificationCount > 0 ">
-          
-          
-        </div> -->
-
-        <!-- <div class="right-menu">
-          <el-dropdown class="user-name">
-            <span class="el-dropdown-link">
-              {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="clickUserMain">个人主页</el-dropdown-item>
-              <el-dropdown-item @click.native="clickUserProfile">个人信息</el-dropdown-item>
-              <el-dropdown-item divided @click.native="logout">
-                退出登录
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div> -->
       </el-menu>
 
       <!-- <el-menu mode="horizontal">
@@ -110,7 +92,6 @@
     <div class="main">
       <router-view v-if="isRouterAlive"></router-view>
     </div>
-
   </div>
 </template>
 
@@ -152,15 +133,12 @@ export default {
   // },
   methods: {
     clickUserMain: function () {
-      console.log("clickUserMain");
       this.$router.push(`/usermain/${this.$store.getters.user_id}`);
     },
     clickUserProfile: function () {
-      console.log("clickUserProfile");
       this.$router.push("/create_user/not_initial");
     },
     logout: function () {
-      console.log("click logout");
       this.$store
         .dispatch("user/logout")
         .then(() => {
@@ -261,7 +239,7 @@ export default {
   font-size: 12px;
 }
 
-.user-name {
+.right-float {
   float: right;
   padding-right: 15px;
 }
@@ -283,7 +261,8 @@ a.anchor {
   visibility: hidden;
 }
 .pre-formatted {
-  white-space: pre;
+  white-space: pre-wrap;
+  line-height: 30px;
 }
 /**修改全局的滚动条*/
 /**滚动条的宽度*/
