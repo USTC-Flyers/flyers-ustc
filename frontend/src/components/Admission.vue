@@ -340,7 +340,9 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-form-item label="其他标化:" size="mini"> </el-form-item>
+                  <el-form-item label="其他标化:" size="mini">
+                    <span>{{ row.background.score }}</span>
+                  </el-form-item>
                   <el-form-item label="科研/实习背景:" style="text-align:left;">
                     <span>
                       <div class="pre-formatted">

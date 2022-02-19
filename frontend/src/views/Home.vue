@@ -18,7 +18,7 @@
         <el-menu-item index="wiki" :route="{path:'/wiki'}" router>申请 Wiki</el-menu-item>
         <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
         <!-- <el-menu-item index="/notification" router hidden>申请</el-menu-item> -->
-        <div style="float: right">
+        <div v-if="username != null" style="float: right">
           <el-badge
             :hidden="notificationCount === 0"
             :value="notificationCount"

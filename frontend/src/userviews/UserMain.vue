@@ -77,7 +77,9 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="其他标化:" size="mini"> </el-form-item>
+            <el-form-item label="其他标化:" size="mini"> 
+              <span>{{ background.score }}</span>
+            </el-form-item>
           </el-row>
           <el-row>
             <el-form-item label="科研/实习背景:">
