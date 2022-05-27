@@ -93,7 +93,7 @@ LOGGING = {
 DEBUG = False
 
 # TODO
-ALLOWED_HOSTS = ['47.96.42.162', '0.0.0.0', 'backend']
+ALLOWED_HOSTS = ['localhost', 'ustcflyer.com', 'ustcflyer', '127.0.0.1']
 
 # Application definition
 
@@ -125,7 +125,7 @@ DATABASES = {
         'NAME': os.environ.get("POSTGRES_DB"),
         'USER': os.environ.get("POSTGRES_USER"),
         'PASSWORD': os.environ.get("POSTGRES_PWD"),
-        'HOST': 'postgres',
+        'HOST': os.environ.get("POSTGRES_HOST"),
         'PORT': '5432',
     }
 }
@@ -178,6 +178,7 @@ WEBPATH_PREFIX = 'http://47.96.42.162:8080/login'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/app/backend/static'
 
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ysj2017/cas/index.html?id=1'
 CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'

@@ -1,20 +1,34 @@
-FROM node:10.19.0-alpine3.11 AS builder
+# frontend builder
+FROM node:16-alpine AS node_builder
 
-RUN mkdir /app
+RUN mkdir -p /app/frontend
+# install package
+WORKDIR /app/frontend
+COPY ./frontend/package.json /app/frontend/
 
-WORKDIR /app
+RUN yarn config set registry https://registry.npmmirror.com && yarn
 
-COPY ./frontend/ /app/frontend
+COPY ./frontend/ /app/frontend/
 
-RUN cd /app/frontend && npm install --registry=https://registry.npm.taobao.org/
+RUN yarn build
 
-RUN cd /app/frontend && npm run build
+# backend builder
+FROM python:3.8-buster
+ENV DJANGO_SETTINGS_MODULE=flyers.settings.prod
 
-FROM nginx:stable-alpine
-ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN mkdir -p /app/backend
+WORKDIR /app/backend
 
-COPY --from=builder /app/frontend/dist /usr/share/nginx/frontend
+# install package
+COPY ./backend/requirements.txt /app/backend/
+RUN pip3 install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY ./backend/ /app/backend/
+
+# copy static files
+RUN mkdir -p /app/backend/static && python manage.py collectstatic --noinput
+COPY --from=node_builder /app/frontend/dist/* /app/backend/static/
+# RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+
+RUN chmod +x ./entrypoint.sh && chmod +x ./wait-for-it.sh
+ENTRYPOINT ["./entrypoint.sh"]

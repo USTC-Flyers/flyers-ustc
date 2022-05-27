@@ -1,3 +1,5 @@
+import os
+
 from .base import *
 
 
@@ -26,14 +28,36 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'flyers',
         'USER': 'postgres',
-        'PASSWORD': '666666',
-        'HOST': '0.0.0.0',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
+
 CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
-CAS_HOME_URL = 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1'
+CAS_HOME_URL = 'http://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, '../../frontend/dist/static')]
+
+TEMPLATE_DIR = os.path.join(BASE_DIR, '../../frontend/dist')
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [TEMPLATE_DIR],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 
 # from deployment
 try:

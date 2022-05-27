@@ -2,3 +2,4 @@
 **/dist
 **.csv
 **.txt
+!/backend/requirements.txt
