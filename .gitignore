@@ -9,7 +9,8 @@ media
 # Backup files # 
 *.bak 
 
-# If you are using PyCharm # 
+# If you are using PyCharm #
+.idea
 .idea/**/workspace.xml 
 .idea/**/tasks.xml 
 .idea/dictionaries 
@@ -123,3 +124,9 @@ frontend/output*
 frontend/.env.development
 *.sql
 *.sql.gz
+
+# ignore data
+data/database/backups/*
+data/database/data/*
+data/logs/*
+data/static/*
