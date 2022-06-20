@@ -40,7 +40,6 @@ class CommentThread(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="comment_thread_upvoted_by",
-        null=True,
         blank=True
     )
     upvoted_count = models.PositiveIntegerField(
@@ -105,7 +104,6 @@ class Comment(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="comment_upvoted_by",
-        null=True,
         blank=True
     )
     upvoted_count = models.PositiveIntegerField(

@@ -1,46 +1,77 @@
 version: "3.2"
-volumes:
-  postgres-data-volume:
-  backend-static-volume:
+networks:
+  database-network:
+    internal: true
 
 services:
-  backend:
-    build: ./backend/
+  server:
+    build: ./
     environment:
       POSTGRES_DB: flyers
       POSTGRES_USER: postgres
       POSTGRES_PWD: ${POSTGRES_PASSWORD}
       DJANGO_SETTINGS_MODULE: flyers.settings.prod
+      POSTGRES_HOST: database
     volumes:
-      - backend-static-volume:/app/backend/static
+      #TODO: mount log directory
+      - ./data/static:/app/backend/static_output
     ports:
-      - 5678:5678
-      - 8000:8000
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:5678:5678"
+    networks:
+      - database-network
     depends_on:
-      - postgres
+      - database
 
-  postgres:
-    build: 
-      context: ./docker/postgres
-      dockerfile: Dockerfile
+  database:
+    image: postgres:14.3-alpine3.15
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      #      POSTGRES_PASSWORD: password
       POSTGRES_DB: flyers
-      POSTGRES_HOST: "%"
+      POSTGRES_HOST: '%'
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
-      - postgres-data-volume:/var/lib/postgres
+      - ./data/database/init:/docker-entrypoint-initdb.d/
+      - ./data/database/data:/var/lib/postgresql/data
+      - ./data/database/backups:/backups
+
+  database-backups:
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    user: postgres:postgres
+    volumes:
+      - ./data/database/backups:/backups
+    networks:
+      - database-network
+    depends_on:
+      - database
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_DB: flyers
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      #      POSTGRES_PASSWORD: password
+      # POSTGRES_PASSWORD_FILE: /run/secrets/db_password <-alternative for POSTGRES_PASSWORD (to use with docker secrets)
+      POSTGRES_EXTRA_OPTS: -Z6 --schema=public --blobs
+      BACKUP_KEEP_DAYS: 7
+      BACKUP_KEEP_WEEKS: 4
+      BACKUP_KEEP_MONTHS: 6
+      HEALTHCHECK_PORT: 8008
+      SCHEDULE: "@midnight"
+    ports:
+      - "127.0.0.1:8008:8008"
 
   nginx:
-    build: ./
-    links:
-      - backend
-    volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
-      - backend-static-volume:/app/backend/static
-    ports:
-      - 8080:80
+    network_mode: host
+    image: nginx:1.21.6-alpine-perl
     environment:
-      NODE_ENV: production
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/static/:/app/backend/static/
+      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./data/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./data/logs/nginx/:/logs/
+      - /root/.acme.sh/:/acme/

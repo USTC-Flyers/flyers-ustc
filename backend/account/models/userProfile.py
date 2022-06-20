@@ -18,61 +18,69 @@ class UserProfile(models.Model):
     )
     related_user = models.OneToOneField(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='user'
     )
     nickname = models.CharField(
         max_length=255,
         null=True,
-        blank=True
+        blank=True,
+        verbose_name='昵称'
     )
     school = models.IntegerField(
         choices=SCHOOL_CHOICES,
         editable=True,
-        null=True
+        null=True,
+        verbose_name='学院'
     )
     contact = models.CharField(
         max_length=254,
         null=True,
         blank=True,
+        verbose_name='联系方式'
     )
     is_verified = models.BooleanField(
-        verbose_name="是否通过科大统一身份验证",
+        verbose_name="通过统一身份验证",
         default=False
     )
     role = models.IntegerField(
         choices=ROLE_CHOICES,
-        default=STUDENT
+        default=STUDENT,
+        verbose_name='身份'
     )
     followed = models.ManyToManyField(
         'account.UserProfile',
         related_name="followed_by",
-        null=True,
         blank=True
     )
     enrolledYear = models.CharField(
         max_length=255,
         null=True,
-        blank=True
+        blank=True,
+        verbose_name='入学年份'
     )
     isUndergrad = models.BooleanField(
         blank=True,
-        null=True
+        null=True,
+        verbose_name='是否毕业'
     )
     final_university = models.ForeignKey(
         "admissions.university",
-        verbose_name="user_profile_final_university",
+        verbose_name="录取学校",
         null=True,
         blank=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     final_program = models.CharField(
         max_length=255,
         null=True,
-        blank=True
+        blank=True,
+        verbose_name='最后项目'
     )
     university = models.CharField(
         max_length=255,
-        default='ustc'
+        default='ustc',
+        verbose_name='学校'
     )
     
     def get_all_votes_cnt(self):
@@ -102,3 +110,10 @@ class UserProfile(models.Model):
                 return obj.related_topic.upvoted_count
             except AttributeError:
                 return 0
+
+    def __str__(self):
+        return '{}(id: {})'.format(self.nickname, self.id)
+
+    class Meta:
+        verbose_name = '用户信息'
+        verbose_name_plural = verbose_name

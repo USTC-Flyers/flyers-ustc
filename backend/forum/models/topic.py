@@ -119,7 +119,6 @@ class Topic(models.Model):
         settings.AUTH_USER_MODEL,
         related_name="topic_followed_by",
         blank=True,
-        null=True
     )
     followed_count = models.PositiveIntegerField(
         default=0
@@ -138,7 +137,6 @@ class Topic(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="topic_upvoted_by",
-        null=True,
         blank=True
     )
     upvoted_count = models.PositiveIntegerField(
