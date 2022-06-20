@@ -42,7 +42,7 @@ export default {
   },
   beforeMount() {
     this.redirect = this.$route.query.redirect || "/";
-    const currentUrl = window.location.href;    
+    const currentUrl = window.location.href;
     if (currentUrl.includes("ticket")) {
       // const ticket = currentUrl.match(/\?ticket=([\s\S]+?)#/)[1];
       const ticket = currentUrl.match(/ticket=([\s\S]+)/)[1];
@@ -55,7 +55,7 @@ export default {
           console.log("login error");
         });
     } else if (!this.$store.state.token) {
-      const serviceUrl = `http://home.ustc.edu.cn/~kelleykuang/cas/index.html?redirect=${this.redirect}`;
+      const serviceUrl = `http://home.ustc.edu.cn/~ztl223/cas/index.html?redirect=${this.redirect}`;
       const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
       window.location.href = casUrl;
     }
