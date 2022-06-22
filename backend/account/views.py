@@ -66,6 +66,7 @@ class UserViewSet(
             status=status.HTTP_200_OK
         )
 
+
 class CASLoginView(TokenObtainPairView):
     authentication_classes = ()
     permission_classes = (AllowAny, )

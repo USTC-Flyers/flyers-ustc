@@ -1,7 +1,7 @@
 version: "3.2"
 networks:
   database-network:
-    internal: true
+    internal: false
 
 services:
   server:

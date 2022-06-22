@@ -180,9 +180,9 @@ WEBPATH_PREFIX = 'http://www.ustcflyer.com/login'
 STATIC_URL = '/static/'
 STATIC_ROOT = '/app/backend/static'
 
-CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ysj2017/cas/index.html?id=1'
+CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
 CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
-CAS_HOME_URL = 'http://home.ustc.edu.cn/~kelleykuang/cas/index.html?id=1'
+CAS_HOME_URL = 'http://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
 
 CAS_VERSION = '2'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
