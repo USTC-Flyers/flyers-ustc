@@ -11,7 +11,7 @@ class AdmissionsAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
 
     def show_nickname(self, obj):
-        return obj.related_user.user.nickname
+        return obj.related_user.userprofile.nickname
 
     def show_bg_researchSpec(self, obj):
         return obj.related_background.researchSpec
@@ -31,7 +31,7 @@ class BackgroundAdmin(admin.ModelAdmin):
     exclude = ['related_user']
 
     def show_nickname(self, obj):
-        return obj.related_user.user.nickname
+        return obj.related_user.userprofile.nickname
 
     show_nickname.short_description = '昵称'
 

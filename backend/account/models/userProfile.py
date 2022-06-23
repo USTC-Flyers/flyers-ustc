@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     related_user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='user'
+        related_name='userprofile'
     )
     nickname = models.CharField(
         max_length=255,
