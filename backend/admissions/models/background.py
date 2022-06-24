@@ -82,11 +82,13 @@ class Background(models.Model):
     )
     comments = models.TextField(
         null=True,
-        blank=True
+        blank=True,
+        verbose_name='申请方向思考'
     )
     summary = models.TextField(
         null=True,
         blank=True,
+        verbose_name='申请感言'
     )
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,

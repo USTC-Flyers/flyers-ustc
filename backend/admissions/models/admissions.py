@@ -50,7 +50,7 @@ class Admissions(models.Model):
         max_length=1024,
         null=True,
         blank=True,
-        verbose_name='评论'
+        verbose_name='项目申请经验'
     )
     summary = models.TextField(
         max_length=1024,
