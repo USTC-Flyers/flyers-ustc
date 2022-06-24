@@ -38,32 +38,6 @@ services:
       - ./data/database/data:/var/lib/postgresql/data
       - ./data/database/backups:/backups
 
-  database-backups:
-    image: prodrigestivill/postgres-backup-local
-    restart: always
-    user: postgres:postgres
-    volumes:
-        - ./data/database/backups:/backups
-    networks:
-      - database-network
-    depends_on:
-        - database
-    environment:
-      POSTGRES_HOST: database
-      POSTGRES_DB: flyers
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#      POSTGRES_PASSWORD: password
-      # POSTGRES_PASSWORD_FILE: /run/secrets/db_password <-alternative for POSTGRES_PASSWORD (to use with docker secrets)
-      POSTGRES_EXTRA_OPTS: -Z6 --schema=public --blobs
-      BACKUP_KEEP_DAYS: 7
-      BACKUP_KEEP_WEEKS: 4
-      BACKUP_KEEP_MONTHS: 6
-      HEALTHCHECK_PORT: 8008
-      SCHEDULE: "@midnight"
-    ports:
-      - "127.0.0.1:8008:8008"
-
   nginx:
     network_mode: host
     image: nginx:1.21.6-alpine-perl
