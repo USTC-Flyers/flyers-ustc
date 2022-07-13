@@ -62,7 +62,7 @@ class UserProfile(models.Model):
     isUndergrad = models.BooleanField(
         blank=True,
         null=True,
-        verbose_name='是否毕业'
+        verbose_name='在校时身份'
     )
     final_university = models.ForeignKey(
         "admissions.university",
