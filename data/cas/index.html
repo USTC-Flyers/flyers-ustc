@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirect Page</title>
+</head>
+<body>
+Redirect..
+<script>
+    // This page's url, the host must end with ".ustc.edu.cn"
+    let SERVICE_URL = "http://home.ustc.edu.cn/~ztl223/cas/index.html?redirect={0}";
+
+    // When this page get ticket, user will be redirected to apiUrl
+    let API_URL = "https://www.ustcflyer.com/api/login?redirect={0}&ticket={1}&service={2}";
+
+    let TEST_API_URL = 'http://localhost:8000/api/login?redirect={0}&ticket={1}&service={2}';
+
+    // Default USTC CAS Url
+    let CAS_URL = "https://passport.ustc.edu.cn/login?service={0}";
+    let JUMP_URL = '';
+
+
+    function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+    }
+
+    String.prototype.URLFormat = function(){
+        let args = arguments;
+        return this.replace(/\{(\d+)\}/g, function(a, num){
+            return encodeURI(args[num]) || a
+        })
+    }
+
+    window.onload = function() {
+        const ticket = getURLParameter('ticket');
+        const id = getURLParameter('id');
+        SERVICE_URL = SERVICE_URL.URLFormat(id);
+
+        if (ticket) {
+            // redirect to api
+            const is_test = localStorage.getItem('is_test')
+
+            if (is_test && is_test.toLowerCase() === 'true') {
+                JUMP_URL = TEST_API_URL.URLFormat(id, ticket, SERVICE_URL);
+            } else {
+                JUMP_URL = API_URL.URLFormat(id, ticket, SERVICE_URL);
+            }
+        } else {
+            const is_test = getURLParameter('is_test');
+
+            if (is_test && is_test.toLowerCase() === 'true') {
+                localStorage.setItem('is_test', 'true');
+            } else {
+                localStorage.setItem('is_test', 'false');
+            }
+            // redirect to cas
+            JUMP_URL = CAS_URL.URLFormat(SERVICE_URL);
+        }
+        window.location.href = JUMP_URL;
+    };
+
+</script>
+</body>
+</html>
