@@ -171,7 +171,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-WEBPATH_PREFIX = 'http://www.ustcflyer.com/login'
+WEBPATH_PREFIX = 'https://www.ustcflyer.com/login'
 
 
 # Static files (CSS, JavaScript, Images)
