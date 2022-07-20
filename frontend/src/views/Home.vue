@@ -3,7 +3,6 @@
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   <div class="home-container">
     <div class="header">
-      
       <el-menu :default-active="$route.name" mode="horizontal" router>
         <div id="logo">
           <router-link to="/welcome">
@@ -11,51 +10,24 @@
               USTC 飞跃网站
             </el-button>
           </router-link>
-          
         </div>
         <span></span>
-        <el-menu-item index="admission" :route="{path:'/admission'}" router>录取汇报</el-menu-item>
-        <el-menu-item index="wiki" :route="{path:'/wiki'}" router>申请 Wiki</el-menu-item>
-        <!-- <el-menu-item index="/about" router>关于我们</el-menu-item> -->
-        <!-- <el-menu-item index="/notification" router hidden>申请</el-menu-item> -->
-        <div v-if="username != null" style="float: right">
+        <el-menu-item index="admission" :route="{ path: '/admission' }" router
+          >录取汇报</el-menu-item
+        >
+        <el-menu-item index="wiki" :route="{ path: '/wiki' }" router
+          >申请 Wiki</el-menu-item
+        >
+        <div style="float: right">
           <el-badge
             :hidden="notificationCount === 0"
             :value="notificationCount"
             id="badge"
+            v-show="username !== null"
           >
             <el-button size="small" @click="handleMessageMore">通知</el-button>
           </el-badge>
-          <!-- <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                v-for="(message, index) in messageList"
-                :key="message + index"
-                :id="index + '-' + notificationList[index].id"
-              >
-                <template>
-                  <router-link
-                    :to="{
-                      path: `${pathMap(notificationList[index].obj_name)}/${
-                        notificationList[index].id
-                      }/`,
-                    }"
-                  >
-                    <el-button
-                      type="text"
-                      size="small"
-                      @click="readMessage(notificationList[index].id)"
-                    >
-                      {{ message }}
-                    </el-button>
-                  </router-link>
-                </template>
-              </el-dropdown-item>
-              <el-dropdown-item @click.native="handleMessageMore">
-                更多
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown> -->
-          <el-dropdown v-if="username != null" class="right-float">
+          <el-dropdown v-if="username !== null" class="right-float">
             <span class="el-dropdown-link">
               {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -66,28 +38,17 @@
               <el-dropdown-item @click.native="clickUserProfile"
                 >个人信息</el-dropdown-item
               >
-              <el-dropdown-item  divided @click.native="logout">
+              <el-dropdown-item divided @click.native="logout">
                 退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+
           <router-link v-else to="/login" class="right-float">
-            <el-button type="text">
-              登录
-            </el-button>
+            <el-button size="small" type="primary"> 登录 </el-button>
           </router-link>
         </div>
       </el-menu>
-
-      <!-- <el-menu mode="horizontal">
-          <template slot="title">{{submenus.title}}</template>
-          <el-menu-item v-for="(item, subIndex) in submenus.menus"
-            :index="(index + 1) + '-' + (subIndex + 1)"
-            :key="item.key">
-              {{item.title}}
-          </el-menu-item>
-        </el-submenu>
-      </el-menu> -->
     </div>
     <div class="main">
       <router-view v-if="isRouterAlive"></router-view>
@@ -96,7 +57,6 @@
 </template>
 
 <script>
-
 import { initNotificationCount } from "@/api/user";
 //import './home.css'
 export default {
@@ -104,7 +64,7 @@ export default {
   provide() {
     return {
       reload: this.reload,
-      getNotificationCount: this.getNotificationCount
+      getNotificationCount: this.getNotificationCount,
     };
   },
   data() {
@@ -125,12 +85,6 @@ export default {
     // fetch notification
     this.getNotificationCount();
   },
-  // mounted() {
-  //   window.addEventListener('scroll', this.handleScroll)
-  // },
-  // destroyed () {
-  //   window.removeEventListener('scroll', this.handleScroll)
-  // },
   methods: {
     clickUserMain: function () {
       this.$router.push(`/usermain/${this.$store.getters.user_id}`);
@@ -149,23 +103,11 @@ export default {
           console.log("logout error");
         });
     },
-    // clickNotification(index) {
-    //   console.log("click notification");
-    //   const notification = this.notificationList[index];
-    //   this.$router.push({
-    //     path: "/" + notification.ref_obj_name,
-    //     query: { id: notification.id },
-    //   });
-    // },
-    // pathMap(name) {
-    //   if (name === "TopicRevision") return "topic_revision";
-    //   return name;
-    // },
     handleMessageMore() {
       this.$router.push({ path: "/notificaiton" }, () => {});
     },
     getNotificationCount() {
-      if(this.$store.getters.token){
+      if (this.$store.getters.token) {
         initNotificationCount().then((response) => {
           this.notificationCount = response.unread_count;
         });
@@ -211,7 +153,7 @@ export default {
   margin-top: 0px;
   padding-top: 30px;
   width: 100%;
-  top:60px //指的是margin更以上的距离，即div模块外围距离
+  top: 60px; //指的是margin更以上的距离，即div模块外围距离
   // padding-top:100px;
 }
 .footer {
@@ -267,8 +209,7 @@ a.anchor {
 /**修改全局的滚动条*/
 /**滚动条的宽度*/
 ::-webkit-scrollbar {
-  width: 8px; 
- 
+  width: 8px;
 }
 //滚动条的滑块
 ::-webkit-scrollbar-thumb {
@@ -279,5 +220,4 @@ a.anchor {
   background-color: #d3d3d3;
   border-radius: 3px;
 }
-
 </style>

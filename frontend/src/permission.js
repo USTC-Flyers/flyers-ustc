@@ -38,7 +38,7 @@ router.beforeEach(async (to, from, next) => {
 
           next();
         } catch (error) {
-          if(error.response.status === 404 ){
+          if (error.response.status === 404) {
             next({ path: "/create_user/initial" });
             NProgress.done();
           }
@@ -60,10 +60,9 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       // next(`/login?redirect=${to.path}`);
-      if(to.query.ticket){
+      if (to.query.ticket) {
         next(`/login?redirect=${to.path}&ticket=${to.query.ticket}`);
-      }
-      else {
+      } else {
         next(`/login?redirect=${to.path}`);
       }
       NProgress.done();

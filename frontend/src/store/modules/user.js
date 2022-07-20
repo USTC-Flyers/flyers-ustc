@@ -1,8 +1,15 @@
 import { login, logout, getInfo, refresh, isAdmin } from "@/api/user";
-import { getToken, getRefresh, setToken, setRefresh, removeToken, removeRefresh } from "@/utils/auth";
+import {
+  getToken,
+  getRefresh,
+  setToken,
+  setRefresh,
+  removeToken,
+  removeRefresh,
+} from "@/utils/auth";
 // ! TODO
 import { resetRouter } from "@/router";
-import router from "@/router"
+import router from "@/router";
 
 const getDefaultState = () => {
   return {
@@ -34,7 +41,7 @@ const mutations = {
   },
   SET_REFRESH: (state, refreshToken) => {
     state.refresh_token = refreshToken;
-  }
+  },
 };
 
 const actions = {
@@ -89,13 +96,15 @@ const actions = {
           const user_id = response.user_detail.related_user;
           commit("SET_NAME", name);
           commit("SET_ID", user_id);
-          isAdmin().then((response) => {
-            const is_admin = response.role;
-            commit("SET_ADMIN", is_admin);
-            resolve();
-          }).catch((error) => {
-            reject(error);
-          })
+          isAdmin()
+            .then((response) => {
+              const is_admin = response.role;
+              commit("SET_ADMIN", is_admin);
+              resolve();
+            })
+            .catch((error) => {
+              reject(error);
+            });
         })
         .catch((error) => {
           reject(error);
@@ -124,22 +133,23 @@ const actions = {
 
   refreshToken({ commit, state }) {
     return new Promise((resolve, reject) => {
-      refresh(state.refresh_token).then((resp) => {
-        commit("SET_TOKEN", "Bearer " + resp.access);
-        setToken("Bearer " + resp.access);
-        router.go();
-        resolve();
-      }).catch((error) => {
-        removeToken();
-        removeRefresh();
-        commit("RESET_STATE");
-        router.go();
-        reject(error);
-      })
-    })
-  }
+      refresh(state.refresh_token)
+        .then((resp) => {
+          commit("SET_TOKEN", "Bearer " + resp.access);
+          setToken("Bearer " + resp.access);
+          router.go();
+          resolve();
+        })
+        .catch((error) => {
+          removeToken();
+          removeRefresh();
+          commit("RESET_STATE");
+          router.go();
+          reject(error);
+        });
+    });
+  },
 };
-
 
 export default {
   namespaced: true,

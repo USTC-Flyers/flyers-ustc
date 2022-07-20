@@ -343,14 +343,14 @@
                   <el-form-item label="其他标化:" size="mini">
                     <span>{{ row.background.score }}</span>
                   </el-form-item>
-                  <el-form-item label="科研/实习背景:" style="text-align:left;">
+                  <el-form-item label="科研/实习背景:" style="text-align: left">
                     <span>
                       <div class="pre-formatted">
                         {{ row.background.researchSpec }}
                       </div>
                     </span>
                   </el-form-item>
-                  <el-form-item label="推荐信:" style="text-align:left;">
+                  <el-form-item label="推荐信:" style="text-align: left">
                     <span>
                       <div class="pre-formatted">
                         {{ row.background.referSpec }}

@@ -23,7 +23,9 @@
       <el-input v-model="form.title"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button size="small" type="success" @click="submitForm">立即创建</el-button>
+      <el-button size="small" type="success" @click="submitForm"
+        >立即创建</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

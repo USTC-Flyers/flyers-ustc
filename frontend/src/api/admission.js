@@ -85,7 +85,7 @@ export function admissions_upvote(id) {
   return request({
     url: `/admissions/${id}/action/`,
     method: "patch",
-    data: { action: "upvote"},
+    data: { action: "upvote" },
   });
 }
 
@@ -93,7 +93,7 @@ export function admissions_downvote(id) {
   return request({
     url: `/admissions/${id}/action/`,
     method: "patch",
-    data: { action: "downvote"},
+    data: { action: "downvote" },
   });
 }
 export function admissions_query_page(data, page) {

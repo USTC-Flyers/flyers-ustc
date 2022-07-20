@@ -77,7 +77,7 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="其他标化:" size="mini"> 
+            <el-form-item label="其他标化:" size="mini">
               <span>{{ background.score }}</span>
             </el-form-item>
           </el-row>
@@ -95,7 +95,7 @@
                   </el-tag>
                 </div>
                 <div class="pre-formatted">
-                    {{ background.researchSpec }}
+                  {{ background.researchSpec }}
                 </div>
               </span>
             </el-form-item>
@@ -120,7 +120,7 @@
             </el-form-item>
           </el-row>
         </el-form>
-        <div v-else style="text-align: center;">暂未提交申请背景</div>
+        <div v-else style="text-align: center">暂未提交申请背景</div>
       </div>
       <a class="anchor" id="admissions"></a>
       <div class="content-block">
@@ -222,8 +222,7 @@
             <h2 class="highlight">申请总结</h2>
           </el-col>
           <el-col :span="18">
-           <!-- <h2><i class="cil-thumb-up highlight"> {{ user.all_votes_cnt }}</i></h2>  -->
-           
+            <!-- <h2><i class="cil-thumb-up highlight"> {{ user.all_votes_cnt }}</i></h2>  -->
           </el-col>
         </el-row>
         <div v-if="hasBackground">
@@ -255,12 +254,17 @@
 </template>
 
 <script>
-
 import { get_user_profile } from "@/api/user";
-import { admissions_get_user, admissions_upvote,
-  admissions_downvote, } from "@/api/admission";
-import { background_get_user, background_upvote,
-  background_downvote, } from "@/api/background";
+import {
+  admissions_get_user,
+  admissions_upvote,
+  admissions_downvote,
+} from "@/api/admission";
+import {
+  background_get_user,
+  background_upvote,
+  background_downvote,
+} from "@/api/background";
 // import { getInfo } from "@/api/user";
 // import { admissions_get_my } from "@/api/admission";
 // import { background_get_my } from "@/api/background";
@@ -280,11 +284,10 @@ export default {
   // },
   filters: {
     schoolFilter(index) {
-      if(index && index >= 0 && index < school_list.length){
+      if (index && index >= 0 && index < school_list.length) {
         let school_name = school_list[index];
         return school_name.slice(4, school_name.length);
-      }
-      else return null;
+      } else return null;
     },
     isUndergradFilter(value) {
       const map = {
@@ -395,8 +398,9 @@ export default {
         this.user.school = response.user_detail.school;
         this.user.isUndergrad = response.user_detail.isUndergrad;
         this.user.contact = response.user_detail.contact;
-        if(response.user_detail.final_university){
-          this.user.final_university = response.user_detail.final_university.school_name;
+        if (response.user_detail.final_university) {
+          this.user.final_university =
+            response.user_detail.final_university.school_name;
         }
         this.user.final_program = response.user_detail.final_program;
       });
@@ -425,8 +429,11 @@ export default {
       admissions_get_user(this.user_id).then((response) => {
         this.getTableData(response.user_detail);
         // hash to anchor after getting all data
-        if(location.hash) {
-          setTimeout("document.querySelector(location.hash).scrollIntoView(true)", 100);
+        if (location.hash) {
+          setTimeout(
+            "document.querySelector(location.hash).scrollIntoView(true)",
+            100
+          );
         }
       });
     },

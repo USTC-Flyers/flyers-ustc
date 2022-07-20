@@ -36,7 +36,7 @@ export function background_upvote(id) {
   return request({
     url: `/background/${id}/action/`,
     method: "patch",
-    data: { action: "upvote"},
+    data: { action: "upvote" },
   });
 }
 
@@ -44,7 +44,6 @@ export function background_downvote(id) {
   return request({
     url: `/background/${id}/action/`,
     method: "patch",
-    data: { action: "downvote"},
+    data: { action: "downvote" },
   });
 }
-

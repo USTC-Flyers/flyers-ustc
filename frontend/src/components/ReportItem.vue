@@ -57,7 +57,7 @@
               :key="univ.id"
               :label="univ.school_name"
               :value="univ.id"
-              @click.native ="handleSelect(index)"
+              @click.native="handleSelect(index)"
             >
               <div class="name">
                 {{ univ.short_name }}-{{ univ.school_name_cn }}

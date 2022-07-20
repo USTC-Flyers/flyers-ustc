@@ -41,7 +41,11 @@ export default {
     //   });
   },
   beforeMount() {
-    this.redirect = this.$route.query.redirect.fullPath || "/";
+    try {
+      this.redirect = this.$route.query.redirect.fullPath || "/";
+    } catch (e) {
+      this.redirect = "/";
+    }
     const currentUrl = window.location.href;
     if (currentUrl.includes("ticket")) {
       // const ticket = currentUrl.match(/\?ticket=([\s\S]+?)#/)[1];

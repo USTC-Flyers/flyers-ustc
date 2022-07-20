@@ -1,14 +1,13 @@
 import Vue from "vue";
 //
-import "./views/vue.css"
+import "./views/vue.css";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/en"; // lang i18n
-// import this package's 
-import './assets/icon/iconfont.css'
+// import this package's
+import "./assets/icon/iconfont.css";
 
-import { ElementTiptapPlugin } from 'element-tiptap';
-
+import { ElementTiptapPlugin } from "element-tiptap";
 
 import App from "./App";
 import store from "./store";
@@ -32,7 +31,6 @@ Vue.use(ElementUI, { locale });
 // var echarts = require('echarts')
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
-
 
 Vue.use(ElementTiptapPlugin);
 // 现在你已经在全局注册了 `el-tiptap` 组件。

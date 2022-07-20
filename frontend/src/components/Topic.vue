@@ -107,7 +107,7 @@ export default {
           this.$message.success("删除成功");
           this.reload();
           this.$forceUpdate();
-          this.$router.push({ path: "/wiki" })
+          this.$router.push({ path: "/wiki" });
         })
         .catch((err) => {
           console.log(err);
@@ -156,8 +156,8 @@ export default {
     this.topic_id = to.params.id;
     this.getTopicContent();
     setTimeout(() => {
-      document.body.scrollTop = 0
-      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }, 300);
     next();
   },

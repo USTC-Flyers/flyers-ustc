@@ -61,7 +61,7 @@ export default {
       });
   },
   methods: {
-    revisionAp: function() {
+    revisionAp: function () {
       approveTopic(this.revision_id)
         .then(() => {
           this.$message.success("审核完成，修改通过");
@@ -71,7 +71,7 @@ export default {
           console.log(err);
         });
     },
-    revisionRej: function() {
+    revisionRej: function () {
       rejectTopic(this.revision_id)
         .then(() => {
           this.$message.success("审核完成，修改未通过");

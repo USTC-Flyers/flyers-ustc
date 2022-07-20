@@ -13,9 +13,9 @@ export function logout(token) {
     url: "/logout/",
     method: "post",
     data: {
-      "refresh_token": token
-    }
-  })
+      refresh_token: token,
+    },
+  });
 }
 
 export function refresh(token) {
@@ -23,10 +23,10 @@ export function refresh(token) {
     url: "/refresh/",
     method: "post",
     data: {
-      "refresh": token
-    }
-  })
-} 
+      refresh: token,
+    },
+  });
+}
 
 export function getInfo() {
   return request({
@@ -63,7 +63,6 @@ export function update_user_profile(id, data) {
   });
 }
 
-
 export function initNotification() {
   return request({
     url: "/notification/unread_set/",
@@ -88,6 +87,6 @@ export function getNotification() {
 export function readNotification(id) {
   return request({
     url: `/notification/${id}/read/`,
-    method: "post"
-  })
+    method: "post",
+  });
 }

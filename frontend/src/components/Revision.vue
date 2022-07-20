@@ -7,13 +7,15 @@
       height="550"
       id="tiptap-editor"
     />
-    <el-button type="primary" @click="submitForm" style="margin-top:30px">提交</el-button>
+    <el-button type="primary" @click="submitForm" style="margin-top: 30px"
+      >提交</el-button
+    >
   </div>
 </template>
 
 <script>
 // import Editor from "@tinymce/tinymce-vue";
-import TiptapEditor from "./TiptapEditor"
+import TiptapEditor from "./TiptapEditor";
 import { getTopic, updateTopic } from "@/api/wiki";
 export default {
   name: "Revision",
@@ -38,7 +40,10 @@ export default {
   },
   methods: {
     submitForm() {
-      updateTopic(this.topic_id, { title: this.title, content: this.content }).then(() => {
+      updateTopic(this.topic_id, {
+        title: this.title,
+        content: this.content,
+      }).then(() => {
         this.$message.success("更新成功");
         this.$router.go(-1);
       });
@@ -56,10 +61,9 @@ export default {
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
-  width:850px;
-  
+  width: 850px;
 }
-#tiptap-editor{
-  width:850px;
+#tiptap-editor {
+  width: 850px;
 }
 </style>

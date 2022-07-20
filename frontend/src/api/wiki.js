@@ -33,22 +33,22 @@ export function deleteTopic(id) {
 export function getTopicRevision(id) {
   return request({
     url: `/topic_revision/${id}/`,
-    method: "get"
-  })
+    method: "get",
+  });
 }
 export function approveTopic(id) {
   return request({
     url: `/topic_revision/${id}/review/`,
     method: "patch",
     data: { status: 2 },
-  })
+  });
 }
 export function rejectTopic(id) {
   return request({
     url: `/topic_revision/${id}/review/`,
     method: "patch",
     data: { status: 1 },
-  })
+  });
 }
 export function updateTopic(id, data) {
   return request({
@@ -56,8 +56,8 @@ export function updateTopic(id, data) {
     method: "post",
     data: {
       related_topic: id,
-      ...data
-    }
+      ...data,
+    },
   });
 }
 
@@ -79,7 +79,7 @@ export function upvoteTopic(id) {
   return request({
     url: `/topic/${id}/action/`,
     method: "patch",
-    data: { action: "upvote"},
+    data: { action: "upvote" },
   });
 }
 
@@ -87,16 +87,15 @@ export function downvoteTopic(id) {
   return request({
     url: `/topic/${id}/action/`,
     method: "patch",
-    data: { action: "downvote"},
+    data: { action: "downvote" },
   });
 }
-
 
 export function followTopic(id) {
   return request({
     url: `/topic/${id}/action/`,
     method: "patch",
-    data: { action: "follow"},
+    data: { action: "follow" },
   });
 }
 

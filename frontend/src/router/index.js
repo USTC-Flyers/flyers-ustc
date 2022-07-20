@@ -38,7 +38,10 @@ const routes = [
         component: () => import("../views/Subhome"),
         redirect: "/welcome",
         children: [
-          { path: "/welcome", component: () => import("@/components/Welcome.vue") },
+          {
+            path: "/welcome",
+            component: () => import("@/components/Welcome.vue"),
+          },
           { path: "/rules", component: () => import("@/components/Rules.vue") },
           {
             path: "/admission",
@@ -104,9 +107,9 @@ const routes = [
 const router = new VueRouter({
   routes,
   mode: "history",
-  scrollBehavior (to, from, savedPosition) {
-    return { x: 0, y: 0 }
-  }
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
+  },
 });
 
 export function resetRouter() {

@@ -11,154 +11,152 @@
       </el-steps>
     </div>
     <div class="form">
-        <div v-if="active == 0">
-          <el-form
-            :model="form_data.background"
-            label-position="right"
-            label-width="110px"
-          >
-            <el-form-item label="专业" size="mini">
-              <el-col :span="9">
-                <el-select
-                  v-model="form_data.background.major"
-                  filterable
-                  clearable
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="[value, label] in Object.entries(major_list)"
-                    :key="value"
-                    :label="label"
-                    :value="value"
-                  ></el-option>
-                </el-select>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="GPA" size="mini">
-              <el-col :span="9">
-                <el-input-number
-                  v-model="form_data.background.gpa"
-                  :precision="2"
-                  :step="0.01"
-                  :min="1.0"
-                  :max="4.3"
-                ></el-input-number>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="排名" size="mini">
-              <el-col :span="9">
-                <el-select
-                  clearable
-                  v-model="form_data.background.rank"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="[value, label] in Object.entries(rank_list)"
-                    :key="value"
-                    :label="label"
-                    :value="value"
-                  ></el-option>
-                </el-select>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="托福" size="mini">
-              <el-col :span="9">
-                <el-input v-model="form_data.background.TOEFL"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="GRE" size="mini">
-              <el-col :span="9">
-                <el-input v-model="form_data.background.GRE"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="其他标化" size="mini">
-              <el-col :span="9">
-                <el-input
-                  v-model="form_data.background.score"
-                  placeholder="雅思、GRE Sub 等"
-                ></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="科研/实习背景">
-              <el-checkbox-group
-                v-model="form_data.background.research_tag_list"
+      <div v-if="active == 0">
+        <el-form
+          :model="form_data.background"
+          label-position="right"
+          label-width="110px"
+        >
+          <el-form-item label="专业" size="mini">
+            <el-col :span="9">
+              <el-select
+                v-model="form_data.background.major"
+                filterable
+                clearable
+                placeholder="请选择"
               >
-                <el-checkbox
-                  v-for="[value, label] in Object.entries(research_tags)"
+                <el-option
+                  v-for="[value, label] in Object.entries(major_list)"
                   :key="value"
-                  :label="value"
-                  >{{ label }}</el-checkbox
-                >
-              </el-checkbox-group>
-              <el-input
-                v-model="form_data.background.researchSpec"
-                type="textarea"
-                :rows="5"
-                placeholder="科研实习背景具体描述，Paper发表等"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="推荐信">
-              <el-checkbox-group v-model="form_data.background.ref_tag_list">
-                <el-checkbox
-                  v-for="[value, label] in Object.entries(ref_tags)"
+                  :label="label"
+                  :value="value"
+                ></el-option>
+              </el-select>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="GPA" size="mini">
+            <el-col :span="9">
+              <el-input-number
+                v-model="form_data.background.gpa"
+                :precision="2"
+                :step="0.01"
+                :min="1.0"
+                :max="4.3"
+              ></el-input-number>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="排名" size="mini">
+            <el-col :span="9">
+              <el-select
+                clearable
+                v-model="form_data.background.rank"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="[value, label] in Object.entries(rank_list)"
                   :key="value"
-                  :label="value"
-                  >{{ label }}</el-checkbox
-                >
-              </el-checkbox-group>
+                  :label="label"
+                  :value="value"
+                ></el-option>
+              </el-select>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="托福" size="mini">
+            <el-col :span="9">
+              <el-input v-model="form_data.background.TOEFL"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="GRE" size="mini">
+            <el-col :span="9">
+              <el-input v-model="form_data.background.GRE"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="其他标化" size="mini">
+            <el-col :span="9">
               <el-input
-                v-model="form_data.background.referSpec"
-                type="textarea"
-                :rows="5"
-                placeholder="推荐信具体描述"
+                v-model="form_data.background.score"
+                placeholder="雅思、GRE Sub 等"
               ></el-input>
-            </el-form-item>
-            <el-form-item label="主申方向" size="mini">
-              <el-col :span="9">
-                <el-select
-                  clearable
-                  v-model="form_data.background.apply_for"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="[value, label] in Object.entries(applyfor_list)"
-                    :key="value"
-                    :label="label"
-                    :value="value"
-                  ></el-option>
-                </el-select>
-              </el-col>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div v-show="active == 1">
-          <report-item
-            v-for="(item, index) in admissions"
-            :key="index"
-            :id="index"
-            ref="admission_forms"
-            :data="item"
-            :univ_list="univ_list[index]"
-          >
-            <!-- <el-button
+            </el-col>
+          </el-form-item>
+          <el-form-item label="科研/实习背景">
+            <el-checkbox-group v-model="form_data.background.research_tag_list">
+              <el-checkbox
+                v-for="[value, label] in Object.entries(research_tags)"
+                :key="value"
+                :label="value"
+                >{{ label }}</el-checkbox
+              >
+            </el-checkbox-group>
+            <el-input
+              v-model="form_data.background.researchSpec"
+              type="textarea"
+              :rows="5"
+              placeholder="科研实习背景具体描述，Paper发表等"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="推荐信">
+            <el-checkbox-group v-model="form_data.background.ref_tag_list">
+              <el-checkbox
+                v-for="[value, label] in Object.entries(ref_tags)"
+                :key="value"
+                :label="value"
+                >{{ label }}</el-checkbox
+              >
+            </el-checkbox-group>
+            <el-input
+              v-model="form_data.background.referSpec"
+              type="textarea"
+              :rows="5"
+              placeholder="推荐信具体描述"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="主申方向" size="mini">
+            <el-col :span="9">
+              <el-select
+                clearable
+                v-model="form_data.background.apply_for"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="[value, label] in Object.entries(applyfor_list)"
+                  :key="value"
+                  :label="label"
+                  :value="value"
+                ></el-option>
+              </el-select>
+            </el-col>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-show="active == 1">
+        <report-item
+          v-for="(item, index) in admissions"
+          :key="index"
+          :id="index"
+          ref="admission_forms"
+          :data="item"
+          :univ_list="univ_list[index]"
+        >
+          <!-- <el-button
               v-if="index > 0 || admissions.length > 1"
               type="danger"
               size="mini"
               @click="del_admission(index)"
               >删除此项</el-button
             > -->
-            <el-button
-              v-if="index > 0 || admissions.length > 1"
-              type="danger"
-              size="small"
-              @click="del_admission(index)"
-              icon="el-icon-delete"
-              style="position: relative; left: 640px"
-              circle
-            >
-            </el-button>
-          </report-item>
-          <!-- <el-form
+          <el-button
+            v-if="index > 0 || admissions.length > 1"
+            type="danger"
+            size="small"
+            @click="del_admission(index)"
+            icon="el-icon-delete"
+            style="position: relative; left: 640px"
+            circle
+          >
+          </el-button>
+        </report-item>
+        <!-- <el-form
             :rules="admission_rules"
             v-for="(item, index) in admissions"
             :key="index"
@@ -286,87 +284,88 @@
               >
             </el-form-item>
           </el-form> -->
-          <el-button
-            type="success"
-            icon="el-icon-plus"
-            size="medium"
-            @click="add_admission()"
-            round
-            style="position: relative; left: 20px"
-            >新增录取项</el-button
-          >
-        </div>
-        <div v-if="active == 2">
-          <el-form label-position="right" label-width="110px">
-            <el-form-item label="申请方向的思考">
-              <tiptap-editor
-                v-model="form_data.background.comments"
-                placeholder="请输入文章内容"
-                height="300"
-              />
-            </el-form-item>
-            <el-form-item label="其他申请感言">
-              <tiptap-editor
-                v-model="form_data.background.summary"
-                placeholder="请输入文章内容"
-                height="300"
-              />
-            </el-form-item>
-          </el-form>
-        </div>
-        <div v-else-if="active == 3">
-          <el-form label-position="right" label-width="70px">
-            <el-form-item label="最终去向">
-              <el-select
-                v-model="final_university"
-                placeholder="请选择学校"
-                clearable>
-                <el-option
-                  class="university"
-                  v-for="(item, index) in final_univ_list"
-                  :key="index"
-                  :label="item.univ.school_name"
-                  :value="item.univ.id"
-                  @click.native="final_program = item.program"
-                >
-                  <div class="name">
-                    {{ item.univ.short_name }}-{{ item.univ.school_name_cn }}
-                  </div>
-                  <div class="line2">
-                    <span class="fullname">{{ item.univ.school_name }}</span>
-                    <span class="area">{{ item.univ.area }}</span>
-                  </div>
-                </el-option>
-              </el-select>
-              <el-autocomplete v-model="final_program"
-                placeholder="请输入项目"
-                :trigger-on-focus="false"
-                clearable>
-              </el-autocomplete>
-            </el-form-item>
-            <el-form-item label="联系方式">
-              <el-input
-                v-model="contact"
-                type="textarea"
-                :rows="4"
-                placeholder="QQ，微信，邮箱等任何方便学弟学妹联系你的方式"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="button">
-          <el-button v-show="active > 0" type="primary" @click="active--"
-            >上一步</el-button
-          >
-          <el-button ref="next" v-if="active < 3" type="primary" @click="active++"
-            >下一步</el-button
-          >
-          <el-button v-else type="success" @click="handleSubmit">提交</el-button>
-        </div>
+        <el-button
+          type="success"
+          icon="el-icon-plus"
+          size="medium"
+          @click="add_admission()"
+          round
+          style="position: relative; left: 20px"
+          >新增录取项</el-button
+        >
+      </div>
+      <div v-if="active == 2">
+        <el-form label-position="right" label-width="110px">
+          <el-form-item label="申请方向的思考">
+            <tiptap-editor
+              v-model="form_data.background.comments"
+              placeholder="请输入文章内容"
+              height="300"
+            />
+          </el-form-item>
+          <el-form-item label="其他申请感言">
+            <tiptap-editor
+              v-model="form_data.background.summary"
+              placeholder="请输入文章内容"
+              height="300"
+            />
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-else-if="active == 3">
+        <el-form label-position="right" label-width="70px">
+          <el-form-item label="最终去向">
+            <el-select
+              v-model="final_university"
+              placeholder="请选择学校"
+              clearable
+            >
+              <el-option
+                class="university"
+                v-for="(item, index) in final_univ_list"
+                :key="index"
+                :label="item.univ.school_name"
+                :value="item.univ.id"
+                @click.native="final_program = item.program"
+              >
+                <div class="name">
+                  {{ item.univ.short_name }}-{{ item.univ.school_name_cn }}
+                </div>
+                <div class="line2">
+                  <span class="fullname">{{ item.univ.school_name }}</span>
+                  <span class="area">{{ item.univ.area }}</span>
+                </div>
+              </el-option>
+            </el-select>
+            <el-autocomplete
+              v-model="final_program"
+              placeholder="请输入项目"
+              :trigger-on-focus="false"
+              clearable
+            >
+            </el-autocomplete>
+          </el-form-item>
+          <el-form-item label="联系方式">
+            <el-input
+              v-model="contact"
+              type="textarea"
+              :rows="4"
+              placeholder="QQ，微信，邮箱等任何方便学弟学妹联系你的方式"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="button">
+        <el-button v-show="active > 0" type="primary" @click="active--"
+          >上一步</el-button
+        >
+        <el-button ref="next" v-if="active < 3" type="primary" @click="active++"
+          >下一步</el-button
+        >
+        <el-button v-else type="success" @click="handleSubmit">提交</el-button>
+      </div>
     </div>
-    <div>
-      
-    </div>
+    <div></div>
   </div>
 </template>
 
@@ -395,13 +394,13 @@ import {
   ref_tags,
   tags_mapper,
 } from "@/assets/data.json";
-import TiptapEditor from "./TiptapEditor"
+import TiptapEditor from "./TiptapEditor";
 import ReportItem from "./ReportItem";
 export default {
   name: "Report_Admission",
   components: {
     ReportItem,
-    TiptapEditor
+    TiptapEditor,
   },
   data() {
     return {
@@ -476,18 +475,18 @@ export default {
     final_univ_list() {
       let result = [];
       for (let i = 0; i < this.univ_list.length; i++) {
-        if(this.univ_list[i][0] && this.admissions[i].result){
+        if (this.univ_list[i][0] && this.admissions[i].result) {
           result.push({
             univ: this.univ_list[i][0],
-            program: this.admissions[i].related_program
-          })   
+            program: this.admissions[i].related_program,
+          });
         }
       }
       // this.univ_list.forEach(list => {
       //   result.push(list[0]);
       // });
       return result;
-    }
+    },
   },
   created() {
     this.is_initial =
@@ -622,9 +621,10 @@ export default {
       this.final_program = this.admissions[index].related_program;
     },
     async handleSubmit() {
-      this.form_data.background.tags = this.form_data.background.research_tag_list.concat(
-        this.form_data.background.ref_tag_list
-      );
+      this.form_data.background.tags =
+        this.form_data.background.research_tag_list.concat(
+          this.form_data.background.ref_tag_list
+        );
       if (!this.form_data.background.major) {
         this.form_data.background.major = null;
       }
@@ -734,10 +734,11 @@ export default {
       });
       edit_funcs.push(
         new Promise((resolve, reject) => {
-          update_user_profile(this.user_id, { 
+          update_user_profile(this.user_id, {
             contact: this.contact,
             final_university: this.final_university,
-            final_program: this.final_program })
+            final_program: this.final_program,
+          })
             .then((response) => {
               console.log(response);
               resolve();
@@ -762,10 +763,10 @@ export default {
 
 <style>
 .step {
-  position:relative;
+  position: relative;
   margin: 0 auto;
   width: 1100px;
-  height:120px;
+  height: 120px;
 }
 
 .el-form-item__label {
@@ -781,7 +782,7 @@ export default {
   width: 650px;
   position: relative;
   /* top:10px; */
-  bottom:60px;
+  bottom: 60px;
   /* display: inline; */
   /* text-align: center; */
   /* margin: 0px 0px; */
