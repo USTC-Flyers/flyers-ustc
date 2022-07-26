@@ -158,6 +158,8 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'https://www.ustcflyer.com', 'https://ustcflyer.com', 'http://localhost:8000']
+
 # for cas
 # !FIXME: 如果不加这个配置login里的allowany就会fail
 AUTHENTICATION_BACKENDS = (

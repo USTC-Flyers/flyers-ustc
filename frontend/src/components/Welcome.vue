@@ -126,7 +126,7 @@
         <router-link to="/login">
           <a href="/login">登录</a>
         </router-link>
-        查以查看飞跃群号
+        以查看飞跃群号
       </i>
     </div>
     <p></p>
