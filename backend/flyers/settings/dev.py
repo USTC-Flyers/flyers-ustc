@@ -36,7 +36,7 @@ DATABASES = {
 
 
 CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
-CAS_HOME_URL = 'http://home.ustc.edu.cn/~ztl223/cas/index.html?id=1?is_test=true'
+CAS_HOME_URL = 'http://home.ustc.edu.cn/~ztl223/cas/debug.html?id=1'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, '../../frontend/dist/static')]
 

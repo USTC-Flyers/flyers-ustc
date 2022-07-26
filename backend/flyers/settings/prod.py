@@ -35,14 +35,21 @@ EMAIL_USE_SSL = True
 ADMINS = [('Feiyue', 'flyers_ustc@163.com')]
 
 # Create empty logging file if not exist
+
 INFO_LOG_PATH = "/app/backend/logs/info.log"
 ERROR_LOG_PATH = "/app/backend/logs/error.log"
 if not os.path.exists(INFO_LOG_PATH):
-    with open(INFO_LOG_PATH, 'w'):
+    try:
+        with open(INFO_LOG_PATH, 'w'):
+            pass
+    except Exception:
         pass
 
 if not os.path.exists(ERROR_LOG_PATH):
-    with open(ERROR_LOG_PATH, 'w'):
+    try:
+        with open(ERROR_LOG_PATH, 'w'):
+            pass
+    except Exception:
         pass
 
 
@@ -81,19 +88,17 @@ LOGGING = {
         },
         'info_file': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.FileHandler',
+            'filters': ['require_debug_false'],
             'filename': "/app/backend/logs/info.log",
-            'maxBytes': 300 * 1024 * 1024,
-            'backupCount': 10,
             'formatter': 'verbose',
             'encoding': 'utf-8'
         },
         'error_file': {
             'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.FileHandler',
+            'filters': ['require_debug_false'],
             'filename': "/app/backend/logs/error.log",
-            'maxBytes': 300 * 1024 * 1024,
-            'backupCount': 10,
             'formatter': 'verbose',
             'encoding': 'utf-8'
         },
