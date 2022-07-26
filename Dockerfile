@@ -13,7 +13,7 @@ COPY ./frontend/ /app/frontend/
 RUN yarn build
 
 # backend builder
-FROM python:3.8-buster
+FROM python:3.9-alpine3.15
 ENV DJANGO_SETTINGS_MODULE=flyers.settings.prod
 
 RUN mkdir -p /app/backend
