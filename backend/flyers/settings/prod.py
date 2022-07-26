@@ -88,7 +88,7 @@ LOGGING = {
         },
         'info_file': {
             'level': 'INFO',
-            'class': 'logging.handlers.FileHandler',
+            'class': 'logging.FileHandler',
             'filters': ['require_debug_false'],
             'filename': "/app/backend/logs/info.log",
             'formatter': 'verbose',
@@ -96,7 +96,7 @@ LOGGING = {
         },
         'error_file': {
             'level': 'ERROR',
-            'class': 'logging.handlers.FileHandler',
+            'class': 'logging.FileHandler',
             'filters': ['require_debug_false'],
             'filename': "/app/backend/logs/error.log",
             'formatter': 'verbose',
