@@ -108,18 +108,27 @@
           如果你遇到了网站的 bug 或者任何建议，请与杨舒静（QQ:
           1143965080）、袁旷（QQ：947749682）、刘正韬（QQ：2667286947）、强家璇（QQ：735896780）直接联系～
         </p>
-        <p>或发邮件至
-          flyers_ustc@163.com。我们将尽快与你联系并解决。
-        </p>
+        <p>或发邮件至 flyers_ustc@163.com。我们将尽快与你联系并解决。</p>
       </li>
     </ul>
     <p></p>
     <p>以下是飞跃群群号，持续更新中：</p>
-    <ul>
-      <li><p>2021 届飞跃总群：180446308</p></li>
-      <li><p>2022 届飞跃总群：1158255412</p></li>
-      <li><p>2023 届飞跃总群：677034076</p></li>
-    </ul>
+    <div v-if="username">
+      <ul>
+        <li><p>2021 届飞跃总群：180446308</p></li>
+        <li><p>2022 届飞跃总群：1158255412</p></li>
+        <li><p>2023 届飞跃总群：677034076</p></li>
+      </ul>
+    </div>
+    <div v-else class="welcome-group-alert">
+      <i>
+        请
+        <router-link to="/login">
+          <a href="/login">登录</a>
+        </router-link>
+        查以查看飞跃群号
+      </i>
+    </div>
     <p></p>
     <h2>特别感谢</h2>
     <p>
@@ -150,6 +159,11 @@ export default {
     this.hashTo();
     next();
   },
+  computed: {
+    username() {
+      return this.$store.getters.name;
+    },
+  },
   methods: {
     hashTo() {
       if (location.hash) {
@@ -167,5 +181,10 @@ export default {
 .app {
   margin: 0 auto;
   width: 900px;
+}
+
+.welcome-group-alert {
+  color: red;
+  font-weight: bold;
 }
 </style>
