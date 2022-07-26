@@ -59,7 +59,9 @@ export default {
           console.log("login error");
         });
     } else if (!this.$store.state.token) {
-      const serviceUrl = `http://home.ustc.edu.cn/~ztl223/cas/index.html?redirect=${this.redirect}`;
+      const serviceUrl = `http://home.ustc.edu.cn/~ztl223/cas/index.html?redirect=${
+        this.redirect
+      }${process.env.NODE_ENV === "production" ? "" : "&is_test=true"}`;
       const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
       window.location.href = casUrl;
     }

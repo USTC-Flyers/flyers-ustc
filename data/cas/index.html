@@ -38,7 +38,10 @@ Redirect..
 
         if (ticket) {
             // redirect to api
-            const is_test = localStorage.getItem('is_test')
+            let is_test = getURLParameter('is_test');
+            if (!is_test) {
+                is_test = localStorage.getItem('is_test');
+            }
 
             if (is_test && is_test.toLowerCase() === 'true') {
                 JUMP_URL = TEST_API_URL.URLFormat(id, ticket, SERVICE_URL);
