@@ -5,6 +5,7 @@ from .university import University
 from .background import Background
 from django.db.utils import IntegrityError
 
+
 class Admissions(models.Model):
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
@@ -65,7 +66,6 @@ class Admissions(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="admissions_upvoted_by",
-        null=True,
         blank=True,
         verbose_name='点赞用户名单'
     )

@@ -56,7 +56,6 @@ class InternBackground(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="internbackground_upvoted_by",
-        null=True,
         blank=True
     )
     upvoted_count = models.PositiveIntegerField(

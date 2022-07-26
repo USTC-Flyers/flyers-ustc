@@ -24,68 +24,86 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.163.com'  
+EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 465
-SERVER_EMAIL = 'flyers_ustc@163.com'  
-EMAIL_HOST_USER = 'flyers_ustc@163.com'  
+SERVER_EMAIL = 'flyers_ustc@163.com'
+EMAIL_HOST_USER = 'flyers_ustc@163.com'
 # EMAIL_HOST_PASSWORD = '/-HMVcHC5r5Xt8j'  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'  
+EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'
 EMAIL_USE_SSL = True
 ADMINS = [('Feiyue', 'flyers_ustc@163.com')]
 
 # Logging
 # https://www.agiliq.com/blog/2017/12/configure-django-log-exceptions-production/
 LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'filters': {
-		'require_debug_false': {
-			'()': 'django.utils.log.RequireDebugFalse',
-		},
-		'require_debug_true': {
-			'()': 'django.utils.log.RequireDebugTrue',
-		},
-	},
-	'formatters': {
-		'django.server': {
-			'()': 'django.utils.log.ServerFormatter',
-			'format': '[%(server_time)s] %(message)s',
-		}
-	},
-	'handlers': {
-		'console': {
-			'level': 'INFO',
-			'filters': ['require_debug_true'],
-			'class': 'logging.StreamHandler',
-		},
-		'console_debug_false': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'logging.StreamHandler',
-		},
-		'django.server': {
-			'level': 'INFO',
-			'class': 'logging.StreamHandler',
-			'formatter': 'django.server',
-		},
-		'mail_admins': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'django.utils.log.AdminEmailHandler'
-		}
-	},
-	'loggers': {
-		'django': {
-			'handlers': ['console', 'console_debug_false', 'mail_admins'],
-			'level': 'INFO',
-		},
-		'django.server': {
-			'handlers': ['django.server'],
-			'level': 'INFO',
-			'propagate': False,
-		}
-	}
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(server_time)s] %(message)s',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'console_debug_false': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'logging.StreamHandler',
+        },
+        'info_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': "/app/backend/logs/info.log",
+            'maxBytes': 300 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': "/app/backend/logs/error.log",
+            'maxBytes': 300 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'console_debug_false', 'mail_admins'],
+            'level': 'INFO',
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
+        }
+    }
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -114,7 +132,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'flyers.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -173,12 +190,12 @@ USE_TZ = True
 
 WEBPATH_PREFIX = 'https://www.ustcflyer.com/login'
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
 STATIC_ROOT = '/app/backend/static'
+
+MEDIA_ROOT = '/app/backend/media/mdeditor'
 
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
 CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'

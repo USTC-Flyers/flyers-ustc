@@ -40,6 +40,8 @@ CAS_HOME_URL = 'http://home.ustc.edu.cn/~ztl223/cas/index.html?id=1?is_test=true
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, '../../frontend/dist/static')]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mdeditor')
+
 TEMPLATE_DIR = os.path.join(BASE_DIR, '../../frontend/dist')
 
 TEMPLATES = [

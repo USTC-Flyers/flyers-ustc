@@ -93,7 +93,6 @@ class Background(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="background_upvoted_by",
-        null=True,
         verbose_name='点赞人',
         blank=True
     )

@@ -1,11 +1,10 @@
-from djchoices import choices
-from .choice import Choices
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .university import University
 from .intern_background import InternBackground
 from django.db.utils import IntegrityError
+
 
 class Internship(models.Model):
     INTERNCHOICES = [
@@ -87,7 +86,6 @@ class Internship(models.Model):
     upvoted = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="internship_upvoted_by",
-        null=True,
         blank=True
     )
     upvoted_count = models.PositiveIntegerField(
@@ -101,6 +99,7 @@ class Internship(models.Model):
             self.save()        
         else:
             raise IntegrityError
+
     def downvote(self, user):
         if self in user.internship_upvoted_by.all():
             user.internship_upvoted_by.remove(self)

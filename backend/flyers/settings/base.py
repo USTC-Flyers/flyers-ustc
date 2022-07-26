@@ -38,12 +38,14 @@ INSTALLED_APPS = [
     # 'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
+    'mdeditor',
     # 'hitcount',
     'multiselectfield',
     # Custom apps
+    'docs',
     'account',
     'admissions',
-    'forum'
+    'forum',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +153,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # for cas
 # !FIXME: 如果不加这个配置login里的allowany就会fail
