@@ -34,6 +34,18 @@ EMAIL_HOST_PASSWORD = 'FLMUXXOJLAVXQIRL'
 EMAIL_USE_SSL = True
 ADMINS = [('Feiyue', 'flyers_ustc@163.com')]
 
+# Create empty logging file if not exist
+INFO_LOG_PATH = "/app/backend/logs/info.log"
+ERROR_LOG_PATH = "/app/backend/logs/error.log"
+if not os.path.exists(INFO_LOG_PATH):
+    with open(INFO_LOG_PATH, 'w'):
+        pass
+
+if not os.path.exists(ERROR_LOG_PATH):
+    with open(ERROR_LOG_PATH, 'w'):
+        pass
+
+
 # Logging
 # https://www.agiliq.com/blog/2017/12/configure-django-log-exceptions-production/
 LOGGING = {

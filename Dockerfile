@@ -26,7 +26,7 @@ RUN pip3 install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ -
 COPY ./backend/ /app/backend/
 
 # copy static files
-RUN mkdir -p /app/backend/static && python manage.py collectstatic --noinput
+RUN  mkdir -p /app/backend/logs /app/backend/static && touch /app/backend/logs/info.log /app/backend/logs/error.log && python manage.py collectstatic --noinput
 COPY --from=node_builder /app/frontend/dist/* /app/backend/static/
 # RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
