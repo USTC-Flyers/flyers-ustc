@@ -27,6 +27,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from posts.views import PostListView, PostDetailView  ## Testing
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -60,6 +61,10 @@ urlpatterns = [
     path('api/login/', CASLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer)),
     path('api/logout/', CASLogoutView.as_view()),
     path('api/refresh/', TokenRefreshView.as_view()),
+
+    path('', PostListView.as_view(), name='posts'),  ## Testing
+    path('<slug:slug>/', PostDetailView.as_view(), name='detail'),  ## Testing
+    path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount'))  ## Testing
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

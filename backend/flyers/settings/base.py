@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'mdeditor',
-    # 'hitcount',
+    'hitcount',  ## Testing
     'multiselectfield',
     # Custom apps
     'docs',
