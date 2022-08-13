@@ -17,7 +17,7 @@ class Docs(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='修改时间')
     doc_type = models.CharField(max_length=20, choices=DOC_CHOICES, default='doc', verbose_name='文档类型')
     content = MDTextField(verbose_name='内容')
-    other_info = models.TextField(max_length=500, verbose_name='其他信息')
+    other_info = models.TextField(max_length=500, verbose_name='其他信息', blank=True)
 
     def __str__(self):
         return self.title
