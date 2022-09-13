@@ -27,10 +27,12 @@ class User(AbstractUser):
         validate = (settings.CAS_VALIDATE_URL + "?" +
                     urlencode({"service": service, "ticket": ticket}))
         with urlopen(validate) as req:
-            tree = ElementTree.fromstring(req.read())[0]
+            req_str = req.read()
+            tree = ElementTree.fromstring(req_str)[0]
         cas = "{http://www.yale.edu/tp/cas}"
         if tree.tag == cas + "authenticationFailure":
             raise User.DoesNotExist
+        print(req_str)
         gid = tree.find("attributes").find(cas + "gid").text.strip()
         uid = tree.find(cas + "user").text.strip()
         return gid, uid
