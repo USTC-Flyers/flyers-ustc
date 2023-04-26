@@ -81,17 +81,29 @@ class AdmissionsViewSet(
         kwargs = request.data
         admission_filter = ['related_university', 'result', 'enrolledSemester']
         query = Q()
-        if 'tags' in kwargs:
-            tags = kwargs['tags']
-            if len(tags) >= 1:
-                query &= Q(related_background__tags__contains=tags)
+        # if 'tags' in kwargs:
+        #     tags = kwargs['tags']
+        #     if len(tags) >= 1:
+        #         query &= Q(related_background__tags__contains=tags)
+        # if 'rank' in kwargs:
+        #     rank_dict = dict(zip(rank_tag, range(len(rank_tag))))
+        #     rank_num = rank_dict[kwargs['rank']]
+        #     rank_list = []
+        #     for i in range(rank_num + 1):
+        #         rank_list.append(rank_tag[i])
+        #     query &= Q(related_background__rank__in=rank_list)
         if 'rank' in kwargs:
             rank_dict = dict(zip(rank_tag, range(len(rank_tag))))
             rank_num = rank_dict[kwargs['rank']]
-            rank_list = []
-            for i in range(rank_num + 1):
-                rank_list.append(rank_tag[i])
+            
+            # Calculate the range of rank tags to include, excluding the previous rank tags
+            start_rank = rank_num - 1 if rank_num > 0 else 0
+            end_rank = rank_num + 1
+            
+            rank_list = rank_tag[start_rank:end_rank]
+            
             query &= Q(related_background__rank__in=rank_list)
+
         if 'apply_for' in kwargs:
             query &= Q(related_background__apply_for=kwargs['apply_for'])
         if 'major' in kwargs:
