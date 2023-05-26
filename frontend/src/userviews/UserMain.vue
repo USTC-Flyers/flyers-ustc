@@ -387,7 +387,7 @@ export default {
     '$route.params.id':function(v){
        this.user_id = v;
     this.getUserProfile();
-    this.getBackground();
+    this.getBackground1();
     this.getTable();
     }
   },
