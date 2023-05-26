@@ -383,6 +383,14 @@ export default {
     this.getBackground();
     this.getTable();
   },
+  watch:{
+    '$route.params.id':function(v){
+       this.user_id = v;
+    this.getUserProfile();
+    this.getBackground();
+    this.getTable();
+    }
+  },
   methods: {
     getHeaderClass: function () {
       return "table-header";
