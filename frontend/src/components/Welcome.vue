@@ -123,6 +123,10 @@
         <li><p>2022 届飞跃总群：1158255412</p></li>
         <li><p>2023 届飞跃总群：677034076</p></li>
         <li><p>2024 届飞跃总群：526966348</p></li>
+        <li class="new-group">
+        <p>2025 届飞跃总群：590043107 </p>
+        <span class="new-tag">New</span>
+    </li>
       </ul>
     </div>
     <div v-else class="welcome-group-alert">
@@ -192,4 +196,19 @@ export default {
   color: red;
   font-weight: bold;
 }
+
+.new-group {
+    position: relative;
+  }
+
+  .new-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    font-size: 0.8em;
+    padding: 0.2em 0.4em;
+    border-radius: 0 0 0 0.3em;
+  }
 </style>
