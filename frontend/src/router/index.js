@@ -54,6 +54,16 @@ const routes = [
             component: () => import("@/components/Report_Admission.vue"),
           },
           {
+            path: "/research",
+            component: () => import("@/components/Research.vue"),
+            name: "research",
+          },
+          {
+            path: "/report_research/:is_initial",
+            name: "research",
+            component: () => import("@/components/Report_Research.vue"),
+          },
+          {
             path: "/usermain/:id",
             component: () => import("@/userviews/UserMain.vue"),
           },

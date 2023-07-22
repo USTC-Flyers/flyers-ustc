@@ -2,10 +2,10 @@
   <div class="app-container">
     <div>
       <router-link
-        :to="`/report_admission/${is_initial ? 'initial' : 'not_initial'}`"
+        :to="`/report_admission/${is_background_initial ? 'initial' : 'not_initial'}`"
       >
         <el-button
-          v-if="is_initial"
+          v-if="is_admission_initial"
           type="success"
           size="default"
           style="margin-bottom: 20px"
@@ -422,6 +422,7 @@ import {
   admissions_downvote,
   admissions_query_page,
   admissions_get_all_page,
+  admissions_get_my,
 } from "@/api/admission";
 import {
   background_get_my,
@@ -517,7 +518,8 @@ export default {
       univ_loading: false,
       current_univ_list: [],
       current_program_list: [],
-      is_initial: true,
+      is_background_initial: true,
+      is_admission_initial: true,
       pageNum: 0,
       currentPage: 1,
       isNotQuery: true,
@@ -525,13 +527,20 @@ export default {
   },
   created() {
     this.tag_list = Object.assign({}, research_tags, ref_tags);
-    background_get_my()
-      .then(() => {
-        this.is_initial = false;
-      })
-      .catch(() => {
-        this.is_initial = true;
-      });
+      admissions_get_my()
+        .then((response) => {
+          this.is_admission_initial = response.user_detail.length == 0;
+        })
+        .catch(() => {
+          this.is_admission_initial = true;
+        });
+      background_get_my()
+        .then(() =>{
+            this.is_background_initial = false;
+        })
+        .catch(() => {
+            this.is_background_initial = true;
+        });
     this.isNotQuery = true;
     this.handlePagination(1);
   },

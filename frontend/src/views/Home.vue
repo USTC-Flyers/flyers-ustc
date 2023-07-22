@@ -15,6 +15,9 @@
         <el-menu-item index="admission" :route="{ path: '/admission' }" router
           >录取汇报</el-menu-item
         >
+        <el-menu-item index="research" :route="{ path: '/research' }" router
+          >暑研汇报</el-menu-item
+        >
         <el-menu-item index="wiki" :route="{ path: '/wiki' }" router
           >申请 Wiki</el-menu-item
         >
