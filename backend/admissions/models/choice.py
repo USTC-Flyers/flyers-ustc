@@ -98,7 +98,8 @@ research_tag = [
     'oversea_research',
     'paper',
     'first_author',
-    'internship'
+    'internship',
+    'graudate',
 ]
 
 refer_tag = [

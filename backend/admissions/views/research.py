@@ -19,16 +19,16 @@ from .. import permissions
 
 related_university = openapi.Parameter('related_university', openapi.IN_QUERY, description="University ID", type=openapi.TYPE_INTEGER)
 related_program = openapi.Parameter('related_program', openapi.IN_QUERY, description="Program ID", type=openapi.TYPE_INTEGER)
-result = openapi.Parameter('result', openapi.IN_QUERY, description="admissions result", type=openapi.TYPE_STRING)
-enrolledSemester = openapi.Parameter('enrolledSemester', openapi.IN_QUERY, description="enrolledSemester", type=openapi.TYPE_STRING)
+result = openapi.Parameter('result', openapi.IN_QUERY, description="research result", type=openapi.TYPE_STRING)
+semester = openapi.Parameter('semester', openapi.IN_QUERY, description="semester", type=openapi.TYPE_STRING)
 rank = openapi.Parameter('rank', openapi.IN_QUERY, description="rank包括其之前的", type=openapi.TYPE_STRING)
 apply_for = openapi.Parameter('apply_for', openapi.IN_QUERY, description="apply_for", type=openapi.TYPE_STRING)
 major = openapi.Parameter('major', openapi.IN_QUERY, description="major", type=openapi.TYPE_STRING)
 tags = openapi.Parameter('tags', openapi.IN_QUERY, description="tags", type=openapi.TYPE_STRING)
-user_response = openapi.Response('data', serializers.AdmissionNestedSerializers(many=True))
+user_response = openapi.Response('data', serializers.ResearchNestedSerializers(many=True))
 param = openapi.Parameter('action', openapi.IN_QUERY, description="是('upvote', 'downvote')中的一个", type=openapi.TYPE_STRING)
 
-class AdmissionsViewSet(
+class ResearchViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
@@ -36,7 +36,7 @@ class AdmissionsViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    queryset = models.Admissions.objects.all()
+    queryset = models.Research.objects.all()
     permission_classes = [permissions.IsOwnerOrReadOnly, IsAuthenticated]
     ordering = ('-created_time')
     pagination_class = PageNumberPagination
@@ -65,7 +65,7 @@ class AdmissionsViewSet(
         pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
         result = self.queryset.filter(related_user__id=pk)
         serializer_class = self.get_serializer_class()
-        many = not isinstance(result, models.Admissions)
+        many = not isinstance(result, models.Research)
         result = serializer_class(result, many=many, context={'request': request}).data
         data = {
             'user_detail': result
@@ -75,11 +75,11 @@ class AdmissionsViewSet(
             status=status.HTTP_200_OK
         )
     
-    @swagger_auto_schema(manual_parameters=[related_program, related_university, result, apply_for, major, tags, rank, enrolledSemester], responses={200: user_response})
+    @swagger_auto_schema(manual_parameters=[related_program, related_university, result, apply_for, major, tags, rank, semester], responses={200: user_response})
     @action(methods=['post'], detail=False, url_path='condition_query', url_name='condition_query')
     def condition_query(self, request, *args, **kwargs):
         kwargs = request.data
-        admission_filter = ['related_university', 'result', 'enrolledSemester']
+        research_filter = ['related_university', 'result', 'semester']
         query = Q()
         if 'tags' in kwargs:
             tags = kwargs['tags']
@@ -108,12 +108,12 @@ class AdmissionsViewSet(
             query &= Q(related_background__apply_for=kwargs['apply_for'])
         if 'major' in kwargs:
             query &= Q(related_background__major=kwargs['major'])
-        for tag in admission_filter:
+        for tag in research_filter:
             if tag in kwargs:
                 query &= Q(**{tag: kwargs[tag]})
         if 'related_program' in kwargs:
             program = kwargs['related_program']
-            result = models.Admissions.objects.annotate(similarity=
+            result = models.Research.objects.annotate(similarity=
                     TrigramSimilarity('related_program__unaccent', program),
                 ).filter(similarity__gt=0.1)
         else:
@@ -121,10 +121,10 @@ class AdmissionsViewSet(
         result = result.filter(query).select_related('related_university', 'related_background').order_by('-created_time')
         page = self.paginate_queryset(result)
         if page is not None:
-            data = serializers.AdmissionNestedSerializers(page, many=True, context={'request': request}).data
+            data = serializers.ResearchNestedSerializers(page, many=True, context={'request': request}).data
             return self.get_paginated_response(data)
         else:
-            data = serializers.AdmissionNestedSerializers(result, many=True, context={'request': request}).data
+            data = serializers.ResearchNestedSerializers(result, many=True, context={'request': request}).data
         return Response(
             status=status.HTTP_200_OK,
             data={
@@ -172,132 +172,8 @@ class AdmissionsViewSet(
     def get_serializer_class(self):
         # for listing
         if self.request.method in drf_permissions.SAFE_METHODS:
-            return serializers.AdmissionNestedSerializers
-        return serializers.AdmissionsSerializer
-
-    def get_serializer(self, *args, **kwargs):
-        if isinstance(kwargs.get('data', {}), list):
-                kwargs['many'] = True
-        return super().get_serializer(*args, **kwargs)
-    
-class InternshipViewSet(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = models.Internship.objects.all()
-    permission_classes = [permissions.IsOwnerOrReadOnly]
-    ordering = ('-created_time')
-    pagination_class = PageNumberPagination
-    
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset()).order_by('-created_time')
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-    
-    def perform_create(self, serializer):
-        try:
-            serializer.save(related_user=self.request.user, related_background=self.request.user.intern_background)
-        except models.InternBackground.DoesNotExist:
-            raise NotAcceptable(detail="请先创建录取背景", code=status.HTTP_400_BAD_REQUEST)
-        except IntegrityError:
-            raise NotAcceptable(detail="不能重复填写录取信息哦", code=status.HTTP_400_BAD_REQUEST)
-        
-    @action(methods=['get'], detail=False, url_path='user_detail', url_name='user_detail')
-    def user_detail(self, request, *args, **kwargs):
-        pk = int(self.request.query_params['pk']) if 'pk' in self.request.query_params else request.user.id
-        result = self.queryset.filter(related_user__id=pk)
-        serializer_class = self.get_serializer_class()
-        many = not isinstance(result, models.Internship)
-        result = serializer_class(result, many=many, context={'request': request}).data
-        data = {
-            'user_detail': result
-        }
-        return Response(
-            data=data,
-            status=status.HTTP_200_OK
-        )
-        
-    @action(methods=['post'], detail=False, url_path='condition_query', url_name='condition_query')
-    def condition_query(self, request, *args, **kwargs):
-        kwargs = request.data
-        admission_filter = ['related_university', 'is_done']
-        query = Q()
-        result = self.queryset
-        if 'tags' in kwargs:
-            tags = kwargs['tags']
-            query &= Q(related_background__tags__contains=tags)
-        # if 'rank' in kwargs:
-        #     rank_dict = dict(zip(rank_tag, range(len(rank_tag))))
-        #     rank_num = rank_dict[kwargs['rank']]
-        #     rank_list = []
-        #     for i in range(rank_num + 1):
-        #         rank_list.append(rank_tag[i])
-        #     query &= Q(related_background__rank__in=rank_list)
-        if 'rank' in kwargs:
-            rank_dict = dict(zip(rank_tag, range(len(rank_tag))))
-            rank_num = rank_dict[kwargs['rank']]
-
-            # Calculate the range of rank tags to include, excluding the previous rank tags
-            start_rank = rank_num - 1 if rank_num > 0 else 0
-            end_rank = rank_num + 1
-
-            rank_list = rank_tag[start_rank:end_rank]
-
-            query &= Q(related_background__rank__in=rank_list)
-        if 'apply_exp' in kwargs:
-            apply_exp = kwargs['apply_exp']
-            if not isinstance(apply_exp, list):
-                apply_exp = [apply_exp]
-            query &= Q(apply_exp__in=apply_exp)
-        if 'result' in kwargs:
-            res = kwargs['result']
-            if not isinstance(res, list):
-                res = [res]
-            query &= Q(result__in=res)
-        if 'major' in kwargs:
-            query &= Q(related_background__major=kwargs['major'])
-        for tag in admission_filter:
-            if tag in kwargs:
-                query &= Q(**{tag: kwargs[tag]})
-        if 'professor' in kwargs:
-            professor = kwargs['professor']
-            result = models.Internship.objects.annotate(similarity=
-                    TrigramSimilarity('professor__unaccent', professor),
-                ).filter(similarity__gt=0.1)
-        if 'specialty' in kwargs:
-            specialty = kwargs['specialty']
-            result = result.annotate(
-                similarity=TrigramSimilarity('specialty', specialty)
-            ).filter(similarity__gt=0.1)
-        result = result.filter(query).select_related('related_university', 'related_background').order_by('-created_time')
-        page = self.paginate_queryset(result)
-        if page is not None:
-            data = serializers.InternshipNestedSerializers(page, many=True, context={'request': request}).data
-            return self.get_paginated_response(data)
-        else:
-            data = serializers.InternshipNestedSerializers(result, many=True, context={'request': request}).data
-        return Response(
-            status=status.HTTP_200_OK,
-            data={
-                'condition_query': data
-            }
-        )
-        
-    def get_serializer_class(self):
-        # for listing
-        if self.request.method in drf_permissions.SAFE_METHODS:
-            return serializers.InternshipNestedSerializers
-        return serializers.InternshipSerializer
+            return serializers.ResearchNestedSerializers
+        return serializers.ResearchSerializer
 
     def get_serializer(self, *args, **kwargs):
         if isinstance(kwargs.get('data', {}), list):

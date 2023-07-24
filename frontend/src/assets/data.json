@@ -71,6 +71,22 @@
         "2011 Fall",
         "2011 Spring"
     ],
+    "summer_list": [
+        "2024",
+        "2023",
+        "2022",
+        "2021",
+        "2020",
+        "2019",
+        "2018",
+        "2017",
+        "2016",
+        "2015",
+        "2014",
+        "2013",
+        "2012",
+        "2011"
+    ],
     "rank_list": {
         "top1%": "Top 1%",
         "top5%": "Top 5%",
@@ -98,7 +114,8 @@
         "oversea_research": "海外科研",
         "first_author": "顶会/顶刊一作",
         "paper": "有Paper",
-        "internship": "工业界实习"
+        "internship": "工业界实习",
+        "graudate": "研究生"
     },
     "ref_tags": {
         "oversea_refer": "海外推",
