@@ -2,7 +2,9 @@
   <div class="app-container">
     <div>
       <router-link
-        :to="`/report_admission/${is_background_initial ? 'initial' : 'not_initial'}`"
+        :to="`/report_admission/${
+          is_background_initial ? 'initial' : 'not_initial'
+        }`"
       >
         <el-button
           v-if="is_admission_initial"
@@ -527,20 +529,20 @@ export default {
   },
   created() {
     this.tag_list = Object.assign({}, research_tags, ref_tags);
-      admissions_get_my()
-        .then((response) => {
-          this.is_admission_initial = response.user_detail.length == 0;
-        })
-        .catch(() => {
-          this.is_admission_initial = true;
-        });
-      background_get_my()
-        .then(() =>{
-            this.is_background_initial = false;
-        })
-        .catch(() => {
-            this.is_background_initial = true;
-        });
+    admissions_get_my()
+      .then((response) => {
+        this.is_admission_initial = response.user_detail.length == 0;
+      })
+      .catch(() => {
+        this.is_admission_initial = true;
+      });
+    background_get_my()
+      .then(() => {
+        this.is_background_initial = false;
+      })
+      .catch(() => {
+        this.is_background_initial = true;
+      });
     this.isNotQuery = true;
     this.handlePagination(1);
   },
