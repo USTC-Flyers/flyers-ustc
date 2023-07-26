@@ -8,5 +8,5 @@ cd $1
 git pull origin master
 docker-compose build
 docker-compose down
-docker rmi flyers-ustc_server:latest
+docker network rm flyers-ustc_database-network
 docker-compose up -d  --remove-orphans
