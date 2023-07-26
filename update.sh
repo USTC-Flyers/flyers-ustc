@@ -8,5 +8,5 @@ cd $1
 git pull origin master
 docker-compose build
 docker-compose down
-sleep 10
+docker network prune
 docker-compose up -d  --remove-orphans
