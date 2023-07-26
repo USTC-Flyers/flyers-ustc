@@ -6,7 +6,7 @@ then
 fi
 cd $1
 git pull origin master
-docker-compose down  --remove-orphans
 docker network prune
+docker-compose down  --remove-orphans
 # docker-compose build
 docker-compose up -d  --remove-orphans
