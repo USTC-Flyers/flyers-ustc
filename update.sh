@@ -8,5 +8,5 @@ cd $1
 git pull origin master
 docker network rm $(docker network ls -q)
 docker-compose down
-# docker-compose build
+docker-compose build
 docker-compose up -d
