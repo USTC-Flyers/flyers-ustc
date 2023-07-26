@@ -1,11 +1,14 @@
 <template>
   <div class="app">
   <div style="background-color: #f0f0f0; padding: 10px;">
-  <h2 style="background-color: #f0f0f0; padding: 5px;">公告栏</h2>
-  <p style="background-color: #f0f0f0; padding: 5px;">
-    校友需要发布广告？需要在校同学协助进校？没问题！飞跃编辑部建立了校友对接群：814392960。
-  </p>
+    <h2 style="background-color: #f0f0f0; padding: 5px;">公告栏</h2>
+    <p style="background-color: #f0f0f0; padding: 5px;">
+      校友需要发布广告？需要在校同学协助进校？没问题！飞跃编辑部建立了校友对接群：814392960
+    </p>
+    <br>
+    <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
   </div>
+</div>
     <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
@@ -110,7 +113,7 @@
     <ul>
       <li>
         <p>
-          如果你遇到了网站的 bug 或者任何建议，请与现任管理员 刘正韬（QQ：2667286947）、强家璇（QQ：735896780）直接联系～
+          如果你遇到了网站的 bug 或者任何建议，请与现任管理员：蒻家璇（QQ：735896780）、韬韬（QQ：2667286947）直接联系～
         </p>
         <p>或发邮件至 flyers_ustc@163.com，我们将尽快解决。</p>
       </li>
