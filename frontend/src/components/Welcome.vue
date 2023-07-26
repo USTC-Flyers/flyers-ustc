@@ -8,7 +8,6 @@
     <br>
     <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
   </div>
-</div>
     <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
