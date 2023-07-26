@@ -619,7 +619,7 @@ export default {
           univ: item.related_university.short_name,
           univ_fullname: item.related_university.school_name,
           program: item.related_program,
-          semester: item.enrolledSemester,
+          semester: item.semester,
           result: item.result,
           program_experience: item.comments,
           program_summary: item.summary,
