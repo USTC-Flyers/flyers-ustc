@@ -36,6 +36,37 @@
 
     <el-row>
       <el-col :span="12">
+        <el-form-item label="当前GPA" size="mini" prop="gpa">
+            <el-col :span="9">
+              <el-input-number
+                v-model="data.gpa"
+                :precision="2"
+                :step="0.01"
+                :min="1.0"
+                :max="4.3"
+              ></el-input-number>
+            </el-col>
+        </el-form-item>
+      </el-col> 
+      <el-col :span="12">
+        <el-form-item label="当前TOFEL" size="mini" prop="TOEFL">
+            <el-col :span="9">
+              <el-input v-model="data.TOEFL"></el-input>
+            </el-col>
+        </el-form-item>
+      </el-col>
+
+    </el-row>
+
+    <el-row>
+    <el-col :span="12">
+        <el-form-item label="当前GRE" size="mini" prop="GRE">
+            <el-col :span="9">
+              <el-input v-model="data.GRE"></el-input>
+            </el-col>
+        </el-form-item>
+      </el-col>  
+      <el-col :span="12">
         <el-form-item label="暑研学校" prop="related_university">
           <el-select
             v-model="data.related_university"
@@ -66,7 +97,10 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+    </el-row>
+
+    <el-row>
+        <el-col :span="12">
         <el-form-item label="录取项目" prop="related_program">
           <el-autocomplete
             v-model="data.related_program"
@@ -130,6 +164,9 @@ export default {
           related_program: null,
           comments: "",
           summary: "",
+          gpa: null,
+          TOEFL: null,
+          GRE: null,
         };
       },
       required: true,
@@ -207,6 +244,27 @@ export default {
             message: "请输入录取项目",
             trigger: ["blur", "change"],
           },
+        ],
+        gpa: [
+            {
+                required: false,
+                message: "请输入GPA",
+                trigger: ["blur", "change"],
+            }
+        ],
+        TOEFL: [
+            {
+                required: false,
+                message: "请输入TOEFL",
+                trigger: ["blur", "change"],
+            }
+        ],
+        GRE: [
+            {
+                required: false,
+                message: "请输入GRE",
+                trigger: ["blur", "change"],
+            }
         ],
       },
       //   current_univ_list: [],

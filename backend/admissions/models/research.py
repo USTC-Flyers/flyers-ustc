@@ -35,6 +35,23 @@ class Research(models.Model):
         blank=False,
         on_delete=models.CASCADE
     )
+    gpa = models.FloatField(
+        null=True,
+        verbose_name='当前绩点',
+        blank=True
+    )
+    TOEFL = models.CharField(
+        max_length=255,
+        verbose_name='当前TOEFL',
+        null=True, 
+        blank=True
+    )
+    GRE = models.CharField(
+        max_length=256,
+        verbose_name='当前GRE',
+        null=True, 
+        blank=True
+    )
     result = models.BooleanField(
         null=False,
         blank=False,

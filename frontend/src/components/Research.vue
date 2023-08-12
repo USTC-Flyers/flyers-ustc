@@ -370,6 +370,24 @@
                 :visible.sync="summary_visible[$index]"
                 custom-class="dialog"
               >
+              <div class="dialog-block">
+                  <i class="el-icon-arrow-right dialog-title">
+                    当时GPA</i
+                  >
+                  <div v-html="row.gpa" />
+                </div>
+                <div class="dialog-block">
+                  <i class="el-icon-arrow-right dialog-title">
+                    当时TOEFL</i
+                  >
+                  <div v-html="row.TOEFL" />
+                </div>
+                <div class="dialog-block">
+                  <i class="el-icon-arrow-right dialog-title">
+                    当时GRE</i
+                  >
+                  <div v-html="row.GRE" />
+                </div>
                 <div class="dialog-block">
                   <i class="el-icon-arrow-right dialog-title">
                     申请方向的思考</i
@@ -627,6 +645,9 @@ export default {
           upvoted_count: item.upvoted_count,
           major: item.related_background.major,
           background: item.related_background,
+          gpa: item.gpa,
+          TOEFL: item.TOEFL,
+          GRE: item.GRE,
         });
         this.experience_visible.push(false);
         this.background_visible.push(false);
