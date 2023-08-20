@@ -147,10 +147,13 @@
     </div>
     <p></p>
     <h2>特别感谢</h2>
-    <div class="appreciation">
-    <h2 style="text-align: center; color: #333; font-weight: bold;">特别感谢</h2>
+  <div class="appreciation">
+    <h2 style="text-align: center; color: #333; font-weight: bold;">特别鸣谢</h2>
     <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
         Balabala、Haowen、Jiaxuan、Junwei、Kuang、Shujing、Zhengtao
+    </p >
+    <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
+        Cheng、Guangcanlan、Shijia、Sijia
     </p >
     <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
         国合部、校友总会、新创校友基金会、卢征天院长、Zach Smith教授
