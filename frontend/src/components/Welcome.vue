@@ -146,7 +146,6 @@
       </i>
     </div>
     <p></p>
-    <h2>特别感谢</h2>
   <div class="appreciation">
     <h2 style="text-align: center; color: #333; font-weight: bold;">特别鸣谢</h2>
     <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
