@@ -25842,6 +25842,20 @@
   },
   {
     "area": "日本",
+    "school_name": "University of Tokyo",
+    "school_name_cn": "东京大学",
+    "short_name": "UTokyo",
+    "programs": []
+  },
+  {
+    "area": "大中华地区",
+    "school_name": "其它",
+    "school_name_cn": "其它",
+    "short_name": "Others",
+    "programs": []
+  },
+  {
+    "area": "日本",
     "school_name": "Nagoya University",
     "school_name_cn": "名古屋大学",
     "short_name": "EN.JP",
