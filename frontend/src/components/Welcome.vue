@@ -8,6 +8,7 @@
     <br>
     <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
     <p style="background-color: #f0f0f0; padding: 5px;">10.1 Wiki更新：化院2023飞跃手册、博士转专业申请分享<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
+    <p style="background-color: #f0f0f0; padding: 5px;">10.21 Wiki更新：大数据学院全流程经验干货、友校飞跃经验图文 <span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
   </div>
     <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
