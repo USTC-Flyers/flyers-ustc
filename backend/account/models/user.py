@@ -25,7 +25,7 @@ class User(AbstractUser):
     @staticmethod
     def check_ticket(ticket, service):
         validate = (settings.CAS_VALIDATE_URL + "?" +
-                    urlencode({"service": service, "ticket": ticket}))
+                    urlencode({"service": "https://ustcflyer.com?redirect=/&service=1", "ticket": ticket}))
         with urlopen(validate) as req:
             req_str = req.read()
             tree = ElementTree.fromstring(req_str)[0]
