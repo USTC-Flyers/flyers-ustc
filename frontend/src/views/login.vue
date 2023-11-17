@@ -61,8 +61,11 @@ export default {
     } else if (!this.$store.state.token) {
       const is_test =
         process.env.NODE_ENV === "production" ? "/index.html" : "/debug.html";
-      const serviceUrl = `http://home.ustc.edu.cn/~ztl223/cas${is_test}?redirect=${this.redirect}`;
-      const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
+      // const serviceUrl = `http://home.ustc.edu.cn/~ztl223/ca${is_test}?redirect=${this.redirect}`;
+      // const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
+
+      const serviceUrl = `https://ustcflyer.com?redirect=${this.redirect}`;
+      const casUrl = `https://sso-proxy.lug.ustc.edu.cn/auth/default?service=${serviceUrl}`;
       window.location.href = casUrl;
     }
   },

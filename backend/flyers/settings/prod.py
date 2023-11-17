@@ -218,8 +218,10 @@ STATIC_ROOT = '/app/backend/static'
 MEDIA_ROOT = '/app/backend/media/mdeditor'
 
 CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
-CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
+# CAS_VALIDATE_URL = 'http://passport.ustc.edu.cn/serviceValidate'
+CAS_VALIDATE_URL = 'https://sso-proxy.lug.ustc.edu.cn/auth/default/validate'
 CAS_HOME_URL = 'http://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
+CAS_SERVER_URL = 'https://home.ustc.edu.cn/~ztl223/cas/index.html?id=1'
 
 CAS_VERSION = '2'
 CAS_APPLY_ATTRIBUTES_TO_USER = True
