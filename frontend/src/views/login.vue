@@ -65,7 +65,7 @@ export default {
       // const casUrl = `http://passport.ustc.edu.cn/login?service=${serviceUrl}`;
 
       const serviceUrl = `https://ustcflyer.com?redirect=${this.redirect}`;
-      const casUrl = `https://sso-proxy.lug.ustc.edu.cn/auth/default?service=${decodeURIComponent(serviceUrl)}`;
+      const casUrl = `https://sso-proxy.lug.ustc.edu.cn/auth/default?service=${encodeURIComponent(serviceUrl)}`;
       window.location.href = casUrl;
     }
   },
