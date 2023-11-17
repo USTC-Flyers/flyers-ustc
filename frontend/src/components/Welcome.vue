@@ -8,13 +8,13 @@
     <br>
     <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
     <p style="background-color: #f0f0f0; padding: 5px;">10.1 Wiki更新：化院2023飞跃手册、博士转专业申请分享<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
-    <p style="background-color: #f0f0f0; padding: 5px;">11.16 由于学校统一认证系统更新，飞跃网站登录功能出现故障，正在抢修，恢复后第一时间于此处与飞跃群通知~ <span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
+    <p style="background-color: #f0f0f0; padding: 5px;">11.17 网站登录已正常，感谢编辑部同学的加班加点，感谢LUG和网络中心的支持 <span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
   </div>
     <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
     <p>
-      飞跃网站是我们升级飞跃手册的一次大胆尝试，也是我们作为毕业生希望献给母校的礼物。以往的申请季中，多届学长学姐编写的飞跃手册和先前的 Adrain
+      飞跃网站是我们升级飞跃手册的大胆尝试。以往的申请季中，多届学长学姐编写的飞跃手册和先前的 Adrain
       网站给予了我们大量申请策略的启发和能力技巧的提升。前辈们无私传授的经验不仅使我们更好地充实自我，也鼓舞着我们继续传承这一优良文化。为了能够更好地传递这些宝贵经验，飞跃编辑部策划以网站的方式收录留学同学的申请总结，提升学长学姐、学弟学妹们以下方面的体验：
     </p>
     <ul>
