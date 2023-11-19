@@ -21,7 +21,12 @@ class User(AbstractUser):
         gid, uid = User.check_ticket(ticket, service)
         user, created = User.objects.get_or_create(gid=gid, username=gid)
         return user, created
-    
+
+    @staticmethod
+    def verify_mail(mail):
+        user, created = User.objects.get_or_create(gid=mail, username=mail, email=mail)
+        return user, created
+
     @staticmethod
     def check_ticket(ticket, service):
         validate = (settings.CAS_VALIDATE_URL + "?" +

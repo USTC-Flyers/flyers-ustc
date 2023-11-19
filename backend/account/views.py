@@ -1,3 +1,6 @@
+import random
+import string
+from rest_framework.exceptions import APIException
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from django.shortcuts import redirect
@@ -8,11 +11,17 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
+from django.core.mail import send_mail
+from django.core.cache import cache
+
+from account.models.user import User
 from . import models
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from . import serializers
 from . import permissions
 from .authentication import JWTCASAuthentication
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 class UserProfileViewSet(
     mixins.CreateModelMixin,
@@ -89,6 +98,50 @@ class CASLoginView(TokenObtainPairView):
         if self.request.method == "GET":
             return [AllowAny()]
         return super().get_permissions()
+
+
+class MailSendCodeView(TokenObtainPairView):
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            mail = request.data.get("mail")
+            valid_suffixes = ['ustc.edu.cn', 'mail.ustc.edu.cn']
+            if not any(mail.endswith(suffix) for suffix in valid_suffixes):
+              return Response(status=status.HTTP_400_BAD_REQUEST,data="请输入正确的教育邮箱")
+            code = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+            alive_mintues = 5
+            cache_key = f'verification_code_{mail}'
+            cache.set(cache_key, code, timeout=60 * alive_mintues)
+            subject = '登录验证码'
+            message = f'您的验证码是: {code},有效期为{alive_mintues}分钟'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [mail]
+            send_mail(subject, message, from_email, recipient_list)
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class MailLoginView(TokenObtainPairView):
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        mail = request.data.get("mail")
+        verify_code = request.data.get("verify_code")
+        if (mail is None or verify_code is None):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            if isinstance(e,APIException):
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,data=e.detail)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="登录异常")
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
 
 class CASLogoutView(TokenObtainPairView):
     authentication_classes = [JWTCASAuthentication]

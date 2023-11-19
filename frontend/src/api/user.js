@@ -7,6 +7,25 @@ export function login(ticket) {
     params: { ticket },
   });
 }
+export function sendVerifyCode(mail) {
+  return request({
+    url: "/mail-login/send",
+    method: "post",
+    data:{
+      mail
+    },
+  });
+}
+export function loginByMail(mail,verify_code) {
+  return request({
+    url: "/mail-login/verify",
+    method: "post",
+    data:{
+      mail,
+      verify_code
+    },
+  });
+}
 
 export function logout(token) {
   return request({
