@@ -114,7 +114,7 @@ export default {
           this.loading.send_verify_code = true
           this.$store.dispatch('user/sendVerifyCode', this.loginForm.mail).then(() => {
             this.$message.success("验证码已发送");
-            this.startCountdown(60*5);
+            this.startCountdown(60);
           }).catch((e) => {
             this.$message.error(e.response?.data || '发送验证码失败');
           }).finally(() => {
