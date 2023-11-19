@@ -23,6 +23,7 @@ class JWTCASAuthentication(JWTAuthentication):
                         user, created = User.verify_mail(mail)
                         token = TokenObtainPairSerializer.get_token(user)
                         token['new_user_created'] = created
+                        cache.delete(cache_key)
                         return user
                     except Exception as e:
                         return None

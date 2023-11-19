@@ -52,7 +52,7 @@ export default {
       loginRules: {
         mail: [
           {required: true, message: '请输入邮箱', trigger: 'blur'},
-          // {pattern: /^[a-zA-Z0-9._-]+@(?:mail\.)?ustc\.edu\.cn$/, message: '请输入正确的教育邮箱', trigger: 'blur'},
+          {pattern: /^[a-zA-Z0-9._-]+@(?:mail\.)?ustc\.edu\.cn$/, message: '请输入正确的教育邮箱', trigger: 'blur'},
         ],
         verify_code: [
           {required: true, message: '请输入验证码', trigger: 'blur'},
@@ -109,6 +109,7 @@ export default {
     },
     sendVerifyCode() {
       this.$refs.loginForm.validateField('mail', err => {
+        console.log(err)
         if (!err) {
           this.loading.send_verify_code = true
           this.$store.dispatch('user/sendVerifyCode', this.loginForm.mail).then(() => {
@@ -127,6 +128,7 @@ export default {
         if (valid) {
           this.loading.login = true
           this.$store.dispatch('user/mailLogin', this.loginForm).then(() => {
+            localStorage.removeItem('countdownEndTime')
             this.$router.push({path: this.redirect})
           }).catch((e) => {
             this.$message.error(e.response?.data || '登录失败');
