@@ -145,7 +145,7 @@ export default {
   },
   beforeMount() {
     try {
-      this.redirect = this.$route.query.redirect.fullPath || "/";
+      this.redirect = this.$route.query.redirect || "/";
     } catch (e) {
       this.redirect = "/";
     }
