@@ -12,11 +12,17 @@ class JWTCASAuthentication(JWTAuthentication):
         header = self.get_header(request)
         ticket = request.GET.get('ticket', None)
         service = request.GET.get('service', settings.CAS_HOME_URL)
-        mail = request.data.get("mail")
-        verify_code = request.data.get("verify_code")
+        if hasattr(request,'data'):
+            mail = request.data.get("mail")
+            verify_code = request.data.get("verify_code")
+        else:
+            mail = None
+            verify_code = None
         if mail is not None and verify_code is not None:
             cache_key = f'verification_code_{mail}'
             cached_code = cache.get(cache_key)
+            if('dev' in settings.SETTINGS_MODULE):
+                cached_code = verify_code
             if cached_code:
                 if cached_code == verify_code:
                     try:
