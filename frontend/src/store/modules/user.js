@@ -18,6 +18,7 @@ const getDefaultState = () => {
         user_id: null,
         is_admin: false,
         refresh_token: getRefresh(),
+        refresh_promise: null,
     };
 };
 
@@ -142,7 +143,10 @@ const actions = {
     },
 
     refreshToken({commit, state}) {
-        return new Promise((resolve, reject) => {
+        if (state.refresh_promise) {
+            return state.refresh_promise;
+        }
+        state.refresh_promise = new Promise((resolve, reject) => {
             refresh(state.refresh_token)
                 .then((resp) => {
                     commit("SET_TOKEN", "Bearer " + resp.access);
@@ -156,7 +160,9 @@ const actions = {
                     commit("RESET_STATE");
                     router.go();
                     reject(error);
-                });
+                }).finally(()=>{
+                    state.refresh_promise = null;
+            });
         });
     },
 };

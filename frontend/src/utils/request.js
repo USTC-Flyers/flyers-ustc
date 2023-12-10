@@ -55,6 +55,9 @@ service.interceptors.response.use(
         store
           .dispatch("user/refreshToken")
           .then(() => {
+            if (error.config.method === 'get') {
+              return service(error.config);
+            }
             // console.log('refresh done')
           })
           .catch((error) => {
