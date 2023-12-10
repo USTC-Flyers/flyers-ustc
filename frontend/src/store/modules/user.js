@@ -66,7 +66,6 @@ const actions = {
     },
     mailLogin({commit},{mail,verify_code}) {
        return  loginByMail(mail,verify_code).then(response=>{
-           console.log(response)
            commit("SET_TOKEN", "Bearer " + response.access);
            commit("SET_REFRESH", response.refresh);
            setToken("Bearer " + response.access);

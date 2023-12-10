@@ -58,6 +58,7 @@ urlpatterns = [
     path('api/', include('admissions.urls')),  
     path('api/', include('forum.urls')),      
     path('api/', include('account.urls')),
+    path('api/discussion/', include('discussion.urls')),
     path('api/login/', CASLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer)),
     path('api/mail-login/send', MailSendCodeView.as_view()),
     path('api/mail-login/verify', MailLoginView.as_view(serializer_class=TokenObtainPairWithoutPasswordSerializer)),

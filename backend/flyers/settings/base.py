@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'account',
     'admissions',
     'forum',
+    'discussion'
 ]
 
 MIDDLEWARE = [

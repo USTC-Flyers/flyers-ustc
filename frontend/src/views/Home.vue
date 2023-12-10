@@ -21,14 +21,18 @@
         <el-menu-item index="wiki" :route="{ path: '/wiki' }" router
           >申请 Wiki</el-menu-item
         >
-        <div style="float: right">
+        <el-menu-item index="forum" :route="{ path: '/discussion' }" router
+        >交流讨论</el-menu-item
+        >
+        <div style="float: right;display: flex;align-items: center">
+          <el-button size="small" type="primary" v-if="$route.path==='/discussion'" @click="$router.push('/discussion/create')" style="margin-right: 16px;">写点什么</el-button>
           <el-badge
             :hidden="notificationCount === 0"
             :value="notificationCount"
             id="badge"
             v-show="username !== null"
           >
-            <el-button size="small" @click="handleMessageMore">通知</el-button>
+            <el-button size="small"  @click="handleMessageMore">通知</el-button>
           </el-badge>
           <el-dropdown v-if="username !== null" class="right-float">
             <span class="el-dropdown-link">
@@ -153,9 +157,8 @@ export default {
 .main {
   position: relative;
   margin: 0;
-  margin-top: 0px;
-  padding-top: 30px;
   width: 100%;
+  min-height: calc(100vh - 60px);
   top: 60px; //指的是margin更以上的距离，即div模块外围距离
   // padding-top:100px;
 }

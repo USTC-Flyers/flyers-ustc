@@ -7,26 +7,26 @@
         <div>你没有新的通知</div>
       </template>
       <el-table-column
-        prop="created_time"
-        label="时间"
-        align="center"
-        width="200"
+          prop="created_time"
+          label="时间"
+          align="center"
+          width="200"
       >
         <template slot-scope="scope">
           {{ scope.row.created_time | dateFilter }}
         </template>
       </el-table-column>
       <el-table-column
-        prop="message"
-        label="消息"
-        header-align="center"
-        width="350"
+          prop="message"
+          label="消息"
+          header-align="center"
+          width="350"
       >
       </el-table-column>
       <el-table-column label="查看" width="100">
         <template slot-scope="{ row }">
           <router-link
-            :to="{
+              :to="{
               path: `${row.route_name}/${row.route_id}/`,
               hash: row.hash,
             }"
@@ -40,12 +40,13 @@
     </el-table>
     <!-- <router-link :to="{ path: `/revision/${topic_id}` }"> -->
     <el-button
-      v-if="isAll === false"
-      icon="el-icon-d-arrow-right"
-      type="text"
-      style="float: right"
-      @click="getAll"
-      >全部通知</el-button
+        v-if="isAll === false"
+        icon="el-icon-d-arrow-right"
+        type="text"
+        style="float: right"
+        @click="getAll"
+    >全部通知
+    </el-button
     >
     <!-- </router-link> -->
   </div>
@@ -65,15 +66,18 @@ const [
   PR,
   REPORT,
   OTHER,
-] = [...Array(12).keys()];
+  LIKED,
+  COMMENT,
+  COMMENT_LIKED,
+] = [...Array(15).keys()];
 
 import {
   initNotification,
   getNotification,
   readNotification,
 } from "@/api/user";
-import { admissions_get } from "@/api/admission";
-import { getTopicRevision } from "@/api/wiki";
+import {admissions_get} from "@/api/admission";
+import {getTopicRevision} from "@/api/wiki";
 
 // import AnchorRouterLink from 'vue-anchor-router-link'
 export default {
@@ -107,27 +111,30 @@ export default {
     this.operationsMap[DELETED] = "warning-row";
     this.operationsMap[REJECTED] = "warning-row";
     this.operationsMap[REPORT] = "warning-row";
+    this.operationsMap[LIKED] = "success-row";
+    this.operationsMap[COMMENT] = "success-row";
+    this.operationsMap[COMMENT_LIKED] = "success-row";
 
     initNotification()
-      .then((resp) => {
-        // this.notificationList = resp.results;
-        this.notificationList = [];
-        resp.unread_set.forEach((item) => {
-          this.notificationList.push(this.notiMap(item));
-          readNotification(item.id);
+        .then((resp) => {
+          // this.notificationList = resp.results;
+          this.notificationList = [];
+          resp.unread_set.forEach((item) => {
+            this.notificationList.push(this.notiMap(item));
+            readNotification(item.id);
+          });
+          // console.log(this.notificationList);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        // console.log(this.notificationList);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     // !TODO: fixme
     // this.notificationList.forEach((no) => {
     //   no.created_time = this.parseDate(no.created_time);
     // });
   },
   methods: {
-    tableRowClassName({ row, rowIndex }) {
+    tableRowClassName({row, rowIndex}) {
       // console.log(row);
       let operation = this.notificationList[rowIndex];
       return this.operationsMap[operation];
@@ -141,17 +148,17 @@ export default {
     },
     getAll() {
       getNotification()
-        .then((resp) => {
-          // this.notificationList = resp.results;
-          this.notificationList = [];
-          resp.results.forEach((item) => {
-            this.notificationList.push(this.notiMap(item));
+          .then((resp) => {
+            // this.notificationList = resp.results;
+            this.notificationList = [];
+            resp.results.forEach((item) => {
+              this.notificationList.push(this.notiMap(item));
+            });
+            this.isAll = true;
+          })
+          .catch((err) => {
+            console.log(err);
           });
-          this.isAll = true;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     notiMap(noti_item) {
       var result = {
@@ -172,16 +179,16 @@ export default {
           result.hash = "#summary";
         } else if (noti_item.ref_obj_name === "Admissions") {
           admissions_get(noti_item.ref_obj_id)
-            .then((response) => {
-              var schoolname = response.related_university.short_name;
-              result.message = "你的「" + schoolname + "」申请经验被点赞";
-              result.hash = "#admissions";
-            })
-            .catch((error) => {
-              if (error.response.status === 404) {
-                result.message = "该申请经验已被删除";
-              }
-            });
+              .then((response) => {
+                var schoolname = response.related_university.short_name;
+                result.message = "你的「" + schoolname + "」申请经验被点赞";
+                result.hash = "#admissions";
+              })
+              .catch((error) => {
+                if (error.response.status === 404) {
+                  result.message = "该申请经验已被删除";
+                }
+              });
         }
       } else if (noti_item.operation === PR) {
         result.route_name = "review";
@@ -208,6 +215,10 @@ export default {
           result.message = "你对 Wiki -「" + title + "」的修改审核未通过";
           result.route_id = response.related_topic;
         });
+      } else if (noti_item.operation === LIKED||noti_item.operation === COMMENT||noti_item.operation === COMMENT_LIKED) {
+        result.route_name = "/discussion";
+        result.message = noti_item.message;
+        result.route_id = noti_item.ref_obj_id;
       }
       return result;
     },

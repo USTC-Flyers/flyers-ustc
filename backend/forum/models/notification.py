@@ -4,7 +4,7 @@ from django.utils import timezone
 from ..managers.notification import NotificationQueryset
 
 class Notification(models.Model):
-    UPDATED, UPVOTED, DELETED, APPROVED, REJECTED, REPLIED, MENTIONED, PINNED, UNPINNED, PR, REPORT, OTHER = range(12)
+    UPDATED, UPVOTED, DELETED, APPROVED, REJECTED, REPLIED, MENTIONED, PINNED, UNPINNED, PR, REPORT, OTHER, LIKED,COMMENT,COMMENT_LIKED, = range(15)
     OPERATIONS_CHOICES = (
         (UPDATED, "已更新"),
         (UPVOTED, "被点赞"),
@@ -17,7 +17,10 @@ class Notification(models.Model):
         (UNPINNED, "被管理员取消置顶"),
         (PR, "请求更改wiki"),
         (REPORT, "被举报"),
-        (OTHER, "出bug了...")
+        (OTHER, "出bug了..."),
+        (LIKED, "被喜欢"),
+        (COMMENT, "被评论"),
+        (COMMENT_LIKED, "评论被喜欢")
     )
     related_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -52,7 +55,9 @@ class Notification(models.Model):
         
     @property
     def get_message(self):
-        return "您的" + self.ref_obj_name + self.OPERATIONS_CHOICES[self.operation][1]
+        if self.message is None:
+            return "您的" + self.ref_obj_name + self.OPERATIONS_CHOICES[self.operation][1]
+        return self.message
     
     @classmethod
     def notify(cls, comment, to_user, operation, **kwargs):
