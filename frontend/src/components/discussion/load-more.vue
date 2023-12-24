@@ -51,15 +51,22 @@ export default {
     }
   },
   methods: {
-    async loadMore() {
+    async loadMore(refresh) {
       this.loading = true
+      if(refresh){
+        this.page=1
+      }
       try {
         const ret = await this.pageMethod({
           ...this.params,
           page: this.page,
         })
-        if (ret.results && ret.results.length) {
-          this.results.push(...ret.results);
+        if (refresh) {
+          this.results = ret.results || [];
+        }else{
+          if (ret.results && ret.results.length) {
+            this.results.push(...ret.results);
+          }
         }
         const hasMore = ret.count > this.results.length;
         this.hasMore = hasMore;

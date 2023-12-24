@@ -7,7 +7,7 @@ from datetime import datetime
 from hashlib import sha1
 
 from django.conf import settings
-from django.contrib.auth.models import Group
+from django.db.models import Q
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
@@ -18,10 +18,10 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
+from forum.models import Notification
 from .. import models
 from .. import permissions
 from .. import serializers
-from forum.models import Notification
 
 param = openapi.Parameter('action', openapi.IN_QUERY,
                           description="是('like')中的一个",
@@ -46,8 +46,11 @@ class PostViewSet(
     pagination_class = PageNumberPagination
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset()).order_by('-created_time')
-
+        query = request.query_params.get('query')
+        queryset = self.get_queryset().order_by('-created_time')
+        if query != None and query != '':
+            queryset = queryset.filter(Q(title__icontains=query) | Q(content__icontains=query)).order_by(
+                '-created_time')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
@@ -79,7 +82,6 @@ class PostViewSet(
         return Response(
             status=status.HTTP_201_CREATED,
         )
-
 
     @action(methods=['patch'], detail=True, url_path='review', url_name='review')
     def review(self, request, pk):

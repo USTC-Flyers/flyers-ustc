@@ -1,7 +1,13 @@
 <template>
   <div>
+    <div class="search-box">
+      <el-input v-model="query" placeholder="输入关键字搜索" @keyup.enter.native="search" >
+        <el-button slot="append" icon="el-icon-search" @click="search"/>
+      </el-input>
+    </div>
     <load-more
         ref="commentsLoadMore"
+        :params="{query}"
         v-slot="{results}"
         :page-method="loadPost"
     >
@@ -50,6 +56,7 @@ export default {
   components: {LoadMore},
   data() {
     return {
+      query: '',
       loading: false,
       list: [],
       page: {
@@ -59,8 +66,11 @@ export default {
     }
   },
   methods: {
+    search() {
+      this.$refs.commentsLoadMore.loadMore(true);
+    },
     loadPost(params) {
-      return listPost(params)
+      return listPost(params);
     },
     goPost(id) {
       this.$router.push(`/discussion/${id}`)
@@ -71,7 +81,11 @@ export default {
 
 <style lang="scss" scoped>
 
-
+.search-box{
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
 .post-list {
   padding: 0;
 
