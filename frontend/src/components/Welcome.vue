@@ -117,7 +117,7 @@
     <ul>
       <li>
         <p>
-          如果你遇到了网站的 bug 或者任何建议，请与现任站长：蒻家璇（QQ：735896780）、韬韬（QQ：2667286947）直接联系～
+          如果你遇到了网站的 bug 或者任何建议，请与现任站长：家璇 Jase（QQ：735896780）直接联系～
         </p>
         <p>或发邮件至 flyers_ustc@163.com，我们将尽快解决。</p>
       </li>
@@ -152,7 +152,7 @@
         Balabala、Haowen、Jiaxuan、Junwei、Kuang、Shujing、Zhengtao
     </p >
     <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
-        Cheng、Guangcanlan、Shijia、Sijia
+        Cheng、Guangcanlan、Sarah、Shijia、Sijia
     </p >
     <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
         国合部、校友总会、新创校友基金会、卢征天院长、Zach Smith教授
