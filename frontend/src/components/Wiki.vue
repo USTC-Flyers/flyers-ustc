@@ -45,7 +45,7 @@
         >
           <el-button type="text"> 社区规则 </el-button>
         </router-link>
-        <div>Copyright &copy; 2021-2023 USTC飞跃网站</div>
+        <div>Copyright &copy; 2021-2024 USTC飞跃网站</div>
       </div>
     </div>
   </div>

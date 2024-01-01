@@ -3,13 +3,11 @@
   <div style="background-color: #f0f0f0; padding: 10px;">
     <h2 style="background-color: #f0f0f0; padding: 5px;">公告栏</h2>
     <p style="background-color: #f0f0f0; padding: 5px;">
-      校友需要发布广告？需要在校同学协助进校？没问题！飞跃编辑部建立了校友对接群：814392960
+      校友有任何需求？飞跃编辑部建立了校友对接群：814392960
     </p>
     <br>
     <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
-    <p style="background-color: #f0f0f0; padding: 5px;">10.1 Wiki更新：化院2023飞跃手册、博士转专业申请分享<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
-    <p style="background-color: #f0f0f0; padding: 5px;">11.17 网站登录已正常，感谢编辑部同学的加班加点，感谢LUG和网络中心的支持 <span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
-  </div>
+    <p style="background-color: #f0f0f0; padding: 5px;">新上线交流板块，主要用于招生、暑研、实习机会发布和求助<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
     <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
@@ -165,7 +163,7 @@
     </p>
     <p></p>
     <p style="text-align: right">USTC飞跃编辑部</p>
-    <p style="text-align: right">2023</p>
+    <p style="text-align: right"></p>
     <p style="text-align: right">于美丽的科大校园</p>
     <p></p>
   </div>
