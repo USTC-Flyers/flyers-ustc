@@ -167,6 +167,7 @@
     <p style="text-align: right">于美丽的科大校园</p>
     <p></p>
   </div>
+  </div>
 </template>
 
 <script>
