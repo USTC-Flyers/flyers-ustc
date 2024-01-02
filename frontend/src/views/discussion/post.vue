@@ -227,6 +227,7 @@ export default {
         word-wrap: break-word;
         -webkit-font-smoothing: antialiased;
         padding-bottom: 10px;
+        white-space: pre-line;
       }
 
       .post-image-list {

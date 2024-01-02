@@ -53,7 +53,7 @@ export default {
   methods: {
     async loadMore(refresh) {
       this.loading = true
-      if(refresh){
+      if(refresh===true){
         this.page=1
       }
       try {
@@ -61,7 +61,7 @@ export default {
           ...this.params,
           page: this.page,
         })
-        if (refresh) {
+        if (refresh===true) {
           this.results = ret.results || [];
         }else{
           if (ret.results && ret.results.length) {
