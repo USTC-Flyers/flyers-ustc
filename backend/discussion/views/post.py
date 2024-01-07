@@ -23,6 +23,7 @@ from .. import models
 from .. import permissions
 from .. import serializers
 
+
 param = openapi.Parameter('action', openapi.IN_QUERY,
                           description="是('like')中的一个",
                           type=openapi.TYPE_STRING)

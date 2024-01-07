@@ -22,7 +22,7 @@
             </div>
             <div class="post-content">
               <div class="post-title">{{ post.title }}</div>
-              <p class="post-summary">{{ post.content }}</p>
+              <p class="post-summary">{{ post.summary }}</p>
               <ul class="post-image-list" v-if="post.images.length" @click.stop="void(0)">
                 <li v-for="(img,idx) in post.images" :key="idx">
                   <el-image class="image-item" :src="img" :preview-src-list="post.images"/>

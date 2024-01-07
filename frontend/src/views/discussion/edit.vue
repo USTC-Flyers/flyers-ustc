@@ -13,10 +13,7 @@
         />
       </el-form-item>
       <el-form-item prop="content">
-        <post-editor
-            v-model="form"
-            ref="editor"
-        />
+        <tiptap-editor v-model="form.content" :extensions="extensions" placeholder="随便写点什么吧~"/>
       </el-form-item>
       <el-form-item>
         <el-button @click="submitCreate" :disabled="publishing" :loading="publishing" type="primary">发表帖子
@@ -27,11 +24,26 @@
 </template>
 
 <script>
-import {createPost, getPost, updatePost} from "@/api/discussion";
-import PostEditor from "@/components/discussion/post-editor.vue";
+import {createPost, getPost, updatePost, uploadImg} from "@/api/discussion";
+import TiptapEditor from "@/components/TiptapEditor/index.vue";
+import {
+  Blockquote,
+  Bold, BulletList,
+  Doc,
+  Heading, History,
+  HorizontalRule, Image,
+  Indent,
+  Italic, Link, ListItem, OrderedList,
+  Paragraph,
+  Strike,
+  Text,
+  TextAlign,
+  Underline
+} from "element-tiptap";
+import axios from "axios";
 
 export default {
-  components: {PostEditor},
+  components: {TiptapEditor},
   data() {
     return {
       publishing: false,
@@ -55,7 +67,40 @@ export default {
             }
           },
         ],
-      }
+      },
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Heading({level: 5}),
+        new Bold({bubble: true}),
+        new Underline({bubble: true}),
+        new Italic(),
+        new Strike(),
+        new HorizontalRule(),
+        new Indent(),
+        new TextAlign(),
+        new Blockquote(),
+        new Image({
+          uploadRequest: async file => {
+            const uploadArg = await uploadImg();
+            const {host, ...otherParams} = uploadArg;
+            const formData = new FormData();
+            for (const key in otherParams) {
+              formData.set(key, otherParams[key]);
+            }
+            formData.set('success_action_status', 201);
+            formData.append('file', file);
+            await axios.post(host, formData);
+            return host + '/' + otherParams.key;
+          }
+        }),
+        new Link(),
+        new ListItem(),
+        new BulletList(),
+        new OrderedList(),
+        new History(),
+      ]
     };
   },
   computed: {
@@ -81,7 +126,7 @@ export default {
           this.publishing = true;
           try {
             if (this.isEdit) {
-              await updatePost(this.$route.params.id,{
+              await updatePost(this.$route.params.id, {
                 ...this.form,
               });
             } else {
