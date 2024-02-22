@@ -23,9 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'lg#ulucdtykg$w7frf#i9u$zp(adqexs9)12x$sv#xerxy4h5@'
 
+DEFAULT_FILE_STORAGE = 'storages.backends.oss.OssMediaStorage'
+OSS_BUCKET_NAME = 'flyers'
 OSS_ENDPOINT = 'https://oss-cn-hongkong.aliyuncs.com'
 OSS_ACCESS_KEY_ID='LTAI5tKv5A47zQ1WAVknsbZd'
 OSS_ACCESS_KEY_SECRET='kQijoOm6RPBVfviwkLaUlDJ2ufNM75'
+MEDIA_URL = 'https://flyers.oss-cn-hongkong.aliyuncs.com/media/'
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'
