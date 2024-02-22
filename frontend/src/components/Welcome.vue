@@ -8,6 +8,7 @@
     <br>
     <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
     <p style="background-color: #f0f0f0; padding: 5px;">新上线交流板块，主要用于招生、暑研、实习机会发布和求助<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
+    </div>
     <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
@@ -167,7 +168,7 @@
     <p style="text-align: right">于美丽的科大校园</p>
     <p></p>
   </div>
-  </div>
+  
 </template>
 
 <script>
