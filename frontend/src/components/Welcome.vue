@@ -179,11 +179,28 @@
 
 <script>
 export default {
-  name: 'Appreciation',
-  data() {
-    return {
-      username: '',
-    };
+  name: "Welcome",
+  created() {
+    this.hashTo();
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.hashTo();
+    next();
+  },
+  computed: {
+    username() {
+      return this.$store.getters.name;
+    },
+  },
+  methods: {
+    hashTo() {
+      if (location.hash) {
+        setTimeout(
+          "document.querySelector(location.hash).scrollIntoView(true)",
+          100
+        );
+      }
+    },
   },
 };
 </script>
