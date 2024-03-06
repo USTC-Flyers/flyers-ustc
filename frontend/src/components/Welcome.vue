@@ -1,15 +1,12 @@
 <template>
   <div class="app">
-  <div style="background-color: #f0f0f0; padding: 10px;">
-    <h2 style="background-color: #f0f0f0; padding: 5px;">公告栏</h2>
-    <p style="background-color: #f0f0f0; padding: 5px;">
-      校友有任何需求？飞跃编辑部建立了校友对接群：814392960
-    </p>
-    <br>
-    <p style="background-color: #f0f0f0; padding: 5px;">新上线暑研经验版块<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
-    <p style="background-color: #f0f0f0; padding: 5px;">新上线交流板块，主要用于招生、暑研、实习机会发布和求助<span style="margin-left: 5px; font-size: 0.6em; background-color: #FFD700; color: #fff; padding: 2px 5px; border-radius: 5px;">new</span></p>
+    <div class="announcement">
+      <h2>公告栏</h2>
+      <p>校友有任何需求？飞跃编辑部建立了校友对接群：814392960</p>
+      <p>新上线暑研经验版块<span class="new-tag">new</span></p>
+      <p>新上线交流板块，主要用于招生、暑研、实习机会发布和求助<span class="new-tag">new</span></p>
     </div>
-    <h1>关于我们</h1>
+<h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
     <p>
@@ -84,11 +81,7 @@
       </li>
     </ul>
     <p></p>
-    <h2>加入我们！</h2>
-    <p>
-      飞跃网站还有无限发展的可能性。为了保障飞跃网站的茁壮成长，我们成立了下属于国际交流与合作部的组织，并获得了来自校友总会、中国科大校友基金会、中国科大教育基金会、新创校友基金会等组织的大力支持。在这里，你能获得丰厚的劳动报酬，认识校内有想法、有执行力的优秀同龄人，结识经验丰富、乐于助人的前辈，接触广阔的校友资源，并在申请季中获得切实的支持。飞跃编辑部的主要工作均在大四下完成，在毕业临别之际，这将是一份回味无穷的科大纪念品。2022
-      届飞跃编辑部正在招募中，无论是对留学申请有见解、对外联有经验、或是愿意进行网站开发和维护的同学，我们都期待你的加入！欢迎在飞跃群中直接私聊群主，进行进一步了解。
-    </p>
+    
     <a class="anchor" id="contact"></a>
     <h2>联系我们</h2>
     <p>如果对网站有任何疑问或需求，欢迎与我们积极取得联系！</p>
@@ -147,81 +140,129 @@
       </i>
     </div>
     <p></p>
-  <div class="appreciation">
-    <h2 style="text-align: center; color: #333; font-weight: bold;">特别鸣谢</h2>
-    <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
-        Balabala  Haowen  Jiaxuan  Junwei  Kuang  Shujing  Zhengtao  Zhidao
-    </p >
-    <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
-        Cheng  Guangcanlan  Sarah  Shijia  Sijia
-    </p >
-    <p style="text-align: center; color: #666; font-size: 1.2em; margin-top: 20px;">
-        国合部、校友总会、新创校友基金会、卢征天院长、Zach Smith教授
-    </p >
-</div>
-    <p>
     
-    </p>
-    <p></p>
-    <p style="text-align: right">USTC飞跃编辑部</p>
-    <p style="text-align: right"></p>
-    <p style="text-align: right">于美丽的科大校园</p>
-    <p></p>
+
+    <div class="appreciation">
+      <h2>特别鸣谢</h2>
+      <div class="founding-team">
+        <span>Shujing</span>
+        <span>Kuang</span>
+        <span>Guangcanlan</span>
+      </div>
+      <div class="contributors">
+        <span>Balabala</span>
+        <span>Haowen</span>
+        <span>Jiaxuan</span>
+        <span>Junwei</span>
+        <span>Zhengtao</span>
+        <span>Zhidao</span>
+        <span>Cheng</span>
+        <span>Sarah</span>
+        <span>Shijia</span>
+        <span>Sijia</span>
+      </div>
+      <div class="organizations">
+        <span>国合部</span>
+        <span>校友总会</span>
+        <span>新创校友基金会</span>
+        <span>卢征天院长</span>
+        <span>Zach Smith教授</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>USTC飞跃编辑部</p>
+      <p>于美丽的科大校园</p>
+    </div>
   </div>
-  
 </template>
 
 <script>
 export default {
-  name: "Welcome",
-  created() {
-    this.hashTo();
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.hashTo();
-    next();
-  },
-  computed: {
-    username() {
-      return this.$store.getters.name;
-    },
-  },
-  methods: {
-    hashTo() {
-      if (location.hash) {
-        setTimeout(
-          "document.querySelector(location.hash).scrollIntoView(true)",
-          100
-        );
-      }
-    },
+  name: 'Appreciation',
+  data() {
+    return {
+      username: '',
+    };
   },
 };
 </script>
 
 <style scoped>
-.app {
-  margin: 0 auto;
-  width: 900px;
+.announcement {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.welcome-group-alert {
-  color: red;
-  font-weight: bold;
+.announcement h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.announcement p {
+  margin-bottom: 10px;
+}
+
+.group-list {
+  margin-bottom: 20px;
 }
 
 .new-group {
-    position: relative;
-  }
+  position: relative;
+}
 
-  .new-tag {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: red;
-    color: white;
-    font-size: 0.8em;
-    padding: 0.2em 0.4em;
-    border-radius: 0 0 0 0.3em;
-  }
+.new-tag {
+  margin-left: 5px;
+  font-size: 0.6em;
+  background-color: #FFD700;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.welcome-group-alert {
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.appreciation {
+  background-color: #f8f8f8;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.appreciation h2 {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.appreciation .founding-team,
+.appreciation .contributors,
+.appreciation .organizations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.appreciation .founding-team span,
+.appreciation .contributors span,
+.appreciation .organizations span {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  color: #333;
+}
+
+.footer {
+  text-align: right;
+  margin-top: 40px;
+}
 </style>
