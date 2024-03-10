@@ -92,6 +92,7 @@ const actions = {
 
     // get user info
     getInfo({commit}) {
+        // eslint-disable-next-line no-debugger
         return new Promise((resolve, reject) => {
             getInfo()
                 .then((response) => {
@@ -151,19 +152,18 @@ const actions = {
                 .then((resp) => {
                     commit("SET_TOKEN", "Bearer " + resp.access);
                     setToken("Bearer " + resp.access);
-                    router.go();
                     resolve();
                 })
                 .catch((error) => {
                     removeToken();
                     removeRefresh();
                     commit("RESET_STATE");
-                    router.go();
                     reject(error);
                 }).finally(()=>{
                     state.refresh_promise = null;
             });
         });
+        return state.refresh_promise;
     },
 };
 

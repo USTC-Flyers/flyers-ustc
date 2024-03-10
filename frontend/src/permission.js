@@ -3,7 +3,7 @@ import store from "./store";
 // import { Message } from "element-ui";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
-import { getToken } from "@/utils/auth"; // get token from cookie
+import {getRefresh, getToken} from "@/utils/auth"; // get token from cookie
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
@@ -18,9 +18,14 @@ router.beforeEach(async (to, from, next) => {
   // set page title
 
   // determine whether the user has logged in
-  const hasToken = getToken();
+  let hasToken = getToken();
+  const hasRefreshToken = getRefresh();
 
-  if (hasToken) {
+  if (hasToken||hasRefreshToken) {
+    if (!hasToken && hasRefreshToken) {
+      await store.dispatch("user/refreshToken").catch(() => {});
+      hasToken = getToken();
+    }
     if (to.path === "/login") {
       // if is logged in, redirect to the home page
       next({ path: "/" });
