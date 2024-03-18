@@ -118,16 +118,17 @@
     </ul>
     <p></p>
     <p>以下是飞跃群群号，持续更新中：</p>
-    <div v-if="username">
+    <div v-if="username" class="group-list">
       <ul>
         <li><p>2021 届飞跃总群：180446308</p></li>
         <li><p>2022 届飞跃总群：1158255412</p></li>
         <li><p>2023 届飞跃总群：677034076</p></li>
         <li><p>2024 届飞跃总群：526966348</p></li>
+        <li><p>2025 届飞跃总群：590043107</p></li>
         <li class="new-group">
-        <p>2025 届飞跃总群：590043107 </p>
-        <span class="new-tag">New</span>
-    </li>
+          <p>2026 届飞跃总群： 772451534</p>
+          <span class="new-tag">New</span>
+        </li>
       </ul>
     </div>
     <div v-else class="welcome-group-alert">
@@ -281,5 +282,50 @@ export default {
 .footer {
   text-align: right;
   margin-top: 40px;
+}
+
+.group-list {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.new-group {
+  position: relative;
+}
+
+.new-tag {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #ff6b6b;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 </style>
