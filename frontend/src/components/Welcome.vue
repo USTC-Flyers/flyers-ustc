@@ -212,67 +212,109 @@ export default {
 </script>
 
 <style scoped>
-.announcement {
-  background-color: #f0f0f0;
-  padding: 20px;
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #222;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
   margin-bottom: 20px;
 }
 
-.announcement h2 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 30px;
 }
 
-.announcement p {
-  margin-bottom: 10px;
+li {
+  font-size: 16px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.about {
+
+.announcement {
+  background-color: #f0f0f0;
+  padding: 30px;
+  border-radius: 10px;
   margin-bottom: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.about h1 {
+.announcement h2 {
   font-size: 24px;
   margin-bottom: 20px;
 }
 
-.about p {
+.announcement p {
+  font-size: 16px;
   margin-bottom: 15px;
 }
 
-.group-list {
-  margin-bottom: 20px;
-}
-
-.new-group {
-  position: relative;
-}
-
 .new-tag {
-  margin-left: 5px;
-  font-size: 0.6em;
-  background-color: #FFD700;
+  background-color: #4CAF50;
   color: #fff;
-  padding: 2px 5px;
-  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-left: 10px;
+}
+
+.about {
+  margin-bottom: 60px;
+}
+
+.contact {
+  margin-bottom: 60px;
+}
+
+.group-list {
+  margin-bottom: 40px;
 }
 
 .welcome-group-alert {
-  margin-bottom: 20px;
+  font-size: 18px;
   font-style: italic;
+  margin-bottom: 30px;
+  color: #666;
 }
 
 .appreciation {
   background-color: #f8f8f8;
-  padding: 40px;
+  padding: 50px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 .appreciation h2 {
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 30px;
+  color: #222;
+  margin-bottom: 40px;
 }
 
 .appreciation .founding-team,
@@ -281,7 +323,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .appreciation .founding-team span,
@@ -289,60 +331,18 @@ export default {
 .appreciation .organizations span {
   background-color: #fff;
   border-radius: 20px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   margin: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-weight: bold;
   color: #333;
+  font-size: 16px;
 }
 
 .footer {
-  text-align: right;
-  margin-top: 40px;
-}
-
-.group-list {
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-}
-
-p {
-  margin: 0;
-  font-size: 16px;
-  color: #333;
-}
-
-.new-group {
-  position: relative;
-}
-
-.new-tag {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: #ff6b6b;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin-top: 60px;
+  font-size: 14px;
+  color: #888;
 }
 </style>
