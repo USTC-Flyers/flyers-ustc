@@ -1,11 +1,13 @@
 <template>
   <div class="app">
-    <div class="announcement">
+    <section class="announcement">
       <h2>公告栏</h2>
       <p>校友有任何需求？飞跃编辑部建立了校友对接群：814392960</p>
       <p>新上线暑研经验版块<span class="new-tag">new</span></p>
       <p>新上线交流板块，主要用于招生、暑研、实习机会发布和求助<span class="new-tag">new</span></p>
-    </div>
+    </section>
+    
+    <section class="about">
 <h1>关于我们</h1>
     <p>Hi～这里是 USTC 飞跃编辑部。</p>
     <p></p>
@@ -81,7 +83,8 @@
       </li>
     </ul>
     <p></p>
-    
+  </section>
+  <section class="contact">
     <a class="anchor" id="contact"></a>
     <h2>联系我们</h2>
     <p>如果对网站有任何疑问或需求，欢迎与我们积极取得联系！</p>
@@ -116,6 +119,7 @@
         <p>或发邮件至 flyers_ustc@163.com，我们将尽快解决。</p>
       </li>
     </ul>
+  </section>
     <p></p>
     <p>以下是飞跃群群号，持续更新中：</p>
     <div v-if="username" class="group-list">
@@ -142,7 +146,7 @@
     </div>
     <p></p>
     
-
+    <section class="appreciation">
     <div class="appreciation">
       <h2>特别鸣谢</h2>
       <div class="founding-team">
@@ -170,11 +174,12 @@
         <span>Zach Smith教授</span>
       </div>
     </div>
+  </section>
 
-    <div class="footer">
+  <footer class="footer">
       <p>USTC飞跃编辑部</p>
       <p>于美丽的科大校园</p>
-    </div>
+    </footer>
   </div>
 </template>
 
@@ -220,6 +225,18 @@ export default {
 
 .announcement p {
   margin-bottom: 10px;
+}
+.about {
+  margin-bottom: 40px;
+}
+
+.about h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.about p {
+  margin-bottom: 15px;
 }
 
 .group-list {
