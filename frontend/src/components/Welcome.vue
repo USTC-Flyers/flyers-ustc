@@ -162,15 +162,14 @@
         <span>Zhengtao</span>
         <span>Zhidao</span>
         <span>Cheng</span>
-        <span>Sarah</span>
         <span>Shijia</span>
         <span>Sijia</span>
       </div>
       <div class="organizations">
         <span>国合部</span>
-        <span>校友总会</span>
+        <span>硅谷校友会</span>
         <span>新创校友基金会</span>
-        <span>卢征天院长</span>
+        <span>卢征天教授</span>
         <span>Zach Smith教授</span>
       </div>
     </div>
