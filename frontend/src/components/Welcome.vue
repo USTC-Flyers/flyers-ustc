@@ -177,7 +177,7 @@
 
   <footer class="footer">
       <p>USTC飞跃编辑部</p>
-      <p>于美丽的科大校园</p>
+      <p>于美丽的科大校园 & 硅谷</p>
     </footer>
   </div>
 </template>
