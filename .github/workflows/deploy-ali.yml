@@ -28,4 +28,5 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_PRIVATE_KEYPHRASE }}
-        script: bash ${{ secrets.DEPLOY_PATH }}/update.sh ${{ secrets.DEPLOY_PATH }}
+        script: bash /root/flyers-ustc/update.sh /root/flyers-ustc
+        #script: bash ${{ secrets.DEPLOY_PATH }}/update.sh ${{ secrets.DEPLOY_PATH }}
